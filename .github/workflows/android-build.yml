@@ -1,0 +1,53 @@
+name: Build Android embedded APK
+
+on:
+  push:
+    branches:
+      - main
+      - temp
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reconstruct Android source
+        run: |
+          cat ci/android-src.part* > android-build-src.zip.b64
+          base64 -d android-build-src.zip.b64 > android-build-src.zip
+          unzip -t android-build-src.zip
+          unzip -q -o android-build-src.zip
+
+      - name: Apply canonical runtime sources
+        run: |
+          cp ci/patches/DebExtractor.kt android/app/src/main/java/io/leostrange/dshandroid/runtime/DebExtractor.kt
+          cp ci/patches/RuntimeInstaller.kt android/app/src/main/java/io/leostrange/dshandroid/runtime/RuntimeInstaller.kt
+          cp ci/patches/NativeBuildConfig.kt android/app/src/main/java/io/leostrange/dshandroid/runtime/NativeBuildConfig.kt
+          cp ci/patches/HarnessForegroundService.kt android/app/src/main/java/io/leostrange/dshandroid/HarnessForegroundService.kt
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+
+      - name: Unit tests
+        working-directory: android
+        run: gradle testDebugUnitTest --stacktrace
+
+      - name: Build debug APK
+        working-directory: android
+        run: gradle assembleDebug --stacktrace
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: DeepSeekHarness-Android-fast-bootstrap-debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error

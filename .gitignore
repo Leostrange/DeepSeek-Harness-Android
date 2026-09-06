@@ -1,0 +1,16 @@
+# Gradle / Android build artifacts
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+.idea/
+*.iml
+
+# Runtime QA screenshots (kept locally, not published)
+qa/emu-*.png
+qa/*.b64
+
+# OS noise
+Thumbs.db
+.DS_Store
