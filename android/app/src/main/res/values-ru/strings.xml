@@ -79,6 +79,10 @@
     <string name="font_reset">Сбросить к настройкам DSH</string>
     <string name="harness_update">Обновить DeepSeek Harness</string>
     <string name="harness_update_started">Обновление запущено — прогресс в журнале Harness</string>
+    <string name="attach_choose">Прикрепить…</string>
+    <string name="attach_files">Файл(ы)…</string>
+    <string name="attach_gallery">Из галереи…</string>
+    <string name="attach_folder">Папка проекта (как рабочее пространство)…</string>
     <string name="download_saved">Сохранено: %s</string>
     <string name="dsh_model_pick">Модель / провайдер</string>
     <string name="dsh_model_pick_btn">Открыть выбор модели в чате (DSH)</string>

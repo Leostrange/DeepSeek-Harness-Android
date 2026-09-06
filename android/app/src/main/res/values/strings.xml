@@ -79,6 +79,10 @@
     <string name="font_reset">Reset to DSH defaults</string>
     <string name="harness_update">Update DeepSeek Harness</string>
     <string name="harness_update_started">Update started — progress in Harness log</string>
+    <string name="attach_choose">Attach…</string>
+    <string name="attach_files">File(s)…</string>
+    <string name="attach_gallery">From gallery…</string>
+    <string name="attach_folder">Project folder (add as workspace)…</string>
     <string name="download_saved">Saved: %s</string>
     <string name="dsh_model_pick">Model / provider</string>
     <string name="dsh_model_pick_btn">Open model picker in the chat (DSH)</string>

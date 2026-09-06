@@ -79,6 +79,10 @@
     <string name="font_reset">恢复 DSH 默认</string>
     <string name="harness_update">更新 DeepSeek Harness</string>
     <string name="harness_update_started">更新已开始 — 进度见 Harness 日志</string>
+    <string name="attach_choose">附加…</string>
+    <string name="attach_files">文件…</string>
+    <string name="attach_gallery">从相册…</string>
+    <string name="attach_folder">项目文件夹（作为工作区）…</string>
     <string name="download_saved">已保存：%s</string>
     <string name="dsh_model_pick">模型 / 提供商</string>
     <string name="dsh_model_pick_btn">在聊天中打开模型选择（DSH）</string>

@@ -207,6 +207,17 @@ class HarnessForegroundService : Service() {
                     appendLog("Harness notice: acknowledged via ${onboarding.mechanism}")
                 }
 
+                // ── Android SDK (first boot, together with the other packages)
+                val sdkMarker = File(
+                    RuntimePaths.hostHome(installer.runtimeRoot),
+                    ".dsh/android-sdk/.installed",
+                )
+                if (!sdkMarker.isFile) {
+                    installAndroidSdkInline(runner, installer.runtimeRoot)
+                } else {
+                    appendLog("Android SDK: already installed")
+                }
+
                 launchHarness(runner)
             } catch (cancelled: kotlinx.coroutines.CancellationException) {
                 throw cancelled
@@ -762,6 +773,16 @@ if (os.platform() === 'android') {
                 )
                 appendLog("Harness: обновляю @deepseek-ai/dsh до последней версии…")
                 updateNotification("Обновляю DeepSeek Harness…")
+                val verBefore = runCatching {
+                    runner.runCapture(
+                        listOf(
+                            "${RuntimePaths.PREFIX}/bin/sh", "-c",
+                            "cat ${RuntimePaths.PREFIX}/lib/node_modules/@deepseek-ai/dsh/package.json 2>/dev/null | grep version | head -1",
+                        ),
+                        30,
+                    ).output
+                }.getOrNull()
+                appendLog("Harness: текущая версия $verBefore")
                 val install = runner.start(
                     listOf(
                         "${RuntimePaths.PREFIX}/bin/npm",
@@ -804,8 +825,9 @@ if (os.platform() === 'android') {
     /**
      * Installs JDK 17 + Gradle + Android cmdline-tools into the sandbox by
      * running assets/setup-android-sdk.sh (see ~/DSH_ANDROID_SETUP_PLAN.md
-     * from the harness workspace). Runs independently of the harness itself,
-     * progress is streamed into the harness log.
+     * from the harness workspace). Two entry points: the first-boot chain
+     * in [startHarness] (inline, with the other packages) and the manual
+     * button in the settings sheet. Progress is streamed into the log.
      */
     private fun installAndroidSdk(forceUpdate: Boolean) {
         if (sdkJob?.isActive == true) {
@@ -819,43 +841,52 @@ if (os.platform() === 'android') {
                     appendLog("SDK: рантайм не установлен — сначала запустите Harness")
                     return@launch
                 }
-                val homeHost = File(installer.runtimeRoot, "data/data/com.termux/files/home")
-                val scriptHost = File(homeHost, "setup-android-sdk.sh")
-                assets.open("setup-android-sdk.sh").use { input ->
-                    scriptHost.outputStream().use { input.copyTo(it) }
-                }
-                val marker = File(homeHost, ".dsh/android-sdk/.installed")
-                if (forceUpdate && marker.isFile) marker.delete()
-                if (!forceUpdate && marker.isFile) {
+                if (!forceUpdate && sdkMarkerFile(installer.runtimeRoot).isFile) {
                     appendLog("SDK: уже установлен (обновите через «Обновить SDK»)")
                     return@launch
                 }
-                appendLog("SDK: установка начата (JDK 17 + Gradle + cmdline-tools, ~1 ГБ)")
-                updateNotification("Устанавливаю Android SDK в песочницу…")
-                val runner = ProotRunner(installer.runtimeRoot)
-                val process = runner.start(
-                    listOf("bash", "${RuntimePaths.HOME}/setup-android-sdk.sh"),
-                    linkedMapOf(
-                        "DSH_NO_LANDLOCK" to "1",
-                        "HOME" to RuntimePaths.HOME,
-                    ),
-                )
-                streamProcess(process)
-                if (!process.waitFor(45, TimeUnit.MINUTES)) {
-                    process.destroy()
-                    if (!process.waitFor(2, TimeUnit.SECONDS)) process.destroyForcibly()
-                    appendLog("SDK: таймаут установки")
-                    return@launch
-                }
-                if (process.exitValue() == 0) {
-                    appendLog("SDK: установка завершена успешно")
-                    updateNotification("Android SDK установлен")
-                } else {
-                    appendLog("SDK: установка завершилась с кодом ${process.exitValue()}")
-                }
+                installAndroidSdkInline(ProotRunner(installer.runtimeRoot), installer.runtimeRoot)
             } catch (e: Exception) {
                 appendLog("SDK: ошибка установки — ${e.message}")
             }
+        }
+    }
+
+    private fun sdkMarkerFile(runtimeRoot: File): File =
+        File(RuntimePaths.hostHome(runtimeRoot), ".dsh/android-sdk/.installed")
+
+    /** Blocking SDK install; called from the first-boot chain and the button. */
+    private fun installAndroidSdkInline(runner: ProotRunner, runtimeRoot: File) {
+        try {
+            val homeHost = RuntimePaths.hostHome(runtimeRoot)
+            val scriptHost = File(homeHost, "setup-android-sdk.sh")
+            assets.open("setup-android-sdk.sh").use { input ->
+                scriptHost.outputStream().use { input.copyTo(it) }
+            }
+            appendLog("SDK: установка начата (JDK 17 + Gradle + cmdline-tools, ~1 ГБ)")
+            updateNotification("Устанавливаю Android SDK в песочницу…")
+            val process = runner.start(
+                listOf("bash", "${RuntimePaths.HOME}/setup-android-sdk.sh"),
+                linkedMapOf(
+                    "DSH_NO_LANDLOCK" to "1",
+                    "HOME" to RuntimePaths.HOME,
+                ),
+            )
+            streamProcess(process)
+            if (!process.waitFor(45, TimeUnit.MINUTES)) {
+                process.destroy()
+                if (!process.waitFor(2, TimeUnit.SECONDS)) process.destroyForcibly()
+                appendLog("SDK: таймаут установки (можно повторить из настроек)")
+                return
+            }
+            if (process.exitValue() == 0) {
+                appendLog("SDK: установка завершена успешно")
+                updateNotification("Android SDK установлен")
+            } else {
+                appendLog("SDK: установка завершилась с кодом ${process.exitValue()} (повтор — из настроек)")
+            }
+        } catch (e: Exception) {
+            appendLog("SDK: ошибка установки — ${e.message}")
         }
     }
 

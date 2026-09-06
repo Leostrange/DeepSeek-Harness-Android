@@ -98,13 +98,13 @@ internal object AppPrefs {
     fun setTheme(context: Context, theme: String) = prefs(context).edit().putString(KEY_THEME, theme).apply()
 
     // ── Chat font customization (applied to DSH via CSS injection) ─────────
-    const val KEY_FONT_SIZE = "chat_font_size"       // 0 = DSH default
-    const val KEY_FONT_FAMILY = "chat_font_family"   // "" | "serif" | "mono"
+    const val KEY_FONT_ZOOM = "chat_font_zoom"       // "1" = DSH default
+    const val KEY_FONT_FAMILY = "chat_font_family"   // "" | serif|mono|inter|lora|jbmono|ibmsans|ibmmono
     const val KEY_LINE_HEIGHT = "chat_line_height"   // "" = DSH default
 
-    fun fontSize(context: Context): Int = prefs(context).getInt(KEY_FONT_SIZE, 0)
+    fun fontZoom(context: Context): String = prefs(context).getString(KEY_FONT_ZOOM, "1") ?: "1"
 
-    fun setFontSize(context: Context, size: Int) = prefs(context).edit().putInt(KEY_FONT_SIZE, size).apply()
+    fun setFontZoom(context: Context, zoom: String) = prefs(context).edit().putString(KEY_FONT_ZOOM, zoom).apply()
 
     fun fontFamily(context: Context): String = prefs(context).getString(KEY_FONT_FAMILY, "") ?: ""
 
@@ -318,6 +318,12 @@ private const val WEBVIEW_PAGE_FIX_JS = """
           // leaving dead space under the composer. The chat belongs to the
           // bottom of the screen (and must sit right on the keyboard).
           '  [class*="scrollBody"] { justify-content: flex-end !important; }' +
+          // ...but an overflowing flex column can never scroll back to its
+          // top, so JS flips this class on when content overflows.
+          '  [class*="scrollBody"].dsh-overflow { justify-content: flex-start !important; }' +
+          // Model/effort popovers overflow the right screen edge on phones —
+          // clamp their panels to the viewport.
+          '  [data-radix-popper-content-wrapper] > * { max-width: calc(100vw - 12px) !important; }' +
           // Skeleton chips shown while DSH is still loading the model catalog:
           // the model/effort pills pop in later, leaving the composer row
           // half-empty (BUG-001/FEAT-003).
@@ -445,27 +451,107 @@ private const val WEBVIEW_PAGE_FIX_JS = """
             document.documentElement.classList.add('dsh-hide-rail');
           }
         } catch (e) {}
-        // Native font settings (settings sheet) → CSS for the chat content.
+        // Native font settings (settings sheet) → CSS for the whole Harness.
+        // __dshRegisterFont installs an @font-face from a base64 data URL;
+        // __dshApplyFont maps the stored key to a font stack. Typefaces apply
+        // to the entire Harness UI; the size chip drives a root zoom factor
+        // (scales everything, px sizes included) and line spacing is global.
+        window.__dshRegisterFont = function (family, dataUrl) {
+          try {
+            var s = document.getElementById('dshFF_' + family) || document.createElement('style');
+            s.id = 'dshFF_' + family;
+            s.textContent = "@font-face { font-family: '" + family + "'; src: url(" + dataUrl + "); }";
+            if (!s.parentNode) document.head.appendChild(s);
+          } catch (e) {}
+        };
         window.__dshApplyFont = function () {
           try {
-            var size = localStorage.getItem('dshFontSize') || '';
+            var zoom = localStorage.getItem('dshFontZoom') || '1';
             var fam = localStorage.getItem('dshFontFamily') || '';
             var lh = localStorage.getItem('dshLineHeight') || '';
+            var stacks = {
+              '': '',
+              serif: 'Georgia, "Times New Roman", serif !important;',
+              mono: 'ui-monospace, Menlo, Consolas, monospace !important;',
+              inter: "'Inter', Roboto, sans-serif !important;",
+              lora: "'Lora', Georgia, serif !important;",
+              jbmono: "'JetBrains Mono', ui-monospace, monospace !important;",
+              ibmsans: "'IBM Plex Sans', Roboto, sans-serif !important;",
+              ibmmono: "'IBM Plex Mono', ui-monospace, monospace !important;"
+            };
             var s = document.getElementById('dshFontStyle') || document.createElement('style');
             s.id = 'dshFontStyle';
-            var family = fam === 'serif' ? 'Georgia, "Times New Roman", serif !important;'
-              : fam === 'mono' ? 'ui-monospace, Menlo, Consolas, monospace !important;' : '';
-            s.textContent = '[class*="message"], [class*="markdown"], [class*="bubble"], pre, code {' +
-              (size ? ' font-size: ' + size + 'px !important;' : '') +
-              (family ? ' font-family: ' + family : '') + ' }';
+            s.textContent = 'body { ' + (stacks[fam] !== undefined ? 'font-family: ' + stacks[fam] : '') + ' }' +
+              '#root { zoom: ' + zoom + ' !important; }' +
+              (lh ? 'body, #root { line-height: ' + lh + ' !important; }' : '');
             if (!s.parentNode) document.head.appendChild(s);
-            var l = document.getElementById('dshLhStyle') || document.createElement('style');
-            l.id = 'dshLhStyle';
-            l.textContent = lh ? '[class*="message"], [class*="markdown"], [class*="bubble"] { line-height: ' + lh + ' !important; }' : '';
-            if (!l.parentNode) document.head.appendChild(l);
           } catch (e) {}
         };
         window.__dshApplyFont();
+        // Intercept blob: downloads (Session log export renders an <a
+        // download href=blob:...> — WebView never fires DownloadListener
+        // for those, so bridge the bytes to the app ourselves).
+        document.addEventListener('click', function (e) {
+          try {
+            var a = e.target && e.target.closest ? e.target.closest('a[href^="blob:"]') : null;
+            if (!a) return;
+            e.preventDefault(); e.stopPropagation();
+            fetch(a.getAttribute('href')).then(function (r) { return r.blob(); }).then(function (b) {
+              new Promise(function (res) {
+                var fr = new FileReader();
+                fr.onload = function () { res(fr.result); };
+                fr.readAsDataURL(b);
+              }).then(function (dataUrl) {
+                var name = (a.getAttribute('download') || 'session-log.zip').replace(/[\\/:*?"<>|]/g, '_');
+                if (window.AndroidClipboard && window.AndroidClipboard.saveDownload) {
+                  window.AndroidClipboard.saveDownload(name, dataUrl);
+                }
+              });
+            });
+          } catch (err) {}
+        }, true);
+        // "+ / Commands" popover: append an attach button at the end that
+        // opens the native chooser (files / gallery / project folder).
+        setInterval(function () {
+          try {
+            var lists = document.querySelectorAll('[role=menu]');
+            for (var i = 0; i < lists.length; i++) {
+              var list = lists[i];
+              var txt = (list.textContent || '');
+              if (txt.indexOf('compact') < 0 && txt.indexOf('export') < 0) continue;
+              if (list.querySelector('.dsh-attach-item')) continue;
+              var item = document.createElement('div');
+              item.className = 'dsh-attach-item';
+              item.setAttribute('role', 'menuitem');
+              item.textContent = '📎 Добавить файл или фото…';
+              item.style.cssText = 'padding:10px 14px;cursor:pointer;font-weight:600;';
+              item.addEventListener('click', function (ev) {
+                ev.stopPropagation();
+                var inp = document.createElement('input');
+                inp.type = 'file';
+                inp.accept = '*/*';
+                inp.style.display = 'none';
+                document.body.appendChild(inp);
+                inp.click();
+                setTimeout(function () { inp.remove(); }, 120000);
+              });
+              list.appendChild(item);
+            }
+          } catch (e) {}
+        }, 700);
+        // Chat scroll fix: with the composer pinned to the bottom, an
+        // overflowing flex column can't scroll to the top. When content
+        // overflows, switch that container back to flex-start.
+        setInterval(function () {
+          try {
+            var sbs = document.querySelectorAll('[class*="scrollBody"]');
+            for (var i = 0; i < sbs.length; i++) {
+              var sb = sbs[i];
+              var over = sb.scrollHeight > sb.clientHeight + 2;
+              sb.classList.toggle('dsh-overflow', over);
+            }
+          } catch (e) {}
+        }, 500);
         setInterval(function () { manageSidebar(); ensureSkeletons(); }, 500);
         document.addEventListener('click', function (e) {
           try {
@@ -1139,6 +1225,12 @@ class MainActivity : ComponentActivity() {
                         it?.evaluateJavascript(
                             "(function(){try{return localStorage.getItem('dshRailHidden')||'0';}catch(e){return '0';}})()",
                         ) { v -> railHidden = v?.contains("1") == true }
+                        // Re-register the bundled typeface after (re)load —
+                        // @font-face styles die with the page.
+                        val fam = AppPrefs.fontFamily(this@MainActivity)
+                        if (bundledFonts.containsKey(fam)) {
+                            registerCustomFont(it, fam)
+                        }
                     },
                 )
                 if (snapshot.stage == HarnessStage.RUNNING) {
@@ -1345,7 +1437,7 @@ class MainActivity : ComponentActivity() {
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState())
                     .padding(start = 20.dp, end = 20.dp, bottom = 32.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(stringResource(R.string.action_settings), style = MaterialTheme.typography.headlineSmall)
 
@@ -1587,39 +1679,41 @@ class MainActivity : ComponentActivity() {
                 HorizontalDivider()
 
                 // ── Chat font ──────────────────────────────────────────────
-                Text(stringResource(R.string.font_section), style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(R.string.font_section), style = MaterialTheme.typography.titleSmall)
                 Text(stringResource(R.string.font_size), style = MaterialTheme.typography.labelMedium)
-                var fontSizeSel by remember { mutableStateOf(AppPrefs.fontSize(this@MainActivity)) }
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    listOf(0, 13, 15, 17, 19).forEach { size ->
+                var fontSizeSel by remember { mutableStateOf(AppPrefs.fontZoom(this@MainActivity)) }
+                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    listOf("1" to "DSH", "0.95" to "95%", "1.1" to "110%", "1.25" to "125%", "1.4" to "140%").forEach { (key, label) ->
                         FilterChip(
-                            selected = fontSizeSel == size,
+                            selected = fontSizeSel == key,
                             onClick = {
-                                fontSizeSel = size
-                                AppPrefs.setFontSize(this@MainActivity, size)
+                                fontSizeSel = key
+                                AppPrefs.setFontZoom(this@MainActivity, key)
                                 webView?.evaluateJavascript(
-                                    "(function(v){try{localStorage.setItem('dshFontSize',v);}catch(e){}" +
-                                        "if(window.__dshApplyFont)window.__dshApplyFont();})('" + size + "')",
+                                    "(function(v){try{localStorage.setItem('dshFontZoom',v);}catch(e){}" +
+                                        "if(window.__dshApplyFont)window.__dshApplyFont();})('" + key + "')",
                                     null,
                                 )
                             },
-                            label = { Text(if (size == 0) "DSH" else "$size") },
+                            label = { Text(label) },
                         )
                     }
                 }
                 Text(stringResource(R.string.font_family), style = MaterialTheme.typography.labelMedium)
                 var fontFamSel by remember { mutableStateOf(AppPrefs.fontFamily(this@MainActivity)) }
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     listOf(
                         "" to stringResource(R.string.font_system),
-                        "serif" to stringResource(R.string.font_serif),
-                        "mono" to stringResource(R.string.font_mono),
+                        "inter" to "Inter",
+                        "lora" to "Lora",
+                        "ibmsans" to "IBM Sans",
                     ).forEach { (key, label) ->
                         FilterChip(
                             selected = fontFamSel == key,
                             onClick = {
                                 fontFamSel = key
                                 AppPrefs.setFontFamily(this@MainActivity, key)
+                                registerCustomFont(webView, key)
                                 webView?.evaluateJavascript(
                                     "(function(v){try{localStorage.setItem('dshFontFamily',v);}catch(e){}" +
                                         "if(window.__dshApplyFont)window.__dshApplyFont();})('" + key + "')",
@@ -1630,6 +1724,56 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 }
+                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    listOf(
+                        "jbmono" to "JetBrains Mono",
+                        "ibmmono" to "IBM Plex Mono",
+                        "serif" to stringResource(R.string.font_serif),
+                        "mono" to stringResource(R.string.font_mono),
+                    ).forEach { (key, label) ->
+                        FilterChip(
+                            selected = fontFamSel == key,
+                            onClick = {
+                                fontFamSel = key
+                                AppPrefs.setFontFamily(this@MainActivity, key)
+                                registerCustomFont(webView, key)
+                                webView?.evaluateJavascript(
+                                    "(function(v){try{localStorage.setItem('dshFontFamily',v);}catch(e){}" +
+                                        "if(window.__dshApplyFont)window.__dshApplyFont();})('" + key + "')",
+                                    null,
+                                )
+                            },
+                            label = { Text(label) },
+                        )
+                    }
+                }
+                // Live preview with the actual selected typeface and metrics.
+                val previewTypeface = remember(fontFamSel) {
+                    val asset = when (fontFamSel) {
+                        "inter" -> "fonts/Inter.ttf"
+                        "lora" -> "fonts/Lora.ttf"
+                        "jbmono" -> "fonts/JetBrainsMono.ttf"
+                        else -> null
+                    }
+                    asset?.let { runCatching { android.graphics.Typeface.createFromAsset(assets, it) }.getOrNull() }
+                }
+                AndroidView(
+                    factory = { ctx ->
+                        android.widget.TextView(ctx).apply {
+                            setTextColor(android.graphics.Color.WHITE)
+                            textSize = 16f
+                            text = "Быстрая коричневая лиса прыгает 0123 {code}"
+                        }
+                    },
+                    update = { tv ->
+                        tv.typeface = previewTypeface ?: android.graphics.Typeface.DEFAULT
+                        tv.textSize = 16f * (fontSizeSel.toFloatOrNull() ?: 1f)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(10.dp))
+                        .padding(12.dp),
+                )
                 Text(stringResource(R.string.font_lineheight), style = MaterialTheme.typography.labelMedium)
                 var lineHeightSel by remember { mutableStateOf(AppPrefs.lineHeight(this@MainActivity)) }
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -1651,12 +1795,12 @@ class MainActivity : ComponentActivity() {
                 }
                 OutlinedButton(
                     onClick = {
-                        AppPrefs.setFontSize(this@MainActivity, 0)
+                        AppPrefs.setFontZoom(this@MainActivity, "1")
                         AppPrefs.setFontFamily(this@MainActivity, "")
                         AppPrefs.setLineHeight(this@MainActivity, "")
-                        fontSizeSel = 0; fontFamSel = ""; lineHeightSel = ""
+                        fontSizeSel = "1"; fontFamSel = ""; lineHeightSel = ""
                         webView?.evaluateJavascript(
-                            "(function(){try{localStorage.removeItem('dshFontSize');" +
+                            "(function(){try{localStorage.removeItem('dshFontZoom');" +
                                 "localStorage.removeItem('dshFontFamily');localStorage.removeItem('dshLineHeight');" +
                                 "}catch(e){} if(window.__dshApplyFont)window.__dshApplyFont();})()",
                             null,
@@ -2055,6 +2199,104 @@ class MainActivity : ComponentActivity() {
             stale?.invoke(null)
         }
         pendingFileChooser = callback
+        // Ask what to attach: files, gallery photos, or a project folder that
+        // becomes a new DSH workspace (reuses the in-app browser).
+        runOnUiThread {
+            android.app.AlertDialog.Builder(this)
+                .setTitle(R.string.attach_choose)
+                .setItems(
+                    arrayOf(
+                        getString(R.string.attach_files),
+                        getString(R.string.attach_gallery),
+                        getString(R.string.attach_folder),
+                    ),
+                ) { dialog, which ->
+                    dialog.dismiss()
+                    when (which) {
+                        0 -> openFilesIntent(callback, params)
+                        1 -> openGalleryIntent(callback)
+                        else -> {
+                            pendingFileChooser = null
+                            callback(null)
+                            showNativeFolderPicker(File("/sdcard")) { dir ->
+                                val mapped = mapHostDirToGuestPath(dir)
+                                if (mapped != null && registerWorkspace(mapped.first, mapped.second)) {
+                                    restartHarness()
+                                    android.widget.Toast.makeText(
+                                        this,
+                                        getString(R.string.ws_added, mapped.second),
+                                        android.widget.Toast.LENGTH_LONG,
+                                    ).show()
+                                } else {
+                                    android.widget.Toast.makeText(
+                                        this,
+                                        getString(R.string.ws_add_failed),
+                                        android.widget.Toast.LENGTH_LONG,
+                                    ).show()
+                                }
+                            }
+                        }
+                    }
+                }
+                .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                    dialog.dismiss()
+                    pendingFileChooser = null
+                    callback(null)
+                }
+                .show()
+        }
+    }
+
+    /** Gallery-only picker for attaching photos to the chat. */
+    private fun openGalleryIntent(callback: (Array<android.net.Uri>?) -> Unit) {
+        val intent = android.content.Intent(android.content.Intent.ACTION_GET_CONTENT).apply {
+            type = "image/*"
+            addCategory(android.content.Intent.CATEGORY_OPENABLE)
+            putExtra(android.content.Intent.EXTRA_ALLOW_MULTIPLE, true)
+        }
+        runCatching { startActivityForResult(intent, REQ_FILE_CHOOSER) }
+            .onFailure {
+                val cb = pendingFileChooser
+                pendingFileChooser = null
+                cb?.invoke(null)
+            }
+    }
+
+    /** Classic View dialog walking the internal-storage tree (View-based
+     *  twin of the Compose FolderPickerDialog, usable from WebChromeClient). */
+    private fun showNativeFolderPicker(dir: File, onPick: (File) -> Unit) {
+        val dirs = dir.listFiles { f -> f.isDirectory && !f.name.startsWith(".") }
+            ?.sortedBy { it.name.lowercase() } ?: emptyList()
+        val canGoUp = dir.parentFile?.path?.startsWith("/storage/emulated") == true ||
+            dir.path.startsWith("/storage/emulated/0/")
+        val items = buildList {
+            if (canGoUp) add("↩ …")
+            addAll(dirs.map { "📁 ${it.name}" })
+        }
+        android.app.AlertDialog.Builder(this)
+            .setTitle(dir.path)
+            .setItems(items.toTypedArray()) { dialog, which ->
+                dialog.dismiss()
+                if (canGoUp && which == 0) {
+                    showNativeFolderPicker(dir.parentFile!!, onPick)
+                } else {
+                    val chosen = dirs[if (canGoUp) which - 1 else which]
+                    showNativeFolderPicker(chosen, onPick)
+                }
+            }
+            .setPositiveButton(R.string.ws_pick_confirm) { dialog, _ ->
+                dialog.dismiss()
+                onPick(dir)
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    /** Original file-picker intent (kept from the plain attach flow). */
+    private fun openFilesIntent(
+        callback: (Array<android.net.Uri>?) -> Unit,
+        params: WebChromeClient.FileChooserParams?,
+    ) {
         val multiple = params?.mode == WebChromeClient.FileChooserParams.MODE_OPEN_MULTIPLE
         val intent = runCatching { params?.createIntent() }.getOrNull()
             ?: android.content.Intent(android.content.Intent.ACTION_GET_CONTENT).apply { type = "*/*" }
@@ -2418,6 +2660,29 @@ class MainActivity : ComponentActivity() {
         manager.setPrimaryClip(ClipData.newPlainText("dsh", text))
     }
 
+    /** Bundled free fonts (SIL OFL): family key → asset path / CSS family. */
+    private val bundledFonts = mapOf(
+        "inter" to ("fonts/Inter.ttf" to "Inter"),
+        "lora" to ("fonts/Lora.ttf" to "Lora"),
+        "jbmono" to ("fonts/JetBrainsMono.ttf" to "JetBrains Mono"),
+        "ibmsans" to ("fonts/IBMPlexSans.ttf" to "IBM Plex Sans"),
+        "ibmmono" to ("fonts/IBMPlexMono.ttf" to "IBM Plex Mono"),
+    )
+    private val fontDataCache = mutableMapOf<String, String>()
+
+    /** Registers a bundled @font-face in the page (base64 data URL, cached). */
+    private fun registerCustomFont(webView: WebView?, key: String) {
+        if (webView == null) return
+        val (asset, family) = bundledFonts[key] ?: return
+        val dataUrl = fontDataCache.getOrPut(key) {
+            val bytes = assets.open(asset).use { it.readBytes() }
+            "data:font/ttf;base64," + android.util.Base64.encodeToString(bytes, android.util.Base64.NO_WRAP)
+        }
+        webView.evaluateJavascript(
+            "window.__dshRegisterFont && window.__dshRegisterFont('$family','$dataUrl');", null,
+        )
+    }
+
     /** Best-effort file name from Content-Disposition / mime / url. */
     private fun suggestName(contentDisposition: String?, mimetype: String?, url: String): String {
         val fromCd = contentDisposition?.substringAfter("filename=", "")?.trim('"', ' ', ';')
@@ -2500,6 +2765,25 @@ class MainActivity : ComponentActivity() {
         fun hasContent(): Boolean {
             val manager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             return manager.hasPrimaryClip()
+        }
+
+        /** Blob-download bridge (Session log): name + data:base64 payload. */
+        @JavascriptInterface
+        fun saveDownload(name: String, dataUrl: String) {
+            runCatching {
+                val b64 = dataUrl.substringAfter("base64,")
+                val path = saveBytesToDownloads(
+                    name.ifBlank { "session-log.zip" },
+                    android.util.Base64.decode(b64, android.util.Base64.DEFAULT),
+                )
+                runOnUiThread {
+                    android.widget.Toast.makeText(this@MainActivity, getString(R.string.download_saved, path), android.widget.Toast.LENGTH_LONG).show()
+                }
+            }.onFailure {
+                runOnUiThread {
+                    android.widget.Toast.makeText(this@MainActivity, getString(R.string.dsh_pick_fail), android.widget.Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
