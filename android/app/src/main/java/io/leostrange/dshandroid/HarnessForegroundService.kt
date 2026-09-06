@@ -31,6 +31,8 @@ import java.util.concurrent.TimeUnit
 class HarnessForegroundService : Service() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private var launchJob: Job? = null
+    private var sdkJob: Job? = null
+    private var updateJob: Job? = null
     @Volatile private var harnessProcess: Process? = null
     private val logLines = ArrayDeque<String>()
     private lateinit var logFile: File
@@ -46,6 +48,8 @@ class HarnessForegroundService : Service() {
             ACTION_STOP -> stopHarnessAndSelf()
             ACTION_REINSTALL -> startHarness(forceReinstall = true, fullRuntimeReset = false)
             ACTION_RESET_RUNTIME -> startHarness(forceReinstall = true, fullRuntimeReset = true)
+            ACTION_INSTALL_SDK -> installAndroidSdk(forceUpdate = false)
+            ACTION_UPDATE_HARNESS -> updateHarness()
             else -> startHarness(forceReinstall = false, fullRuntimeReset = false)
         }
         return START_STICKY
@@ -68,6 +72,13 @@ class HarnessForegroundService : Service() {
 
                 stopOwnedProcess()
                 clearLog()
+                // Chat persistence: if the sandbox was reset/reinstalled but
+                // an archive exists, bring the conversations back before the
+                // server starts (it reads the store on boot).
+                val restored = ChatArchive.restoreIfEmpty(this@HarnessForegroundService)
+                if (restored > 0) {
+                    appendLog("Чаты восстановлены из резервной копии (файлов: $restored)")
+                }
                 val installer = RuntimeInstaller(this@HarnessForegroundService)
                 // A rebuild/reinstall must not race a still-running server:
                 // the fresh `dsh web` would die with EADDRINUSE after minutes
@@ -724,11 +735,138 @@ if (os.platform() === 'android') {
         null
     }
 
+    /**
+     * Updates the DeepSeek Harness package to the latest official release
+     * (npm registry, the same channel the desktop shell uses). Runtime and
+     * user data are untouched; on failure the previous version stays intact.
+     * The harness is restarted afterwards so the new version takes effect.
+     */
+    private fun updateHarness() {
+        if (updateJob?.isActive == true) {
+            appendLog("Harness: обновление уже выполняется")
+            return
+        }
+        updateJob = scope.launch {
+            try {
+                val installer = RuntimeInstaller(this@HarnessForegroundService)
+                if (!installer.isInstalled()) {
+                    appendLog("Harness: рантайм не установлен — нечего обновлять")
+                    return@launch
+                }
+                stopOwnedProcess()
+                runCatching { killHostStaleDshProcesses() }
+                val runner = ProotRunner(installer.runtimeRoot)
+                val env = NativeBuildConfig.npmBuildEnvironment(RuntimePaths.PREFIX) + mapOf(
+                    "DSH_NO_LANDLOCK" to "1",
+                    "CI" to "1",
+                )
+                appendLog("Harness: обновляю @deepseek-ai/dsh до последней версии…")
+                updateNotification("Обновляю DeepSeek Harness…")
+                val install = runner.start(
+                    listOf(
+                        "${RuntimePaths.PREFIX}/bin/npm",
+                        "install", "--global", "--ignore-scripts", "--no-audit", "--no-fund",
+                        "@deepseek-ai/dsh@latest",
+                    ),
+                    env,
+                )
+                streamProcess(install)
+                if (!install.waitFor(20, TimeUnit.MINUTES)) {
+                    install.destroy()
+                    appendLog("Harness: таймаут обновления")
+                    return@launch
+                }
+                if (install.exitValue() != 0) {
+                    appendLog("Harness: npm вернул ошибку (${install.exitValue()}) — прежняя версия сохранена")
+                    startHarness(forceReinstall = false, fullRuntimeReset = false)
+                    return@launch
+                }
+                appendLog("Harness: пересборка нативных скриптов пакета…")
+                val rebuild = runner.start(
+                    listOf(
+                        "${RuntimePaths.PREFIX}/bin/sh",
+                        "-c",
+                        NativeBuildConfig.rebuildShellCommand(RuntimePaths.PREFIX),
+                    ),
+                    env,
+                )
+                streamProcess(rebuild)
+                if (!rebuild.waitFor(20, TimeUnit.MINUTES)) rebuild.destroyForcibly()
+                appendLog("Harness: обновление завершено, перезапускаю сервер…")
+                startHarness(forceReinstall = false, fullRuntimeReset = false)
+            } catch (e: Exception) {
+                appendLog("Harness: ошибка обновления — ${e.message}")
+                startHarness(forceReinstall = false, fullRuntimeReset = false)
+            }
+        }
+    }
+
+    /**
+     * Installs JDK 17 + Gradle + Android cmdline-tools into the sandbox by
+     * running assets/setup-android-sdk.sh (see ~/DSH_ANDROID_SETUP_PLAN.md
+     * from the harness workspace). Runs independently of the harness itself,
+     * progress is streamed into the harness log.
+     */
+    private fun installAndroidSdk(forceUpdate: Boolean) {
+        if (sdkJob?.isActive == true) {
+            appendLog("SDK: установка уже выполняется")
+            return
+        }
+        sdkJob = scope.launch {
+            try {
+                val installer = RuntimeInstaller(this@HarnessForegroundService)
+                if (!installer.isInstalled()) {
+                    appendLog("SDK: рантайм не установлен — сначала запустите Harness")
+                    return@launch
+                }
+                val homeHost = File(installer.runtimeRoot, "data/data/com.termux/files/home")
+                val scriptHost = File(homeHost, "setup-android-sdk.sh")
+                assets.open("setup-android-sdk.sh").use { input ->
+                    scriptHost.outputStream().use { input.copyTo(it) }
+                }
+                val marker = File(homeHost, ".dsh/android-sdk/.installed")
+                if (forceUpdate && marker.isFile) marker.delete()
+                if (!forceUpdate && marker.isFile) {
+                    appendLog("SDK: уже установлен (обновите через «Обновить SDK»)")
+                    return@launch
+                }
+                appendLog("SDK: установка начата (JDK 17 + Gradle + cmdline-tools, ~1 ГБ)")
+                updateNotification("Устанавливаю Android SDK в песочницу…")
+                val runner = ProotRunner(installer.runtimeRoot)
+                val process = runner.start(
+                    listOf("bash", "${RuntimePaths.HOME}/setup-android-sdk.sh"),
+                    linkedMapOf(
+                        "DSH_NO_LANDLOCK" to "1",
+                        "HOME" to RuntimePaths.HOME,
+                    ),
+                )
+                streamProcess(process)
+                if (!process.waitFor(45, TimeUnit.MINUTES)) {
+                    process.destroy()
+                    if (!process.waitFor(2, TimeUnit.SECONDS)) process.destroyForcibly()
+                    appendLog("SDK: таймаут установки")
+                    return@launch
+                }
+                if (process.exitValue() == 0) {
+                    appendLog("SDK: установка завершена успешно")
+                    updateNotification("Android SDK установлен")
+                } else {
+                    appendLog("SDK: установка завершилась с кодом ${process.exitValue()}")
+                }
+            } catch (e: Exception) {
+                appendLog("SDK: ошибка установки — ${e.message}")
+            }
+        }
+    }
+
     private fun streamProcess(process: Process) {
         Thread {
             try {
                 process.inputStream.bufferedReader().useLines { lines ->
                     lines.forEach { line ->
+                        // Android linker noise on every guest process — purely
+                        // cosmetic (BUG-003), never carries DSH state.
+                        if (line.contains("WARNING: linker") || line.contains("CANNOT LINK")) return@forEach
                         appendLog(line)
                         maybeCaptureAuthUrl(line)
                     }
@@ -821,6 +959,12 @@ if (os.platform() === 'android') {
         launchJob?.cancel()
         launchJob = null
         stopOwnedProcess()
+        // Chat persistence: snapshot conversations while the server is down
+        // and no session files are being written.
+        runCatching { ChatArchive.backupNow(this) }
+        // Sweep orphaned proot/node children too — stopOwnedProcess only
+        // kills the process we spawned ourselves.
+        runCatching { killHostStaleDshProcesses() }
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
     }
@@ -883,6 +1027,8 @@ if (os.platform() === 'android') {
         const val ACTION_STOP = "io.leostrange.dshandroid.STOP"
         const val ACTION_REINSTALL = "io.leostrange.dshandroid.REINSTALL"
         const val ACTION_RESET_RUNTIME = "io.leostrange.dshandroid.RESET_RUNTIME"
+        const val ACTION_INSTALL_SDK = "io.leostrange.dshandroid.INSTALL_SDK"
+        const val ACTION_UPDATE_HARNESS = "io.leostrange.dshandroid.UPDATE_HARNESS"
         const val NOTIF_ID = 1001
         private const val HARNESS_URL = "http://127.0.0.1:3080"
         private const val MAX_LOG_LINES = 80

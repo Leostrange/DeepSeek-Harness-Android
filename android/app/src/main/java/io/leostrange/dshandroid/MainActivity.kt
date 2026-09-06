@@ -96,6 +96,23 @@ internal object AppPrefs {
     fun theme(context: Context): String = prefs(context).getString(KEY_THEME, "dark") ?: "dark"
 
     fun setTheme(context: Context, theme: String) = prefs(context).edit().putString(KEY_THEME, theme).apply()
+
+    // ── Chat font customization (applied to DSH via CSS injection) ─────────
+    const val KEY_FONT_SIZE = "chat_font_size"       // 0 = DSH default
+    const val KEY_FONT_FAMILY = "chat_font_family"   // "" | "serif" | "mono"
+    const val KEY_LINE_HEIGHT = "chat_line_height"   // "" = DSH default
+
+    fun fontSize(context: Context): Int = prefs(context).getInt(KEY_FONT_SIZE, 0)
+
+    fun setFontSize(context: Context, size: Int) = prefs(context).edit().putInt(KEY_FONT_SIZE, size).apply()
+
+    fun fontFamily(context: Context): String = prefs(context).getString(KEY_FONT_FAMILY, "") ?: ""
+
+    fun setFontFamily(context: Context, family: String) = prefs(context).edit().putString(KEY_FONT_FAMILY, family).apply()
+
+    fun lineHeight(context: Context): String = prefs(context).getString(KEY_LINE_HEIGHT, "") ?: ""
+
+    fun setLineHeight(context: Context, lh: String) = prefs(context).edit().putString(KEY_LINE_HEIGHT, lh).apply()
 }
 
 private data class AppLanguage(val code: String, val nativeName: String)
@@ -291,6 +308,24 @@ private const val WEBVIEW_PAGE_FIX_JS = """
           '  [class*="sidebarCol"] { grid-column: 1 !important; }' +
           '  [class*="centerCol"] { grid-column: 2 !important; }' +
           '  [class*="detailsCol"] { grid-column: 3 !important; }' +
+          // Optional rail-hiding (chip in the native handle): collapses the
+          // 56px icon rail so the chat takes the whole screen. The class is
+          // toggled from Compose and persisted in localStorage.
+          '  html.dsh-hide-rail [class*="sidebarCol"] { display: none !important; }' +
+          '  html.dsh-hide-rail [class*="_frame"] { grid-template-columns: 0px minmax(0, 1fr) 0px !important;' +
+          '    padding-left: 12px !important; padding-right: 12px !important; }' +
+          // Empty-session state: DSH centers the header+composer vertically,
+          // leaving dead space under the composer. The chat belongs to the
+          // bottom of the screen (and must sit right on the keyboard).
+          '  [class*="scrollBody"] { justify-content: flex-end !important; }' +
+          // Skeleton chips shown while DSH is still loading the model catalog:
+          // the model/effort pills pop in later, leaving the composer row
+          // half-empty (BUG-001/FEAT-003).
+          '  .dsh-skel { display: inline-flex; gap: 8px; margin-right: 8px; align-items: center; }' +
+          '  .dsh-skel > i { display: block; width: 72px; height: 32px; border-radius: 16px;' +
+          '    background: rgba(255,255,255,0.09); animation: dshPulse 1.4s ease-in-out infinite; }' +
+          '  .dsh-skel > i:nth-child(2) { width: 56px; animation-delay: .2s; }' +
+          '  @keyframes dshPulse { 0%, 100% { opacity: .4; } 50% { opacity: 1; } }' +
           // Chat must use the whole width: drop desktop max-width caps and
           // let long error/log lines wrap instead of squeezing into a
           // one-word-per-column sliver.
@@ -377,9 +412,61 @@ private const val WEBVIEW_PAGE_FIX_JS = """
         }
         return null;
       }
+      // Model/effort pills appear only after the async catalog load; show
+      // pulsing skeleton chips in the composer row until they arrive.
+      function ensureSkeletons() {
+        try {
+          var send = null;
+          var btns = document.querySelectorAll('button');
+          for (var i = 0; i < btns.length; i++) {
+            var r = btns[i].getBoundingClientRect();
+            var l = btns[i].getAttribute('aria-label') || '';
+            if (r.width > 0 && r.y > window.innerHeight * 0.6 && /Отправить|Send|发送/.test(l)) { send = btns[i]; break; }
+          }
+          var skel = document.querySelector('.dsh-skel');
+          var row = send ? send.parentElement : null;
+          if (!row) { if (skel) skel.remove(); return; }
+          var hasPills = /DeepSeek|MiMo|GPT|Claude|Qwen|Высок|Высо|Средн|Низк|High|Low|Medium/.test(row.textContent || '');
+          if (hasPills) { if (skel) skel.remove(); return; }
+          if (!skel) {
+            skel = document.createElement('span');
+            skel.className = 'dsh-skel';
+            skel.innerHTML = '<i></i><i></i>';
+          }
+          if (skel.parentElement !== row) row.insertBefore(skel, send);
+        } catch (e) {}
+      }
       if (!window.__dshSidebarWatch) {
         window.__dshSidebarWatch = true;
-        setInterval(manageSidebar, 500);
+        // Restore the hidden-rail preference (set from the native handle chip)
+        // before the first paint of the chat, so the rail never flashes.
+        try {
+          if (localStorage.getItem('dshRailHidden') === '1') {
+            document.documentElement.classList.add('dsh-hide-rail');
+          }
+        } catch (e) {}
+        // Native font settings (settings sheet) → CSS for the chat content.
+        window.__dshApplyFont = function () {
+          try {
+            var size = localStorage.getItem('dshFontSize') || '';
+            var fam = localStorage.getItem('dshFontFamily') || '';
+            var lh = localStorage.getItem('dshLineHeight') || '';
+            var s = document.getElementById('dshFontStyle') || document.createElement('style');
+            s.id = 'dshFontStyle';
+            var family = fam === 'serif' ? 'Georgia, "Times New Roman", serif !important;'
+              : fam === 'mono' ? 'ui-monospace, Menlo, Consolas, monospace !important;' : '';
+            s.textContent = '[class*="message"], [class*="markdown"], [class*="bubble"], pre, code {' +
+              (size ? ' font-size: ' + size + 'px !important;' : '') +
+              (family ? ' font-family: ' + family : '') + ' }';
+            if (!s.parentNode) document.head.appendChild(s);
+            var l = document.getElementById('dshLhStyle') || document.createElement('style');
+            l.id = 'dshLhStyle';
+            l.textContent = lh ? '[class*="message"], [class*="markdown"], [class*="bubble"] { line-height: ' + lh + ' !important; }' : '';
+            if (!l.parentNode) document.head.appendChild(l);
+          } catch (e) {}
+        };
+        window.__dshApplyFont();
+        setInterval(function () { manageSidebar(); ensureSkeletons(); }, 500);
         document.addEventListener('click', function (e) {
           try {
             var sb = document.querySelector('[class*="sidebarCol"]');
@@ -1037,12 +1124,22 @@ class MainActivity : ComponentActivity() {
             // handle expands the language/settings/stop chips.
             var settingsOpen by remember { mutableStateOf(false) }
             var toolsOpen by remember { mutableStateOf(false) }
+            var railHidden by rememberSaveable { mutableStateOf(false) }
             var webViewRef by remember { mutableStateOf<WebView?>(null) }
-            Box(modifier = Modifier.fillMaxSize()) {
+            // imePadding: with targetSdk 35 edge-to-edge is forced and
+            // adjustResize never resizes the window — without this the
+            // composer stays hidden under the soft keyboard.
+            Box(modifier = Modifier.fillMaxSize().imePadding()) {
                 HarnessWebView(
                     url = snapshot.harnessUrl ?: HARNESS_URL,
                     modifier = Modifier.fillMaxSize(),
-                    onAttach = { webViewRef = it; currentWebView = it },
+                    onAttach = {
+                        webViewRef = it; currentWebView = it
+                        // Sync the chip state with the page's stored preference.
+                        it?.evaluateJavascript(
+                            "(function(){try{return localStorage.getItem('dshRailHidden')||'0';}catch(e){return '0';}})()",
+                        ) { v -> railHidden = v?.contains("1") == true }
+                    },
                 )
                 if (snapshot.stage == HarnessStage.RUNNING) {
                     Row(
@@ -1052,6 +1149,23 @@ class MainActivity : ComponentActivity() {
                     ) {
                         if (toolsOpen) {
                             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                QuickChip(
+                                    icon = if (railHidden) "◨" else "◧",
+                                    description = stringResource(R.string.btn_hide_rail),
+                                ) {
+                                    // The page toggles the class itself and
+                                    // reports the new state back — the chip's
+                                    // Compose state must never drift from the
+                                    // page (it used to stick hidden forever).
+                                    webViewRef?.evaluateJavascript(
+                                        "(function(){var el=document.documentElement;" +
+                                            "var now=!el.classList.contains('dsh-hide-rail');" +
+                                            "el.classList.toggle('dsh-hide-rail', now);" +
+                                            "try{localStorage.setItem('dshRailHidden', now?'1':'0');}catch(e){}" +
+                                            "return now;})()",
+                                    ) { v -> railHidden = v?.contains("true") == true }
+                                    toolsOpen = false
+                                }
                                 QuickChip(
                                     icon = "⚙",
                                     description = stringResource(R.string.action_settings),
@@ -1131,6 +1245,89 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /** Maps a host directory to a guest path inside the proot sandbox.
+     *  Only internal storage is supported: proot binds host /sdcard to
+     *  guest /sdcard, so /storage/emulated/0/<rel> becomes /sdcard/<rel>.
+     *  Returns guest path + display title, or null for unsupported roots. */
+    private fun mapHostDirToGuestPath(dir: File): Pair<String, String>? = runCatching {
+        val canon = dir.canonicalFile.path
+        val emulated = "/storage/emulated/0"
+        val rel = when {
+            canon == emulated || canon == "/sdcard" -> ""
+            canon.startsWith("$emulated/") -> canon.removePrefix(emulated)
+            canon.startsWith("/sdcard/") -> canon.removePrefix("/sdcard")
+            else -> return null
+        }
+        val guest = "/sdcard$rel"
+        val title = rel.trim('/').substringAfterLast('/').ifBlank { "Workspace" }
+        guest to title
+    }.getOrNull()
+
+    /**
+     * In-app directory browser. The system SAF picker depends on device OEM
+     * documents UI and often confuses users; this dialog walks the internal
+     * storage tree directly (allowed by MANAGE_EXTERNAL_STORAGE) and returns
+     * a real path — no SAF URIs involved.
+     */
+    @Composable
+    private fun FolderPickerDialog(initial: File, onDismiss: () -> Unit, onPick: (File) -> Unit) {
+        var current by remember { mutableStateOf(initial) }
+        val dirs = remember(current) {
+            current.listFiles { f -> f.isDirectory && !f.name.startsWith(".") }
+                ?.sortedBy { it.name.lowercase() } ?: emptyList()
+        }
+        val canGoUp = remember(current) {
+            val p = current.parentFile ?: return@remember false
+            p.path == "/storage/emulated/0" || p.path.startsWith("/storage/emulated/") || p.path == "/sdcard"
+        }
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text(stringResource(R.string.ws_pick_title)) },
+            text = {
+                Column {
+                    Text(
+                        current.path,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    if (canGoUp) {
+                        TextButton(onClick = { current = current.parentFile!! }) {
+                            Text("↩ …")
+                        }
+                    }
+                    Column(
+                        modifier = Modifier
+                            .height(320.dp)
+                            .verticalScroll(rememberScrollState()),
+                    ) {
+                        if (dirs.isEmpty()) {
+                            Text(
+                                "—",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                        dirs.forEach { d ->
+                            TextButton(onClick = { current = d }) {
+                                Text("📁 ${d.name}", maxLines = 1)
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                Button(onClick = { onPick(current) }) {
+                    Text(stringResource(R.string.ws_pick_confirm))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = onDismiss) {
+                    Text(stringResource(R.string.btn_close))
+                }
+            },
+        )
+    }
+
     @Composable
     private fun NativeSettingsSheet(webView: WebView?, onClose: () -> Unit) {
         var dshMode by remember { mutableStateOf("") }
@@ -1142,6 +1339,7 @@ class MainActivity : ComponentActivity() {
             var apiKey by remember { mutableStateOf(loadDshApiKey() ?: "") }
             var feedback by remember { mutableStateOf("") }
             var langSelected by remember { mutableStateOf(AppPrefs.language(this@MainActivity) ?: "en") }
+            var showFolderPicker by remember { mutableStateOf(false) }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -1350,6 +1548,164 @@ class MainActivity : ComponentActivity() {
                 }
                 OutlinedButton(onClick = { pickWorkspaceFolder() }, modifier = Modifier.fillMaxWidth()) {
                     Text(stringResource(R.string.ws_add))
+                }
+                OutlinedButton(
+                    onClick = { showFolderPicker = true },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(stringResource(R.string.ws_pick_inapp))
+                }
+                OutlinedButton(
+                    onClick = {
+                        feedback = if (ChatArchive.backupNow(this@MainActivity) != null) {
+                            getString(R.string.backup_done)
+                        } else {
+                            getString(R.string.backup_failed)
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(stringResource(R.string.backup_now))
+                }
+                if (showFolderPicker) {
+                    FolderPickerDialog(
+                        initial = File("/sdcard"),
+                        onDismiss = { showFolderPicker = false },
+                        onPick = { dir ->
+                            showFolderPicker = false
+                            val mapped = mapHostDirToGuestPath(dir)
+                            feedback = if (mapped != null && registerWorkspace(mapped.first, mapped.second)) {
+                                restartHarness()
+                                getString(R.string.ws_added, mapped.second)
+                            } else {
+                                getString(R.string.ws_add_failed)
+                            }
+                        },
+                    )
+                }
+
+                HorizontalDivider()
+
+                // ── Chat font ──────────────────────────────────────────────
+                Text(stringResource(R.string.font_section), style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(R.string.font_size), style = MaterialTheme.typography.labelMedium)
+                var fontSizeSel by remember { mutableStateOf(AppPrefs.fontSize(this@MainActivity)) }
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    listOf(0, 13, 15, 17, 19).forEach { size ->
+                        FilterChip(
+                            selected = fontSizeSel == size,
+                            onClick = {
+                                fontSizeSel = size
+                                AppPrefs.setFontSize(this@MainActivity, size)
+                                webView?.evaluateJavascript(
+                                    "(function(v){try{localStorage.setItem('dshFontSize',v);}catch(e){}" +
+                                        "if(window.__dshApplyFont)window.__dshApplyFont();})('" + size + "')",
+                                    null,
+                                )
+                            },
+                            label = { Text(if (size == 0) "DSH" else "$size") },
+                        )
+                    }
+                }
+                Text(stringResource(R.string.font_family), style = MaterialTheme.typography.labelMedium)
+                var fontFamSel by remember { mutableStateOf(AppPrefs.fontFamily(this@MainActivity)) }
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    listOf(
+                        "" to stringResource(R.string.font_system),
+                        "serif" to stringResource(R.string.font_serif),
+                        "mono" to stringResource(R.string.font_mono),
+                    ).forEach { (key, label) ->
+                        FilterChip(
+                            selected = fontFamSel == key,
+                            onClick = {
+                                fontFamSel = key
+                                AppPrefs.setFontFamily(this@MainActivity, key)
+                                webView?.evaluateJavascript(
+                                    "(function(v){try{localStorage.setItem('dshFontFamily',v);}catch(e){}" +
+                                        "if(window.__dshApplyFont)window.__dshApplyFont();})('" + key + "')",
+                                    null,
+                                )
+                            },
+                            label = { Text(label) },
+                        )
+                    }
+                }
+                Text(stringResource(R.string.font_lineheight), style = MaterialTheme.typography.labelMedium)
+                var lineHeightSel by remember { mutableStateOf(AppPrefs.lineHeight(this@MainActivity)) }
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    listOf("" to "DSH", "1.5" to "1.5", "1.7" to "1.7", "1.9" to "1.9").forEach { (key, label) ->
+                        FilterChip(
+                            selected = lineHeightSel == key,
+                            onClick = {
+                                lineHeightSel = key
+                                AppPrefs.setLineHeight(this@MainActivity, key)
+                                webView?.evaluateJavascript(
+                                    "(function(v){try{localStorage.setItem('dshLineHeight',v);}catch(e){}" +
+                                        "if(window.__dshApplyFont)window.__dshApplyFont();})('" + key + "')",
+                                    null,
+                                )
+                            },
+                            label = { Text(label) },
+                        )
+                    }
+                }
+                OutlinedButton(
+                    onClick = {
+                        AppPrefs.setFontSize(this@MainActivity, 0)
+                        AppPrefs.setFontFamily(this@MainActivity, "")
+                        AppPrefs.setLineHeight(this@MainActivity, "")
+                        fontSizeSel = 0; fontFamSel = ""; lineHeightSel = ""
+                        webView?.evaluateJavascript(
+                            "(function(){try{localStorage.removeItem('dshFontSize');" +
+                                "localStorage.removeItem('dshFontFamily');localStorage.removeItem('dshLineHeight');" +
+                                "}catch(e){} if(window.__dshApplyFont)window.__dshApplyFont();})()",
+                            null,
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(stringResource(R.string.font_reset))
+                }
+
+                HorizontalDivider()
+
+                // ── DeepSeek Harness update ────────────────────────────────
+                Button(
+                    onClick = {
+                        val intent = android.content.Intent(this@MainActivity, HarnessForegroundService::class.java)
+                            .setAction(HarnessForegroundService.ACTION_UPDATE_HARNESS)
+                        runCatching { startForegroundService(intent) }
+                        feedback = getString(R.string.harness_update_started)
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(stringResource(R.string.harness_update))
+                }
+
+                HorizontalDivider()
+
+                // ── Android SDK in the sandbox ─────────────────────────────
+                Text(stringResource(R.string.sdk_section), style = MaterialTheme.typography.titleMedium)
+                val sdkInstalled = ChatArchive.dshHome(this@MainActivity)
+                    .resolve("android-sdk/.installed").isFile
+                val sdkVersions = ChatArchive.dshHome(this@MainActivity)
+                    .resolve("android-sdk/versions.txt")
+                    .takeIf { it.isFile }?.readLines()?.take(3)?.joinToString("\n") ?: ""
+                Text(
+                    if (sdkInstalled) sdkVersions else stringResource(R.string.sdk_missing),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Button(
+                    onClick = {
+                        val intent = android.content.Intent(this@MainActivity, HarnessForegroundService::class.java)
+                            .setAction(HarnessForegroundService.ACTION_INSTALL_SDK)
+                        runCatching { startForegroundService(intent) }
+                        feedback = getString(R.string.sdk_started)
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(stringResource(if (sdkInstalled) R.string.sdk_update else R.string.sdk_install))
                 }
 
                 HorizontalDivider()
@@ -1703,7 +2059,11 @@ class MainActivity : ComponentActivity() {
         val intent = runCatching { params?.createIntent() }.getOrNull()
             ?: android.content.Intent(android.content.Intent.ACTION_GET_CONTENT).apply { type = "*/*" }
         intent.addCategory(android.content.Intent.CATEGORY_OPENABLE)
-        intent.putExtra(android.content.Intent.EXTRA_ALLOW_MULTIPLE, multiple)
+        // DSH's "+" attachment flow often requests images only; allow any
+        // file type (docs, archives, code) — the page filters what it needs.
+        intent.type = "*/*"
+        intent.removeExtra(android.content.Intent.EXTRA_MIME_TYPES)
+        intent.putExtra(android.content.Intent.EXTRA_ALLOW_MULTIPLE, true)
         runCatching { startActivityForResult(intent, REQ_FILE_CHOOSER) }
             .onFailure {
                 val cb = pendingFileChooser
@@ -2058,6 +2418,72 @@ class MainActivity : ComponentActivity() {
         manager.setPrimaryClip(ClipData.newPlainText("dsh", text))
     }
 
+    /** Best-effort file name from Content-Disposition / mime / url. */
+    private fun suggestName(contentDisposition: String?, mimetype: String?, url: String): String {
+        val fromCd = contentDisposition?.substringAfter("filename=", "")?.trim('"', ' ', ';')
+        val fromUrl = url.substringAfterLast('/').substringBefore('?').takeIf { it.isNotBlank() && !it.startsWith("blob") }
+        val base = fromCd?.takeIf { it.isNotBlank() } ?: fromUrl ?: "session-log"
+        val ext = when {
+            base.contains('.') -> ""
+            mimetype == "text/plain" -> ".txt"
+            else -> ".log"
+        }
+        return base + ext
+    }
+
+    /**
+     * Saves a WebView download (often a `blob:` URL — Session log uses one)
+     * into the shared Downloads collection. Blob bytes are fetched from the
+     * page context via JS (base64 round-trip), plain http(s) URLs are passed
+     * to the system DownloadManager.
+     */
+    private fun saveBlobDownload(url: String, name: String) {
+        if (url.startsWith("blob:")) {
+            val webView = currentWebView ?: return
+            runOnUiThread {
+                val script = "(function(){return fetch('" + url + "').then(function(r){return r.blob()})" +
+                    ".then(function(b){return new Promise(function(res){var fr=new FileReader();" +
+                    "fr.onload=function(){res(fr.result.split(',')[1]);};fr.readAsDataURL(b);});});})()" +
+                    ".catch(function(e){return 'ERR:'+e;})"
+                webView.evaluateJavascript(script, android.webkit.ValueCallback<String> { result ->
+                    val data = result?.trim()?.trim('"') ?: return@ValueCallback
+                    if (data.startsWith("ERR:") || data == "null") {
+                        android.widget.Toast.makeText(this, getString(R.string.dsh_pick_fail), android.widget.Toast.LENGTH_SHORT).show()
+                        return@ValueCallback
+                    }
+                    runCatching { saveBytesToDownloads(name, android.util.Base64.decode(data, android.util.Base64.DEFAULT)) }
+                        .onSuccess { path ->
+                            android.widget.Toast.makeText(this, getString(R.string.download_saved, path), android.widget.Toast.LENGTH_LONG).show()
+                        }
+                        .onFailure {
+                            android.widget.Toast.makeText(this, getString(R.string.dsh_pick_fail), android.widget.Toast.LENGTH_SHORT).show()
+                        }
+                })
+            }
+        } else {
+            runCatching {
+                val request = android.app.DownloadManager.Request(android.net.Uri.parse(url))
+                    .setTitle(name)
+                    .setNotificationVisibility(android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                val manager = getSystemService(DOWNLOAD_SERVICE) as android.app.DownloadManager
+                manager.enqueue(request)
+            }
+        }
+    }
+
+    /** Writes bytes into the shared Downloads collection (MediaStore). */
+    private fun saveBytesToDownloads(name: String, bytes: ByteArray): String {
+        val resolver = contentResolver
+        val values = android.content.ContentValues().apply {
+            put(android.provider.MediaStore.Downloads.DISPLAY_NAME, name)
+            put(android.provider.MediaStore.Downloads.MIME_TYPE, "application/octet-stream")
+        }
+        val uri = resolver.insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
+            ?: throw IllegalStateException("MediaStore insert failed")
+        resolver.openOutputStream(uri)?.use { it.write(bytes) } ?: throw IllegalStateException("no output stream")
+        return "Download/$name"
+    }
+
     private fun pasteFromClipboard(): String {
         val manager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         return manager.primaryClip?.getItemAt(0)?.coerceToText(this)?.toString().orEmpty()
@@ -2100,6 +2526,12 @@ class MainActivity : ComponentActivity() {
                     isFocusableInTouchMode = true
                     requestFocus()
                     addJavascriptInterface(ClipboardBridge(), "AndroidClipboard")
+                    // Session log / file downloads: DSH serves them as blob:
+                    // URLs which Android's DownloadManager cannot fetch, so
+                    // pull the bytes through JS and save to Downloads.
+                    setDownloadListener { url, _, contentDisposition, mimetype, _ ->
+                        saveBlobDownload(url, suggestName(contentDisposition, mimetype, url))
+                    }
                     webViewClient = object : WebViewClient() {
                         override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                             val uri = request?.url ?: return false
