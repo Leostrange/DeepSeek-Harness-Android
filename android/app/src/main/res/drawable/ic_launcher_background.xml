@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- DSHA launcher background: navy → DSH blue → violet diagonal gradient -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <gradient
+        android:angle="315"
+        android:startColor="#172554"
+        android:centerColor="#3A50DC"
+        android:endColor="#7C5CFF"
+        android:type="linear" />
+</shape>
