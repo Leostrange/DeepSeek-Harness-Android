@@ -1,5 +1,6 @@
 # DSHA — DeepSeek Harness для Android
 
+[![Latest release](https://img.shields.io/github/v/release/Leostrange/DeepSeek-Harness-Android?label=release&logo=github)](https://github.com/Leostrange/DeepSeek-Harness-Android/releases/latest)
 [![Build APK](https://img.shields.io/github/actions/workflow/status/Leostrange/DeepSeek-Harness-Android/android-build.yml?label=build%20apk&logo=github)](https://github.com/Leostrange/DeepSeek-Harness-Android/actions/workflows/android-build.yml)
 [![Platform](https://img.shields.io/badge/platform-Android%207.0%2B-3DDC84?logo=android)](#сборка)
 [![Language](https://img.shields.io/badge/language-Kotlin-7F52FF?logo=kotlin)](#архитектура)
@@ -21,7 +22,7 @@
 
 | Скриншот: чат | Скриншот: настройки |
 |---|---|
-| ![Чат](docs/screenshots/emu-chat.png) | ![Настройки](docs/screenshots/emu-settings.png) |
+| ![Чат](docs/screenshots/device-chat.png) | ![Настройки](docs/screenshots/device-settings.png) |
 
 ## Возможности
 
