@@ -93,8 +93,9 @@ cd android
 4. ⚙ → «Добавить папку рабочего пространства» → выберите папку на устройстве.
 5. Пользуйтесь: режимы, права, усилие и модель — как в десктопной версии.
 
-## Смотрите также
+## См. также
 
+- [CHANGELOG.md](CHANGELOG.md) — подробный список всех изменений
 - [DeepSeek-Harness-Desktop-RU](https://github.com/Leostrange/DeepSeek-Harness-Desktop-RU) — десктопная Windows-оболочка
 - [Mr.Comic](https://github.com/Leostrange/Mr.Comic) — модульный Android-ридер
 
