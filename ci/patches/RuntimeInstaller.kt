@@ -28,12 +28,45 @@ class RuntimeInstaller(private val context: Context) {
             NativeBuildConfig.requiredPackages.all { packageName ->
                 when (packageName) {
                     "libandroid-spawn" -> pathPresent(File(prefix, "lib/libandroid-spawn.so"))
+                    // binutils ships no binary named "binutils" — probe its tools instead.
+                    "binutils" -> listOf("ld", "as", "ar").any { pathPresent(File(prefix, "bin/$it")) }
                     "pkg-config" -> pathPresent(File(prefix, "bin/pkg-config"))
                     "python" -> pathPresent(File(prefix, "bin/python"))
                     "termux-tools" -> pathPresent(File(prefix, "bin/termux-info"))
                     else -> pathPresent(File(prefix, "bin/$packageName"))
                 }
             }
+    }
+
+    /**
+     * Human-readable reason why [isInstalled] is false (marker state, first
+     * missing path). Used for precise "rebuild required" diagnostics.
+     */
+    fun installationProblem(): String {
+        if (!marker.isFile) return "marker file missing (${marker.name})"
+        val lines = runCatching { marker.readLines() }.getOrDefault(emptyList())
+        if (lines.none { it == "schema=$RUNTIME_SCHEMA" }) {
+            return "marker schema mismatch (found: ${lines.firstOrNull { it.startsWith("schema=") } ?: "none"}, expected: schema=$RUNTIME_SCHEMA)"
+        }
+        val prefix = RuntimePaths.hostPrefix(runtimeRoot)
+        val checks = buildList {
+            add("bin/proot" to File(prefix, "bin/proot"))
+            add("bin/node" to File(prefix, "bin/node"))
+            add("bin/npm" to File(prefix, "bin/npm"))
+            NativeBuildConfig.requiredPackages.forEach { packageName ->
+                val path = when (packageName) {
+                    "libandroid-spawn" -> File(prefix, "lib/libandroid-spawn.so")
+                    "binutils" -> File(prefix, "bin/ld")
+                    "pkg-config" -> File(prefix, "bin/pkg-config")
+                    "python" -> File(prefix, "bin/python")
+                    "termux-tools" -> File(prefix, "bin/termux-info")
+                    else -> File(prefix, "bin/$packageName")
+                }
+                add("$packageName (${path.relativeToOrNull(runtimeRoot)?.path ?: path.path})" to path)
+            }
+        }
+        val missing = checks.filter { !pathPresent(it.second) }.map { it.first }
+        return if (missing.isEmpty()) "unknown (all checks pass)" else "missing: ${missing.joinToString(", ")}"
     }
 
     fun ensureInstalled(force: Boolean = false, progress: (RuntimeInstallProgress) -> Unit = {}) {
