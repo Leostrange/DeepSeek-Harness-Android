@@ -1,108 +1,27 @@
-# DSHA — DeepSeek Harness для Android
+# DeepSeek Harness для Android — сборка @Leostrange
 
-[![Latest release](https://img.shields.io/github/v/release/Leostrange/DeepSeek-Harness-Android?label=release&logo=github)](https://github.com/Leostrange/DeepSeek-Harness-Android/releases/latest)
-[![Build APK](https://img.shields.io/github/actions/workflow/status/Leostrange/DeepSeek-Harness-Android/android-build.yml?label=build%20apk&logo=github)](https://github.com/Leostrange/DeepSeek-Harness-Android/actions/workflows/android-build.yml)
-[![Platform](https://img.shields.io/badge/platform-Android%207.0%2B-3DDC84?logo=android)](#сборка)
-[![Language](https://img.shields.io/badge/language-Kotlin-7F52FF?logo=kotlin)](#архитектура)
-[![UI](https://img.shields.io/badge/UI-Jetpack%20Compose-4285F4?logo=jetpackcompose)](#архитектура)
-[![Engine](https://img.shields.io/badge/engine-DeepSeek%20Harness-4D6BFE)](https://github.com/deepseek-ai/deepseek-harness)
+Актуальная сборка: **DSHA 0.1.7-rc2 RU, Test16** для Android 11+ и устройств arm64. [Скачать APK и SHA-256](https://github.com/Leostrange/DeepSeek-Harness-Android/releases/tag/v0.1.7-rc2-ru-test16).
 
-**proot-песочница с Node-сервером · мобильный интерфейс · русский внутри Harness · всё на самом телефоне**
+Этот вариант приложения **сделан на основе [DSH-APP/DSHA](https://github.com/DSH-APP/DSHA)**, который запускает DeepSeek Harness в локальной Android-среде. Мобильную адаптацию, русификацию, интеграцию дополнительных плагинов и исправления для этой сборки выполняет **[@Leostrange](https://github.com/Leostrange)**. Сам DeepSeek Harness — отдельный [проект DeepSeek](https://github.com/deepseek-ai/deepseek-harness); этот Android-вариант не является официальным приложением DeepSeek.
 
----
+## Что добавлено и исправлено в этой сборке
 
-## О проекте
+- Русский интерфейс Android-оболочки, экранов Harness, настроек, пресетов и встроенных плагинов; выбор языка при первом запуске.
+- Мобильная компоновка чата, вкладок, панелей агентов и фоновых задач, редактора пользовательских пресетов и раздела плагинов.
+- Встроенные плагины и мобильная адаптация их интерфейса, включая тему оформления, состояние сессии и сведения о тарифе DeepSeek.
+- Исправления запуска и восстановления среды, разрешений, работы с файлами и отображения всплывающих панелей.
+- В Test16: область переписки расширена до ширины поля ввода, панели статистики располагаются над ним, а кнопка тарифа находится рядом с папкой проекта в шапке чата.
 
-Официальный [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) — агентский веб-интерфейс, который на десктопе живёт в браузере или в [Windows-оболочке](https://github.com/Leostrange/DeepSeek-Harness-Desktop-RU). **DSHA** делает то же самое на Android: запускает `dsh web` (Node-сервер Harness) внутри proot-песочницы прямо на телефоне, открывает его UI в WebView и доводит интерфейс до мобильного вида — шторка сайдбара, полноэкранные настройки, русский перевод, тёмная тема.
+Подробности: [заметки к Test16](docs/releases/0.1.7-rc2-ru-test16.md) и [история изменений](CHANGELOG.md). Фотографии интерфейса добавим позже.
 
-Это не отдельный чат и не прокси: внутри работают штатные рабочие области, сессии, режимы, права, модели, плагины и пресеты агентов DeepSeek Harness.
+## Установка и проверка
 
-> [!NOTE]
-> Неофициальный community-проект. Не является продуктом DeepSeek.
+Скачайте `DSHA-0.1.7-rc2-RU-standard-test16.apk` из [релиза](https://github.com/Leostrange/DeepSeek-Harness-Android/releases/tag/v0.1.7-rc2-ru-test16) и сверьте SHA-256 с файлом рядом с ним. Идентификатор приложения — `com.dsh.client.rc2ru`; эта тестовая сборка имеет отдельную подпись и устанавливается рядом с исходным `com.dsh.client`. Поверх предыдущих сборок RC2 RU с тем же пакетом и ключом она обновляется без удаления данных.
 
-| Скриншот: чат | Скриншот: настройки |
-|---|---|
-| ![Чат](docs/screenshots/device-chat.png) | ![Настройки](docs/screenshots/device-settings.png) |
+Сборка проверена автоматическими Android-тестами, lint и браузерными тестами мобильного интерфейса. Холодный запуск и работа на подключённом телефоне для Test16 пока не подтверждены. Версия предназначена для проверки; при сообщении об ошибке укажите модель устройства и версию Android.
 
-## Возможности
+## Исходный код и история репозитория
 
-| | Возможность |
-|---|---|
-| 📱 | Полноценный DeepSeek Harness на телефоне: `dsh web` в proot-песочнице, форграунд-сервис держит сессию |
-| 🇷🇺 | Русский интерфейс поверх DSH: словарь + обход shadow-DOM и всплывающих меню, язык приложения `Русский / English / 中文` |
-| 🌗 | Темы оформления: светлая / тёмная / системная |
-| 🗂 | Рабочие пространства с устройства — выбор папки `/sdcard` через системный SAF-пикер, проброс хранилища в песочницу |
-| 🔑 | API-ключ DeepSeek в нативных настройках, передаётся в Harness через `DEEPSEEK_API_KEY` при запуске |
-| 🛠 | Мобильные доработки UI: сайдбар-шторка поверх чата, полноэкранные настройки с прокруткой вкладок, «язычок» быстрых кнопок (⚙ / ⏹) |
-| 🛡 | Устойчивый запуск: очистка осиротевших процессов, подхват живого сервера, автоперезапуск после сбоя порта |
-| ⚙️ | Автосборка debug-APK в GitHub Actions на каждый push |
+Исходная база актуального APK — [DSH-APP/DSHA](https://github.com/DSH-APP/DSHA), лицензия [MIT](https://github.com/DSH-APP/DSHA/blob/main/LICENSE). **Код в папке `android/` этого репозитория относится к прежнему Kotlin/Jetpack Compose прототипу v0.2.0 и не воспроизводит APK Test16.** Его описание и изменения сохранены в [историческом релизе v0.2.0](https://github.com/Leostrange/DeepSeek-Harness-Android/releases/tag/v0.2.0). Не используйте старый workflow сборки как инструкцию для Test16.
 
-## Архитектура
-
-```
-android/                                  Исходники приложения (Kotlin + Jetpack Compose)
-└── app/src/main/java/io/leostrange/dshandroid/
-    ├── MainActivity.kt                   UI: WebView, нативные настройки, RU-слой,
-    │                                     мобильные CSS/JS-инъекции (фуллскрин-настройки,
-    │                                     шторка сайдбара, починка vh-юнитов и грида)
-    ├── HarnessForegroundService.kt       Форграунд-сервис: слои загрузки RUNTIME → DSH
-    │                                     → NATIVE → UI, запуск `dsh web`, env-ключ,
-    │                                     очистка осиротевших процессов
-    ├── runtime/
-    │   ├── RuntimeInstaller.kt           Установка Termux-совместимого рантайма
-    │   ├── ProotRunner.kt                Выполнение команд в proot-песочнице
-    │   ├── ProotCommandBuilder.kt        Командная строка proot и окружение
-    │   ├── BootstrapLayers.kt            Слои и фингерпринты загрузки
-    │   └── NativeBuildConfig.kt          Конфигурация нативной сборки
-    └── HarnessRuntimeState.kt            Общее состояние: этап, auth-URL, статус
-
-ci/                                       CI-зеркало: base64-части zip исходников + канонические патчи
-qa/                                       Проверка UI через Chrome DevTools Protocol (cdp-eval.js)
-docs/                                     План адаптации, найденные корни багов WebView
-```
-
-**Ключевые технические решения**
-
-- WebView на Android нетривиален: `100vh`/`100%` могут давать 0px, Radix-поповеры открываются по `pointerdown`, грид-раскладка DSH теряет порядок колонок (чат схлопывается в 0px). Всё чинится JS/CSS-инъекциями до загрузки страницы.
-- Интеграция с DSH — файловая: `settings.yaml`, `.credentials.yaml`, `workspace.json` пишутся нативно; сервер подхватывает их при рестарте. Ключ провайдера передаётся через окружение запуска.
-- Русский перевод — словарь EN→RU + `MutationObserver` с дебаунсом; при русском языке DSH принудительно держит локаль `en` (переводим своим слоем).
-
-## Сборка
-
-Требования: JDK 17, Android SDK.
-
-```bash
-# Windows
-cd android
-gradlew.bat assembleDebug
-
-# Linux / macOS
-cd android
-./gradlew assembleDebug
-```
-
-Готовый APK: `android/app/build/outputs/apk/debug/app-debug.apk`. Тот же APK собирает [GitHub Actions](https://github.com/Leostrange/DeepSeek-Harness-Android/actions/workflows/android-build.yml) на каждый push (артефакт в истории запусков).
-
-Первый запуск скачивает рантайм и ставит `@deepseek-ai/dsh` (нужен интернет); дальше всё работает локально, кроме запросов к модели.
-
-## Быстрый старт
-
-1. Установите APK, выдайте доступ к хранилищу (запросится при первом старте).
-2. Дождитесь загрузки слоёв: RUNTIME → DSH → NATIVE → UI.
-3. «Язычок» справа → ⚙ → введите API-ключ DeepSeek → «Сохранить» (Harness перезапустится сам).
-4. ⚙ → «Добавить папку рабочего пространства» → выберите папку на устройстве.
-5. Пользуйтесь: режимы, права, усилие и модель — как в десктопной версии.
-
-## См. также
-
-- [CHANGELOG.md](CHANGELOG.md) — подробный список всех изменений
-- [DeepSeek-Harness-Desktop-RU](https://github.com/Leostrange/DeepSeek-Harness-Desktop-RU) — десктопная Windows-оболочка
-- [Mr.Comic](https://github.com/Leostrange/Mr.Comic) — модульный Android-ридер
-
-## Приватность
-
-Всё исполняется на устройстве: сервер живёт в песочнице, сессии и ключи хранятся в приватном каталоге приложения. Ключ API никуда не отправляется, кроме запросов к выбранному провайдеру модели.
-
----
-
-*Лицензия: все права защищены, код публикуется для личного использования. DeepSeek и DeepSeek Harness — торговые марки их правообладателей.*
+Код DeepSeek Harness и сторонних плагинов принадлежит соответствующим авторам и распространяется по их собственным лицензиям.
