@@ -163,7 +163,8 @@ class RecoveryAssetTests(unittest.TestCase):
                       resourceBefore='return hostname;',resourceAfter='return fixedHostname;')
             (assets/'pdf-compat-patch.json').write_text(json.dumps(spec),encoding='utf8')
             language=dict(dshVersion='0.1.7-rc.2',module=browser_overlay.TARGETS['client-locale.js'].removeprefix(browser_overlay.PREFIX),
-                          patches=[dict(before='provide locale;',after='provide locale; effect language;',prependAsset='web-integration/language.js'),
+                          patches=[dict(before='construct locale;',after='construct locale; effect dictionaries;',prependAsset='web-integration/language.js'),
+                                   dict(before='provide locale;',after='provide locale; effect language;'),
                                    dict(before='resolve active;',after='resolve active from native;'),
                                    dict(before='choose locale;',after='choose locale and notify native;')])
             (assets/'language-patch.json').write_text(json.dumps(language),encoding='utf8')
@@ -173,7 +174,7 @@ class RecoveryAssetTests(unittest.TestCase):
                     '<html><head><meta charset="utf-8" /><script src="app.js"></script></head></html>',False),
                     (browser_overlay.TARGETS['client.pdf.js'],pdf,False),
                      (browser_overlay.TARGETS['client-resources.js'],'return hostname;',False),
-                     (browser_overlay.TARGETS['client-locale.js'],'provide locale; resolve active; choose locale;',False)])
+                     (browser_overlay.TARGETS['client-locale.js'],'construct locale; provide locale; resolve active; choose locale;',False)])
             build_archive('window.__ModuleLoader__.load({\nnew Blob([_dsh_pdf_worker_default,')
             raw, patched=browser_overlay.build(archive,assets,'0.1.7-rc.2')
             html=patched['index.html'].decode()

@@ -24910,5 +24910,3707 @@
       "app/src/main/assets/plugin-network.py"
     ],
     "uiFormat": true
+  },
+  {
+    "id": "source_aabcf31e951f5d10",
+    "zh": "\nAPI Key 已同步。",
+    "en": "\nAPI key was restored.",
+    "source": "app/src/main/java/com/deepseekharness/app/BackupManager.java"
+  },
+  {
+    "id": "source_2b9c9ad8eebfcde7",
+    "zh": "\n备份中没有可用的 API Key，请在配置页手动填写。",
+    "en": "\nThe backup did not contain a usable API key. Enter it in Configuration.",
+    "source": "app/src/main/java/com/deepseekharness/app/BackupManager.java"
+  },
+  {
+    "id": "source_41d30c95179cc777",
+    "zh": "[ERR] 截屏存储暂不可用，请检查设备存储。",
+    "en": "[ERR] Screenshot storage is unavailable. Check device storage.",
+    "source": "app/src/main/java/com/deepseekharness/app/DshaAccessibilityService.java"
+  },
+  {
+    "id": "source_fe2f76dcd965d567",
+    "zh": "[POLICY_BLOCKED] 短信读取已关闭，请在设备能力授权中开启",
+    "en": "[POLICY_BLOCKED] SMS reading is off. Enable it in Device permissions",
+    "source": "app/src/main/java/com/deepseekharness/app/HttpShellService.java"
+  },
+  {
+    "id": "source_47cf4a3f2904b518",
+    "zh": "  # 本次 DSH 运行期间有效，可在设备能力授权中随时撤销",
+    "en": "  # Valid for this DSH run. Revoke anytime in Device permissions",
+    "source": "app/src/main/java/com/deepseekharness/app/HttpShellService.java"
+  },
+  {
+    "id": "source_745354588a3fd2a9",
+    "zh": "清空当前输入框",
+    "en": "Clear the current input field",
+    "source": "app/src/main/java/com/deepseekharness/app/HttpShellService.java"
+  },
+  {
+    "id": "source_754ec785ffb10f00",
+    "zh": "截屏  /app/ui/screenshot   → 存 PNG 到应用截图目录并返回路径（不回 base64）\n",
+    "en": "Screenshot  /app/ui/screenshot   → save a PNG in the app's screenshot folder and return its path (not base64)\n",
+    "source": "app/src/main/java/com/deepseekharness/app/HttpShellService.java"
+  },
+  {
+    "id": "source_70694bc10322b8d2",
+    "zh": "格式化完成；部分旧公共、外置目录或系统可再生缓存暂时无法移除，详情已保存在本机提示记录。正在打开欢迎页…",
+    "en": "Formatting is complete. Some legacy public, external, or system-regenerable cache items could not be removed; details were retained locally. Opening the welcome screen…",
+    "source": "app/src/main/java/com/deepseekharness/app/core/BackupTask.java"
+  },
+  {
+    "id": "source_83b0fd3f3bef1c4f",
+    "zh": "格式化完成，正在打开欢迎页…",
+    "en": "Formatting is complete. Opening the welcome screen…",
+    "source": "app/src/main/java/com/deepseekharness/app/core/BackupTask.java"
+  },
+  {
+    "id": "source_75fc0d8ae9df6179",
+    "zh": "正在尝试清理旧版 Documents/dshdata；手动导出的备份与其他个人目录会保留…",
+    "en": "Attempting to remove legacy Documents/dshdata; exported backups and other personal folders stay untouched…",
+    "source": "app/src/main/java/com/deepseekharness/app/core/BackupTask.java"
+  },
+  {
+    "id": "source_06b4cf1929f097c1",
+    "zh": "正在清除运行环境、会话和插件…",
+    "en": "Removing the runtime, conversations, and plugins…",
+    "source": "app/src/main/java/com/deepseekharness/app/core/BackupTask.java"
+  },
+  {
+    "id": "source_16d36627676d260c",
+    "zh": "正在清除本机备份和应用私有文件…",
+    "en": "Removing local backups and private app files…",
+    "source": "app/src/main/java/com/deepseekharness/app/core/BackupTask.java"
+  },
+  {
+    "id": "source_049739a3d5003ad3",
+    "zh": "正在清理缓存和临时文件…",
+    "en": "Clearing caches and temporary files…",
+    "source": "app/src/main/java/com/deepseekharness/app/core/BackupTask.java"
+  },
+  {
+    "id": "source_c7b44ccfd14a422c",
+    "zh": "正在重置设置、设备授权和 API Key…",
+    "en": "Resetting settings, device grants, and the API key…",
+    "source": "app/src/main/java/com/deepseekharness/app/core/BackupTask.java"
+  },
+  {
+    "id": "source_9e3215fa89d8b611",
+    "zh": "格式化完成，正在返回欢迎页…",
+    "en": "Formatting is complete. Returning to welcome…",
+    "source": "app/src/main/java/com/deepseekharness/app/core/BackupTask.java"
+  },
+  {
+    "id": "source_d0a9421f492a4345",
+    "zh": "\n本次应用进程曾无法保存冷安装诊断：",
+    "en": "\nA cold-install diagnostic write failed in this app process: ",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_e3058c891de3b353",
+    "zh": "\n最近隔离运行试验失败\n",
+    "en": "\nLatest isolated runtime trial failure\n",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_d0628ee003ff65da",
+    "zh": "\n正在验证所选运行方式（最多 60 秒）与 Node / npm / Python（最多 20 秒）…\n",
+    "en": "\nChecking the selected runtime (up to 60 seconds), then Node / npm / Python (up to 20 seconds)…\n",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_64445c1024df80fb",
+    "zh": "所选运行方式只读自检：",
+    "en": "Selected runtime read-only check: ",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_e4af542f3a99fe65",
+    "zh": "宿主进程资源",
+    "en": "Host process resources",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_dbf7ca12419cac3a",
+    "zh": "本次只读采样",
+    "en": "Current read-only sample",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_98fcddf33370a7d2",
+    "zh": "仅当前原生进程；不含 Ubuntu 或独立浏览器子进程。请比较相同操作后的多个样本。",
+    "en": "Current native process only; excludes Ubuntu and separate browser child processes. Compare multiple samples after the same operations.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_21da9cad90aa08a9",
+    "zh": "诊断记录写入",
+    "en": "Diagnostic log writes",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_f4236cb835d7421f",
+    "zh": "本次应用进程曾写入失败",
+    "en": "A write failed in this app process",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_d5b3fb9a28016964",
+    "zh": "失败类型来自本机诊断端口；部分冷安装记录可能未能保存。",
+    "en": "The local diagnostic port recorded this failure type; some cold-install records may not have been saved.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_8ec641a9be6b562f",
+    "zh": "Ubuntu 与 Bash 加载器",
+    "en": "Ubuntu and Bash loader",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_2d39f2ed7fe29286",
+    "zh": "就绪检查通过",
+    "en": "Readiness passed",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_b7e3e715f18b9bac",
+    "zh": "需要处理",
+    "en": "Needs attention",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_0c8827138710bc9a",
+    "zh": "就绪检查会核对实际 Bash、ELF 加载器与环境身份。",
+    "en": "Readiness checks actual Bash, its ELF loader and environment identity.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_79ab8a56864d0c51",
+    "zh": "当前环境已就绪。",
+    "en": "Environment ready.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_45037ddc38b67630",
+    "zh": "请到安装与环境查看修复方式。",
+    "en": "Open Installation and environment for repair options.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_48229242d17366a3",
+    "zh": "所选运行方式",
+    "en": "Selected runtime",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_53508a701fba1944",
+    "zh": "尚未验证",
+    "en": "Not verified",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_54bf1c2964ad86b4",
+    "zh": "运行环境尚未就绪。",
+    "en": "The runtime is not ready.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_5b7b01a210b97767",
+    "zh": "实际命令已响应",
+    "en": "Commands responded",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_5bb9b16ed233f453",
+    "zh": "查看检查结果",
+    "en": "Review results",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_7e616f8a5d893c22",
+    "zh": "尚未读取到运行时标识。",
+    "en": "Runtime identity unavailable.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_06e1d40f39a43f0a",
+    "zh": "与包内版本一致",
+    "en": "Matches bundled version",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_c58938e678f60184",
+    "zh": "存在版本差异",
+    "en": "Version differs",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_31c9043586995d59",
+    "zh": "运行时版本与身份",
+    "en": "Runtime version and identity",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_a9211c226ba61c3c",
+    "zh": "完整文件检查请在安装与环境中执行。",
+    "en": "Run the complete component check in Installation and environment.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_91d9d6f260efa904",
+    "zh": "最近隔离运行试验",
+    "en": "Latest isolated runtime trial",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_9f15b8d447d37581",
+    "zh": "没有失败记录",
+    "en": "No failure recorded",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_afcbcbe218a72a81",
+    "zh": "失败证据已保留",
+    "en": "Failure evidence retained",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_26cbab4c04f8a46b",
+    "zh": "运行时更新通过后不会生成失败记录。",
+    "en": "A successful runtime update does not create a failure record.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_81faaad27240dc86",
+    "zh": "存储与数据目录",
+    "en": "Storage and data folders",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_e0a4385386014a9b",
+    "zh": "私有目录可用",
+    "en": "Private directory available",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_ac8c3b4716a068c1",
+    "zh": "可用空间：",
+    "en": "Available space: ",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_4db20655f6b3c3dd",
+    "zh": "不遍历对话与个人文件。",
+    "en": "Conversations and personal files are not traversed.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_713ea9f20a176d64",
+    "zh": "Web 鉴权与桥接",
+    "en": "Web authentication and bridge",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_40b10d1f5d6c8df8",
+    "zh": "已有本轮鉴权地址",
+    "en": "Current startup has an auth URL",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_bd23433b351917d1",
+    "zh": "桥接请求仍须通过鉴权与原生能力确认。",
+    "en": "Bridge requests still require authentication and native capability confirmation.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_9a080922f5739fb4",
+    "zh": "网页内核",
+    "en": "Browser engine",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_1c6c945a7df91fb5",
+    "zh": "本轮没有记录到插件加载错误；未运行的插件仍需使用时验证。",
+    "en": "No plugin loading error recorded for this startup. Unused plugins still require runtime verification.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_6c32f18f25868411",
+    "zh": "插件加载",
+    "en": "Plugin loading",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_d92026ec8234ae73",
+    "zh": "查看启动观察结果",
+    "en": "Review startup observations",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_c8e73a83a4e2eec6",
+    "zh": "存在加载错误",
+    "en": "Loading errors recorded",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_80d13f0f3343787f",
+    "zh": "设备通道",
+    "en": "Device channels",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_43fed9eab7ab037b",
+    "zh": "按需授权",
+    "en": "Optional access",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DiagnosticRepository.java"
+  },
+  {
+    "id": "source_56879c0b03f66406",
+    "zh": "模型设置已同步",
+    "en": "Model settings synced",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_6353ae9c185d0ec3",
+    "zh": "请先完成环境安装。",
+    "en": "Install the environment first.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_3a4a0e621dfe0202",
+    "zh": "当前无法连接配置服务，请稍后重试。",
+    "en": "Cannot connect to settings right now. Retry later.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_1e3c2d2cecda4edf",
+    "zh": "正在准备本机配置服务，表单将在这里显示…",
+    "en": "Preparing local settings. The form will appear here…",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_0b138ed96857e62d",
+    "zh": "配置服务未就绪，请查看启动日志后重试。",
+    "en": "Settings are not ready. Check startup logs and retry.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_bd3fc004481b9c5c",
+    "zh": "本机鉴权未完成，请重试。",
+    "en": "Local authentication incomplete. Retry.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_8d0314cb0860de15",
+    "zh": "服务已改变，请重新读取后保存；草稿仍保留。",
+    "en": "Service changed. Reload before saving; your draft is retained.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_313418e0d549b538",
+    "zh": "无法获取可用模型：",
+    "en": "Could not fetch available models: ",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_d7ab95886c5c14fb",
+    "zh": "配置已被其他页面修改，请重新读取后再保存。",
+    "en": "Settings changed elsewhere. Reload before saving.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_466ccdc85b8805d7",
+    "zh": "DSH 拒绝了此配置，请检查协议、模型与字段格式。",
+    "en": "DSH refused this configuration. Check protocol, models and field formats.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_681e30fe3aa48fa8",
+    "zh": "请重新读取设置后保存。",
+    "en": "Reload settings before saving.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_ba60ab295b719dc9",
+    "zh": "连接设置已保存，但密钥未确认保存。请重新打开该提供方补填密钥。",
+    "en": "Connection saved, but the key was not confirmed. Reopen the provider and enter the key again.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_d4ac0ba8e6beadce",
+    "zh": "密钥保存未确认，请重试。",
+    "en": "Key save unconfirmed. Retry.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_2520e2289cdc4495",
+    "zh": "已保存，Web UI 使用同一份配置。",
+    "en": "Saved. Web UI uses this same configuration.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_6c42e6dac7a7646c",
+    "zh": "正在获取服务商的可用模型…",
+    "en": "Fetching available models from the provider…",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_a6ee00441b2f6ee2",
+    "zh": "服务商没有返回可用模型。",
+    "en": "The provider returned no available models.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_a10d76687e92d1df",
+    "zh": "已获取可用模型，请选择要加入目录的项目。",
+    "en": "Available models fetched. Choose which ones to add.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_954ec984cd4f49d1",
+    "zh": "正在同步…",
+    "en": "Syncing…",
+    "source": "app/src/main/java/com/deepseekharness/app/core/DshModelRepository.java"
+  },
+  {
+    "id": "source_2d8e90025c43cd94",
+    "zh": "旧 Ubuntu 系统已清理，个人数据验证副本与事务记录保留。",
+    "en": "The old Ubuntu system was cleaned. Verified personal-data copies and transaction records remain.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/EnvironmentMaintenance.java"
+  },
+  {
+    "id": "source_452be4793b40b0d0",
+    "zh": "旧环境清理暂缓，原件保留：",
+    "en": "Old environment cleanup was deferred; originals retained: ",
+    "source": "app/src/main/java/com/deepseekharness/app/core/EnvironmentMaintenance.java"
+  },
+  {
+    "id": "source_3754f5e6a61b54f5",
+    "zh": "\n旧事务归档暂缓，原件保留：",
+    "en": "\nOld transaction archival deferred; originals retained: ",
+    "source": "app/src/main/java/com/deepseekharness/app/core/EnvironmentMaintenance.java"
+  },
+  {
+    "id": "source_383688ade1e03783",
+    "zh": "环境重建完成，数据逐文件核验与运行试验通过。\n",
+    "en": "Environment rebuilt; data verification and the runtime trial passed.\n",
+    "source": "app/src/main/java/com/deepseekharness/app/core/EnvironmentMaintenance.java"
+  },
+  {
+    "id": "source_e47525df3e0b386f",
+    "zh": "中断的 profile 设置事务已恢复，原件保留。",
+    "en": "Interrupted profile settings transaction recovered; originals retained.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/EnvironmentMaintenance.java"
+  },
+  {
+    "id": "source_f6309081867f1094",
+    "zh": "\n=== 最近隔离运行试验失败 ===\n",
+    "en": "\n=== Latest isolated runtime trial failure ===\n",
+    "source": "app/src/main/java/com/deepseekharness/app/core/ErrorLogRepository.java"
+  },
+  {
+    "id": "source_32887d715183bbb0",
+    "zh": "\n=== 独立应急 DSH ===\n",
+    "en": "\n=== Independent emergency DSH ===\n",
+    "source": "app/src/main/java/com/deepseekharness/app/core/ErrorLogRepository.java"
+  },
+  {
+    "id": "source_9657c80681e682bd",
+    "zh": "rc1 迁移快照未完成，已阻止导入；原件保留。请检查存储权限和空间后重试：",
+    "en": "rc1 snapshots are incomplete; import is blocked and originals are retained. Check storage access and space, then retry: ",
+    "source": "app/src/main/java/com/deepseekharness/app/core/HarnessController.java"
+  },
+  {
+    "id": "source_c97086c8f543fa57",
+    "zh": "网页已就绪；部分旧数据仍待处理，请在保留数据中检查迁移记录。",
+    "en": "The web service is ready; some legacy data needs attention in Retained data.",
+    "source": "app/src/main/java/com/deepseekharness/app/core/HarnessController.java"
+  },
+  {
+    "id": "source_ba379d361a385bcf",
+    "zh": "格式化已停止更新任务",
+    "en": "Formatting stopped the update task",
+    "source": "app/src/main/java/com/deepseekharness/app/core/UpdateEngine.java"
+  },
+  {
+    "id": "source_862c67b7f0cdb41c",
+    "zh": "等待重新检查更新",
+    "en": "Waiting for a fresh update check",
+    "source": "app/src/main/java/com/deepseekharness/app/core/UpdateEngine.java"
+  },
+  {
+    "id": "source_cee390412ee86ce3",
+    "zh": "应急 DSH 尚未启动",
+    "en": "Recovery DSH has not started",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryController.java"
+  },
+  {
+    "id": "source_11df68244c32b3c7",
+    "zh": "正在准备独立应急 DSH…",
+    "en": "Preparing independent recovery DSH…",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryController.java"
+  },
+  {
+    "id": "source_448bddd3bfa41e12",
+    "zh": "正在重新核验应急进程退出…",
+    "en": "Checking whether the recovery process exited…",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryController.java"
+  },
+  {
+    "id": "source_68ed1a5b68b9844a",
+    "zh": "正在停止应急 DSH，原会话将保留…",
+    "en": "Stopping recovery DSH; its session will be retained…",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryController.java"
+  },
+  {
+    "id": "source_840f9d0dbbc275fc",
+    "zh": " 尚未配置模型凭据，可返回原生应急页面填写本次临时密钥。",
+    "en": " No model credential is configured. Enter a temporary key on the native recovery page.",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryController.java"
+  },
+  {
+    "id": "source_e4d7ae3d5a17126d",
+    "zh": " 原生凭据暂不可读取，已保留原密文；可填写本次临时密钥。",
+    "en": " The saved credential is unavailable and has been preserved. You can enter a temporary key.",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryController.java"
+  },
+  {
+    "id": "source_598c4517e3f69741",
+    "zh": "正在启动空白 DSH，等待受控工具检查与鉴权…",
+    "en": "Starting a blank DSH; waiting for tool verification and authentication…",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryController.java"
+  },
+  {
+    "id": "source_928a3a3b4f747604",
+    "zh": "系统限制进程身份读取；应急对话与只读诊断可用，正式环境写入仍被阻止。",
+    "en": "The system restricts process identity access. Recovery chat and read-only diagnostics are available; writes to the main environment remain blocked.",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryController.java"
+  },
+  {
+    "id": "source_7dbfc8520a40b6cc",
+    "zh": "独立应急 DSH 已就绪；正式环境保持原状。",
+    "en": "Independent recovery DSH is ready. The main environment is preserved.",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryController.java"
+  },
+  {
+    "id": "source_0e65422025128b86",
+    "zh": "应急 DSH 仍在启动，可继续等待或停止；详细原因显示在本页。",
+    "en": "Recovery DSH is still starting. You can wait or stop it; details remain available here.",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryController.java"
+  },
+  {
+    "id": "source_eac59a4177f78424",
+    "zh": "尚未确认应急进程退出，现场已保留；可重试停止。",
+    "en": "Recovery process exit is unconfirmed. Records are preserved; you can retry stopping.",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryController.java"
+  },
+  {
+    "id": "source_a49234fa1127f75e",
+    "zh": "应急 DSH 未就绪：",
+    "en": "Recovery DSH is not ready: ",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryController.java"
+  },
+  {
+    "id": "source_e7893afb2abbbd65",
+    "zh": "应急 DSH 已停止，应急会话及诊断原件已保留。",
+    "en": "Recovery DSH stopped. Its session and original diagnostics are preserved.",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryController.java"
+  },
+  {
+    "id": "source_4fb985d5d308b101",
+    "zh": "应急进程退出尚未确认：",
+    "en": "Recovery process exit is unconfirmed: ",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryController.java"
+  },
+  {
+    "id": "source_be8bc00a6e18821c",
+    "zh": "正在核验独立应急运行时…",
+    "en": "Verifying the independent recovery runtime…",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryRuntime.java"
+  },
+  {
+    "id": "source_9c05024d95834292",
+    "zh": "应急运行时副本校验失败，正在从签名安装包重建…",
+    "en": "The recovery runtime copy failed verification. Rebuilding from the signed APK…",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryRuntime.java"
+  },
+  {
+    "id": "source_4de02cffc84020f0",
+    "zh": "正在校验应急安装包",
+    "en": "Verifying recovery archive",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryRuntime.java"
+  },
+  {
+    "id": "source_d7aa7f593c3cfb68",
+    "zh": "正在准备应急环境",
+    "en": "Preparing recovery runtime",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryRuntime.java"
+  },
+  {
+    "id": "source_d25042298c5dd3ea",
+    "zh": "正在核验应急文件",
+    "en": "Verifying recovery files",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryRuntime.java"
+  },
+  {
+    "id": "source_05f56b6cc320a9a4",
+    "zh": "应急 DSH",
+    "en": "Emergency DSH",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryService.java"
+  },
+  {
+    "id": "source_cd11ae310f80b6f8",
+    "zh": "正在准备应急服务…",
+    "en": "Preparing the emergency service…",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryService.java"
+  },
+  {
+    "id": "source_3d4dc7dc891d8c5a",
+    "zh": "DSHA 应急 DSH",
+    "en": "DSHA emergency DSH",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryService.java"
+  },
+  {
+    "id": "source_5306a2a29aabdcb8",
+    "zh": "停止应急 DSH",
+    "en": "Stop emergency DSH",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryService.java"
+  },
+  {
+    "id": "source_be5f91dec18be918",
+    "zh": "已确认的原生修复仍在执行，可打开查看结果。",
+    "en": "An approved native repair is still running. Open to review its result.",
+    "source": "app/src/main/java/com/deepseekharness/app/recovery/RecoveryService.java"
+  },
+  {
+    "id": "source_fce292a337d8671b",
+    "zh": "隔离检查插件无法启动，详细原因：\n",
+    "en": "The isolated verification plugin could not start. Details:\n",
+    "source": "app/src/main/java/com/deepseekharness/app/runtime/RuntimeTrial.java"
+  },
+  {
+    "id": "source_6320380241cc6bb0",
+    "zh": "包名",
+    "en": "Package",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AboutFragment.java"
+  },
+  {
+    "id": "source_072602565f4bfb20",
+    "zh": "兼容版 · Android 6+",
+    "en": "Compatibility · Android 6+",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AboutFragment.java"
+  },
+  {
+    "id": "source_df6030dd52dfd52e",
+    "zh": "标准版 · Android 11+",
+    "en": "Standard · Android 11+",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AboutFragment.java"
+  },
+  {
+    "id": "source_8b784b6288058b41",
+    "zh": "架构",
+    "en": "Architecture",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AboutFragment.java"
+  },
+  {
+    "id": "source_038ad816c53fe258",
+    "zh": "开源许可",
+    "en": "License",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AboutFragment.java"
+  },
+  {
+    "id": "source_ca66c2da6f5bf825",
+    "zh": "了解更多",
+    "en": "Learn more",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AboutFragment.java"
+  },
+  {
+    "id": "source_1eed531305ffabcb",
+    "zh": "项目仓库",
+    "en": "Repository",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AboutFragment.java"
+  },
+  {
+    "id": "source_8c19728f80c9856a",
+    "zh": "交流与反馈",
+    "en": "Community and feedback",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AboutFragment.java"
+  },
+  {
+    "id": "source_f0568cd08ba9bd76",
+    "zh": "QQ群 975836806 · 问题反馈",
+    "en": "QQ group 975836806 · Issue tracker",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AboutFragment.java"
+  },
+  {
+    "id": "source_648ab284ae5577ef",
+    "zh": "打开 QQ 群",
+    "en": "Open QQ group",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AboutFragment.java"
+  },
+  {
+    "id": "source_941990e52d8bf11b",
+    "zh": "打开问题反馈",
+    "en": "Open issue tracker",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AboutFragment.java"
+  },
+  {
+    "id": "source_f58110610a051663",
+    "zh": "DSHA 与随包第三方组件",
+    "en": "DSHA and bundled components",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AboutFragment.java"
+  },
+  {
+    "id": "source_11c648280f6ce793",
+    "zh": "Ubuntu、Node.js、pnpm、Gecko 与其他依赖遵循各自许可。完整清单位于项目 THIRD_PARTY_NOTICES.md。",
+    "en": "Ubuntu, Node.js, pnpm, Gecko and other dependencies retain their own licenses. See THIRD_PARTY_NOTICES.md in the repository.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AboutFragment.java"
+  },
+  {
+    "id": "source_825cd8a6514cf6cb",
+    "zh": "让助手操作屏幕",
+    "en": "Let the assistant use your screen",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_06a794fd7707469b",
+    "zh": "开启一次，之后直接在对话里说出要做的事。",
+    "en": "Enable once, then describe what you want in a conversation.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_fb6a9528e0d0e23d",
+    "zh": "第 1 步",
+    "en": "Step 1",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_4a1297f26d8ca283",
+    "zh": "开启系统服务",
+    "en": "Enable the system service",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_a802ed9fb9f3a085",
+    "zh": "点下方按钮 → 已下载的应用 / 服务 → DSHA 配对助手 → 开启「使用服务」，确认系统提示。",
+    "en": "Tap below → Downloaded apps / services → DSHA pairing assistant → Enable the service, then confirm the system prompt.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_710ca4677b1a6dbf",
+    "zh": "去开启屏幕操作",
+    "en": "Enable screen control",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_aae0feb224cecf0e",
+    "zh": "第 2 步",
+    "en": "Step 2",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_45001ce4698319ad",
+    "zh": "返回这里检查",
+    "en": "Return here to check",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_9fada042cf88e991",
+    "zh": "检查连接",
+    "en": "Check connection",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_d5ca9e5562d22290",
+    "zh": "怎么使用",
+    "en": "How to use",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_b551c8853d6fd8af",
+    "zh": "在 DSH 对话中发送：\n“请打开系统设置，查看当前的显示设置。”\n\n首次操作按应用提示确认。你可以随时在系统无障碍设置中关闭服务。读屏与点按无需 Root、Shizuku 或 ADB。截屏需要 Android 11+。",
+    "en": "In a DSH conversation, ask:\n“Open system settings and inspect the display settings.”\n\nConfirm the app prompt when requested. You can disable the service in Accessibility settings at any time. Observation and taps require no Root, Shizuku or ADB. Screenshots require Android 11+.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_2e765ea7315bd22e",
+    "zh": "找不到开关或开关是灰色",
+    "en": "Missing or disabled switch",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_abecfbe9c814d864",
+    "zh": "查看系统设置提示",
+    "en": "View system setup tips",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_2d23c5c3efa21baa",
+    "zh": "开启提示",
+    "en": "Setup tips",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_60869f94307f3553",
+    "zh": "部分手机路径是：设置 → 更多设置 → 无障碍 → 已下载的服务。\n\nAndroid 13+ 若提示“受限设置”，在系统应用详情右上角菜单允许受限设置，再返回无障碍页面。只有你确认信任已安装的 DSHA 时才启用。\n\n开启后仍未连接，可关闭再开启服务，并允许 DSHA 后台运行。",
+    "en": "Some devices use Settings → Additional settings → Accessibility → Downloaded services.\n\nOn Android 13+, if the system reports restricted settings, use the app-info menu to allow restricted settings, then return to Accessibility. Enable only for your trusted DSHA installation.\n\nIf disconnected after enabling, toggle the service off and on and allow DSHA to run in the background.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_21da34be875e812f",
+    "zh": "请打开系统设置 → 无障碍 → DSHA 配对助手。",
+    "en": "Open Settings → Accessibility → DSHA pairing assistant.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_21b7fb76cd8cc0a3",
+    "zh": "已连接，可以在对话中使用 Computer Use。",
+    "en": "Connected. Computer Use is available in conversations.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_e11b0cd1de4fc0a7",
+    "zh": "开关已开启，正在等待系统连接；可重新开关服务。",
+    "en": "Enabled, waiting for the system to connect. Try toggling the service.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_0106e76bba47c7dd",
+    "zh": "尚未开启，请完成第 1 步。",
+    "en": "Not enabled. Complete step 1.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_4514a3dc2eae5842",
+    "zh": "查看或关闭系统授权",
+    "en": "Review or disable access",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AccessibilitySetupActivity.java"
+  },
+  {
+    "id": "source_2f55353b2fef30f8",
+    "zh": "查看连接详情 ›",
+    "en": "Connection details ›",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AdbPairActivity.java"
+  },
+  {
+    "id": "source_7d9f51408c51ed01",
+    "zh": "连接详情",
+    "en": "Connection details",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AdbPairActivity.java"
+  },
+  {
+    "id": "source_6ff05e6f46a10394",
+    "zh": "ADB 已关闭，配对密钥保留。需要时可验证连接重新启用。",
+    "en": "ADB disabled. Pairing keys are retained; verify the connection to enable it again.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AdbPairActivity.java"
+  },
+  {
+    "id": "source_a3bb4b2c5ea97f00",
+    "zh": "请填写本机无线调试显示的 IP",
+    "en": "Enter this device's wireless debugging IP",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AdbPairActivity.java"
+  },
+  {
+    "id": "source_c56842c4b1dc89ea",
+    "zh": "端口应为 1–65535，或留空自动发现",
+    "en": "Use a port from 1–65535, or leave blank",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AdbPairActivity.java"
+  },
+  {
+    "id": "source_c2143368324bff4d",
+    "zh": "手动连接设置",
+    "en": "Manual connection",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AdbPairActivity.java"
+  },
+  {
+    "id": "source_30022572ce06d82f",
+    "zh": "配对端口来自六位码弹窗；连接端口来自无线调试主页面。",
+    "en": "Pairing port comes from the code dialog; connection port comes from the main Wireless debugging page.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AdbPairActivity.java"
+  },
+  {
+    "id": "source_ce2d6485cef24e5e",
+    "zh": "本机 IP · 可留空",
+    "en": "Device IP · Optional",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AdbPairActivity.java"
+  },
+  {
+    "id": "source_a1dfd9deee541218",
+    "zh": "配对端口 · 留空自动发现",
+    "en": "Pairing port · Auto if blank",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AdbPairActivity.java"
+  },
+  {
+    "id": "source_97a0f95698e9dfaa",
+    "zh": "连接端口 · 留空自动发现",
+    "en": "Connection port · Auto if blank",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AdbPairActivity.java"
+  },
+  {
+    "id": "source_627ab3b79aed7b5f",
+    "zh": "连接设置已保存，可开始配对或验证已有连接。",
+    "en": "Connection settings saved. Pair or verify the existing connection.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AdbPairActivity.java"
+  },
+  {
+    "id": "source_d51f5cf8ba85abea",
+    "zh": "端口应为 1–65535，或留空自动发现。",
+    "en": "Use a port from 1–65535, or leave blank.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AdbPairActivity.java"
+  },
+  {
+    "id": "source_55c43a6ee8bfc0b8",
+    "zh": "准备数据",
+    "en": "Preparing data",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_d265b6832a6ac6b5",
+    "zh": "保存并核验文件",
+    "en": "Saving and verifying files",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_d3ade8bc2baadcee",
+    "zh": "加密并验证副本",
+    "en": "Encrypting and verifying the copy",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_92f4950c9a6b28ec",
+    "zh": "完成副本记录",
+    "en": "Finishing the copy record",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_3b7e27cb4379da3c",
+    "zh": "正在处理",
+    "en": "Working",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_b6c8da4402838d6b",
+    "zh": "备份任务进行中：",
+    "en": "Backup in progress: ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_f9d529eacdf392b4",
+    "zh": " 项",
+    "en": " entries",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_ba3dfa68377fdcf2",
+    "zh": "自动备份",
+    "en": "Automatic backups",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_42c8098cc2950eb4",
+    "zh": "默认开启。备份对话、附件、配置和插件；不重复备份 Ubuntu。个人项目请使用手动备份。",
+    "en": "On by default. Saves conversations, attachments, settings and plugins, without copying Ubuntu. Use manual backup for personal projects.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_335c8b60baf210cb",
+    "zh": "每天指定时间",
+    "en": "Daily at a chosen time",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_02431769cfda7007",
+    "zh": "每隔一段时间",
+    "en": "At an interval",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_58fb32266f6ea50f",
+    "zh": "停止 DSH 后",
+    "en": "After stopping DSH",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_fa422c055aa14fb5",
+    "zh": "备份时机",
+    "en": "Backup timing",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_e1983c70deaf8bfa",
+    "zh": "每天时间",
+    "en": "Daily time",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_7a98da4ac51d0dcf",
+    "zh": "间隔小时",
+    "en": "Interval in hours",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_5d075c2e0cfed25a",
+    "zh": "间隔 1–168 小时",
+    "en": "Interval: 1–168 hours",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_e6bc64216c797aca",
+    "zh": "请输入 1–168",
+    "en": "Enter 1–168",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_4d4e1c6db67e8252",
+    "zh": "到期时仍在运行则延后，不会停止对话或终端。时间由系统调度，可能略有延迟。保留最近 3 份已验证自动副本。关闭后取消后续任务，已有副本保留。",
+    "en": "If DSH or a terminal is running, backup waits. Android scheduling may delay the selected time. Keeps the latest 3 verified automatic copies. Turning off cancels future jobs and preserves existing copies.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_d2b4e244f4d4dc13",
+    "zh": "自动副本保存在本机，卸载应用会清除。换机或卸载前，请导出副本并保存解密密码。",
+    "en": "Automatic copies are stored on this device and removed when the app is uninstalled. Export a copy and save its decryption password before moving or uninstalling.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_0ba9c12e15a3310b",
+    "zh": "现在创建自动备份",
+    "en": "Create automatic backup now",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_66abf66c6278a403",
+    "zh": "备份任务进行中，请等待完成。",
+    "en": "A backup task is running. Wait for it to finish.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_d12b274a5742e18a",
+    "zh": "请先打开自动备份",
+    "en": "Enable automatic backups first",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_77e61c30dd35801f",
+    "zh": "已安排：DSH 和终端停止后可执行，稍后刷新查看结果。",
+    "en": "Scheduled. DSH and terminals must be stopped. Refresh shortly to view the result.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_90341651dabebb3a",
+    "zh": "刷新备份记录",
+    "en": "Refresh backup records",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_90b27efe69496607",
+    "zh": "正在读取记录…",
+    "en": "Reading records…",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_ae9355390b91a8d4",
+    "zh": "已开启 · 等待到期且 DSH 停止",
+    "en": "On · waiting for the scheduled time and DSH to stop",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_6744b4c6a9aa0038",
+    "zh": "已关闭",
+    "en": "Off",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_dbf504aee1583640",
+    "zh": "上次完成：",
+    "en": "Last completed: ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_cce8232a17430e44",
+    "zh": "待处理：",
+    "en": "Needs attention: ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_90dd8d1bfe27be4c",
+    "zh": "数据已保存；部分插件依赖需在恢复预检中核对。",
+    "en": "Data saved; some plugin dependencies need review before restore.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_2793d775bea74f40",
+    "zh": " · 插件依赖待核对",
+    "en": " · review plugin dependencies",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_e32bcfd5607e4f04",
+    "zh": "导出加密副本",
+    "en": "Export encrypted copy",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_69db4ae811058df7",
+    "zh": "还没有自动备份。到达所选时间后，在 DSH 停止且没有终端任务时创建第一份。",
+    "en": "No automatic backup yet. The first copy is created when due, with DSH and terminals stopped.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/AutomaticBackupActivity.java"
+  },
+  {
+    "id": "source_4c46c904395c2935",
+    "zh": "后台任务",
+    "en": "Background tasks",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/BackgroundTasksActivity.java"
+  },
+  {
+    "id": "source_01f4a6e61f012f35",
+    "zh": "查看正在执行的操作和进度。需要取消时，请进入对应页面。",
+    "en": "View active operations and progress. Open the related page to cancel safely.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/BackgroundTasksActivity.java"
+  },
+  {
+    "id": "source_8f38fd93b5a0847b",
+    "zh": "正在执行",
+    "en": "Running",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/BackgroundTasksActivity.java"
+  },
+  {
+    "id": "source_bc78829ba0c385fd",
+    "zh": "当前没有原生后台任务。",
+    "en": "No native background tasks are running.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/BackgroundTasksActivity.java"
+  },
+  {
+    "id": "source_88cb73251c19138e",
+    "zh": "麦克风未获授权，可在系统应用权限中允许后重试。",
+    "en": "Microphone access was denied. Allow it in system app permissions and retry.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/BrowserMicrophone.java"
+  },
+  {
+    "id": "source_3e5c3ba2c6a7c4e2",
+    "zh": "运行方式",
+    "en": "Runtime",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ConfigFragment.java"
+  },
+  {
+    "id": "source_08c1e91c56ef1497",
+    "zh": "自动（推荐）",
+    "en": "Automatic (recommended)",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ConfigFragment.java"
+  },
+  {
+    "id": "source_1335206cc4f1bc10",
+    "zh": "原生",
+    "en": "Native",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ConfigFragment.java"
+  },
+  {
+    "id": "source_a58aa45e167232fd",
+    "zh": "自动选择内核",
+    "en": "Automatic engine",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ConfigFragment.java"
+  },
+  {
+    "id": "source_fc3a6f98c46b62fd",
+    "zh": "设备通道状态",
+    "en": "Device channel status",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DeviceGrantsFragment.java"
+  },
+  {
+    "id": "source_e91809672a759d94",
+    "zh": "让助手读屏、点击和输入。先完成屏幕操作设置，再在对话中描述任务。",
+    "en": "Let the assistant observe, tap and type. Set up screen control, then describe the task in a conversation.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DeviceGrantsFragment.java"
+  },
+  {
+    "id": "source_f32bc030bb2174f0",
+    "zh": "撤销本次读屏与操作授权",
+    "en": "Revoke screen access for this run",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DeviceGrantsFragment.java"
+  },
+  {
+    "id": "source_5d2a24247d039efb",
+    "zh": "已撤销，后续屏幕操作需要重新确认",
+    "en": "Revoked. Future screen actions require confirmation",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DeviceGrantsFragment.java"
+  },
+  {
+    "id": "source_2cd3d2efabda6573",
+    "zh": "打开虚拟屏",
+    "en": "Open virtual screen",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DeviceGrantsFragment.java"
+  },
+  {
+    "id": "source_12fa22301ae16a53",
+    "zh": "已关闭短信读取",
+    "en": "SMS reading disabled",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DeviceGrantsFragment.java"
+  },
+  {
+    "id": "source_9870db3b3763d43b",
+    "zh": "已关闭 · 查询会被阻止",
+    "en": "Off · queries are blocked",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DeviceGrantsFragment.java"
+  },
+  {
+    "id": "source_c9f763d1ed33f163",
+    "zh": "需要系统定位权限",
+    "en": "Location permission required",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DeviceGrantsFragment.java"
+  },
+  {
+    "id": "source_85499ca13cac5c95",
+    "zh": "位置读取保持关闭。请在系统应用权限中允许定位，再返回这里开启；如果系统定位服务关闭，也需要先开启系统定位。",
+    "en": "Location reading remains off. Allow location in system app permissions, then return and enable it here. System location services must also be enabled.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DeviceGrantsFragment.java"
+  },
+  {
+    "id": "source_a2666f3942988efd",
+    "zh": "暂不开启",
+    "en": "Not now",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DeviceGrantsFragment.java"
+  },
+  {
+    "id": "source_ae5f0898ac61c4c7",
+    "zh": "打开系统权限设置",
+    "en": "Open app permissions",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DeviceGrantsFragment.java"
+  },
+  {
+    "id": "source_1644cfa5be301902",
+    "zh": "请在系统设置中打开 DSHA 应用权限",
+    "en": "Open DSHA permissions in system settings",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DeviceGrantsFragment.java"
+  },
+  {
+    "id": "source_6960e6c6ce04ffc9",
+    "zh": "检查未完成",
+    "en": "Check incomplete",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DiagnosticActivity.java"
+  },
+  {
+    "id": "source_9fda897b08459424",
+    "zh": "请打开失败卡片查看原因，也可复制或导出脱敏报告。",
+    "en": "Open the failure card for details, or copy or export the redacted report.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DiagnosticActivity.java"
+  },
+  {
+    "id": "source_1af6775175ba5664",
+    "zh": "检查已完成",
+    "en": "Checks completed",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DiagnosticActivity.java"
+  },
+  {
+    "id": "source_ecfcd3daf9164ab6",
+    "zh": "还没有启动记录。",
+    "en": "No startup records yet.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DiagnosticActivity.java"
+  },
+  {
+    "id": "source_da590a8fe3ce4de0",
+    "zh": "请选择",
+    "en": "Choose an option",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/DshaSelectView.java"
+  },
+  {
+    "id": "source_16accbd66db5db15",
+    "zh": "启动应急 DSH",
+    "en": "Start emergency DSH",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/EnvironmentRecoveryFragment.java"
+  },
+  {
+    "id": "source_0ae514f38d301aaf",
+    "zh": "查看本次维护记录",
+    "en": "View maintenance record",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+  },
+  {
+    "id": "source_082b4b8be3fcfdcf",
+    "zh": "格式化并全新开始",
+    "en": "Format and start fresh",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+  },
+  {
+    "id": "source_6731ab9598fc9902",
+    "zh": "格式化 DSHA",
+    "en": "Format DSHA",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+  },
+  {
+    "id": "source_9fec37672baddfcd",
+    "zh": "格式化完成",
+    "en": "Formatting complete",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+  },
+  {
+    "id": "source_ba76e738e7402b73",
+    "zh": "正在格式化 DSHA",
+    "en": "Formatting DSHA",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+  },
+  {
+    "id": "source_9e7a3beca36ae438",
+    "zh": "未完成的操作：",
+    "en": "Incomplete operation: ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+  },
+  {
+    "id": "source_f267a707fb286968",
+    "zh": "最后记录阶段：",
+    "en": "Last recorded stage: ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+  },
+  {
+    "id": "source_652fa9343c1230c5",
+    "zh": "旧记录未提供；请查看维护日志",
+    "en": "Not available in the old record; inspect maintenance logs",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+  },
+  {
+    "id": "source_e0f15bd498636d6e",
+    "zh": "原件状态：尚未确认恢复完成。请查看记录后使用“恢复中断维护”；也可进入受限主界面导出可读副本。",
+    "en": "Original state: recovery has not been confirmed. Inspect the record and use Recover interrupted maintenance, or enter the limited interface to export readable copies.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+  },
+  {
+    "id": "source_597d621bc59984a3",
+    "zh": "格式化并全新开始？",
+    "en": "Format and start fresh?",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+  },
+  {
+    "id": "source_fdc6819b672afc5b",
+    "zh": "这会永久删除 DSHA 的运行环境、会话、配置、API Key、插件和本机自动备份，并尝试清理旧版 Documents/dshdata。公共或外置目录不可访问时会记录提示，不会阻止私有数据完成格式化；手动导出的备份与其他个人目录会保留。",
+    "en": "This permanently deletes the DSHA runtime, conversations, configuration, API key, plugins, and local automatic backups, and attempts to remove legacy Documents/dshdata. Unavailable public or external storage is reported without blocking private-data formatting. Exported backups and other personal folders stay untouched.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+  },
+  {
+    "id": "source_5e6162a81c4315f0",
+    "zh": "最后确认",
+    "en": "Final confirmation",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+  },
+  {
+    "id": "source_579afc60e803b3da",
+    "zh": "格式化不可撤销。确认后会展示清理过程，完成时直接返回欢迎页并重新准备环境。",
+    "en": "Formatting cannot be undone. Progress will be shown, then DSHA will return directly to welcome and prepare a fresh environment.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+  },
+  {
+    "id": "source_3c83944318953474",
+    "zh": "删除全部并格式化",
+    "en": "Delete all and format",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+  },
+  {
+    "id": "source_62c7b068b1ea4fde",
+    "zh": "暂时无法格式化",
+    "en": "Cannot format yet",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+  },
+  {
+    "id": "source_9f316ed0f0f091df",
+    "zh": "另一个任务正在运行，请结束后重试。",
+    "en": "Another task is running. Try again after it finishes.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+  },
+  {
+    "id": "source_4d99c976beb8827e",
+    "zh": "可用",
+    "en": "Available",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/InstallFragment.java"
+  },
+  {
+    "id": "source_8f31a776d53b824a",
+    "zh": "等待检查",
+    "en": "Needs checking",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/InstallFragment.java"
+  },
+  {
+    "id": "source_7385ee9430a58100",
+    "zh": "启动后可查看访问地址。",
+    "en": "Start DSH to view access addresses.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/LaunchFragment.java"
+  },
+  {
+    "id": "source_bd24c35c8d550876",
+    "zh": "复制本机地址",
+    "en": "Copy local URL",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/LaunchFragment.java"
+  },
+  {
+    "id": "source_1c60dc6688ef716d",
+    "zh": "▶  进入工作台",
+    "en": "▶  Open workspace",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/LaunchFragment.java"
+  },
+  {
+    "id": "source_f27f574a94805cd8",
+    "zh": "检测到旧版备份",
+    "en": "Previous backup found",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/MainActivity.java"
+  },
+  {
+    "id": "source_8609e2fc38f4f1d9",
+    "zh": "选择恢复",
+    "en": "Inspect and restore",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/MainActivity.java"
+  },
+  {
+    "id": "source_6e90ac940752ebf1",
+    "zh": "忽略",
+    "en": "Ignore",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/MainActivity.java"
+  },
+  {
+    "id": "source_187b88cd44e46d10",
+    "zh": "手动选择",
+    "en": "Choose manually",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/MainActivity.java"
+  },
+  {
+    "id": "source_9b99ca73f3b9ff24",
+    "zh": "是否需要恢复以前的备份？",
+    "en": "Restore an older backup?",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/MainActivity.java"
+  },
+  {
+    "id": "source_9e6028d819437513",
+    "zh": "当前环境没有用户数据。系统暂时无法枚举卸载前的 Download/DSHA 文件；可用文件选择器直接选择备份，不需要开启所有文件访问。",
+    "en": "This environment has no user data. Android cannot enumerate backups from the previous installation, but the file picker can open one without all-files access.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/MainActivity.java"
+  },
+  {
+    "id": "source_34e166fcaf7c80f4",
+    "zh": "不用了",
+    "en": "Not now",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/MainActivity.java"
+  },
+  {
+    "id": "source_41e8acc40f7db2c8",
+    "zh": "备份无法自动读取",
+    "en": "Backup cannot be read automatically",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/MainActivity.java"
+  },
+  {
+    "id": "source_89ff93dd80d0cf81",
+    "zh": "请用文件选择器指定备份包。",
+    "en": "Choose the backup package with the file picker.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/MainActivity.java"
+  },
+  {
+    "id": "source_9c8cbf2c570e5d20",
+    "zh": "服务商、连接方式与模型目录。保存后与 Web UI 同步。",
+    "en": "Providers, connections and models. Saved settings sync with Web UI.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_68891ab35cab9663",
+    "zh": "重新连接",
+    "en": "Reconnect",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_24333b816b6157a0",
+    "zh": "正在处理，请等待结果。",
+    "en": "Working. Please wait for the result.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_85a9990cca9a9fa0",
+    "zh": "放弃本次编辑？",
+    "en": "Discard these edits?",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_fd4b9e3b6c685bae",
+    "zh": "继续编辑",
+    "en": "Keep editing",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_e7f51b070effdbe9",
+    "zh": "放弃",
+    "en": "Discard",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_ecd5bf304c003844",
+    "zh": "已配置的服务商",
+    "en": "Configured providers",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_b924454c1996b8f2",
+    "zh": "使用服务商默认地址",
+    "en": "Uses provider default endpoint",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_3f15d8c637b3bae2",
+    "zh": "添加第三方模型",
+    "en": "Add third-party models",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_7a8e5055681c38e0",
+    "zh": "填写服务商 API 地址、密钥与模型 ID，支持 OpenAI / Anthropic 等协议",
+    "en": "Enter an endpoint, API key and model ID. Supports OpenAI, Anthropic and other protocols",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_093284aa266d27c8",
+    "zh": "选择内置服务商",
+    "en": "Choose a built-in provider",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_2da08f2d9e337c68",
+    "zh": "使用 DSH 已支持的服务商配置",
+    "en": "Use a provider supported by DSH",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_5d3bf702b137833f",
+    "zh": "重新读取配置",
+    "en": "Reload settings",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_5d8045ab0e1067c4",
+    "zh": "继续进入 DSHA",
+    "en": "Continue to DSHA",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_7f7703a1bae86e36",
+    "zh": "添加服务商",
+    "en": "Add a provider",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_f26264c00e5909ad",
+    "zh": "自定义提供方",
+    "en": "Custom provider",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_2a7e26e37b5b6a5f",
+    "zh": "此服务商组件尚不可用，请检查插件。",
+    "en": "Provider component unavailable. Check plugins.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_bdafbed6b250de3d",
+    "zh": "编辑完成后，点击下方保存。",
+    "en": "Save below when your edits are ready.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_f7dd413bd9812312",
+    "zh": "唯一标识（小写英文）",
+    "en": "Provider ID (lowercase)",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_a98585871c5313ff",
+    "zh": "显示名称",
+    "en": "Display name",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_537352400c495fb8",
+    "zh": "可选",
+    "en": "Optional",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_d94c3fb876621695",
+    "zh": "API 地址",
+    "en": "API endpoint",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_9ff5b90ceb2b745b",
+    "zh": "留空使用 DeepSeek 官方地址",
+    "en": "Leave blank for the official DeepSeek endpoint",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_d1492757f2501097",
+    "zh": "服务商默认",
+    "en": "Provider default",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_a5fe4d51472e15d8",
+    "zh": "连接协议",
+    "en": "Protocol",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_913c738ad8818bde",
+    "zh": "留空保留已有密钥",
+    "en": "Leave blank to keep the existing key",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_ec75e17dd938ddfc",
+    "zh": "密钥不会在此回显。新密钥通过 DSH 凭据服务保存。",
+    "en": "Existing keys are never shown here. New keys are saved through DSH credentials.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_f3f7f9ecdd8d232d",
+    "zh": "自定义请求头",
+    "en": "Custom request headers",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_34b3cac2a496d263",
+    "zh": "模型目录",
+    "en": "Models",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_36a045ebcc6da95f",
+    "zh": "高级配置",
+    "en": "Advanced settings",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_80962dc8c9561961",
+    "zh": "保存并同步",
+    "en": "Save and sync",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_d44e9b3d3b31d37b",
+    "zh": "名称",
+    "en": "Name",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_cda1d55c5231b853",
+    "zh": "值",
+    "en": "Value",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_28fdcd7cd026cf34",
+    "zh": "服务商要求的值",
+    "en": "Value required by the provider",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_a2db9f96d6bc4d60",
+    "zh": "移除此请求头",
+    "en": "Remove header",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_11ab8e80b3b7e373",
+    "zh": "添加请求头",
+    "en": "Add header",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_005f3b0e8347a335",
+    "zh": "仅发送给此服务商；保存后用于模型请求和目录查询。",
+    "en": "Sent only to this provider. Save to apply to model requests and model discovery.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_a0db38efede2a38b",
+    "zh": "编辑模型与容量",
+    "en": "Edit model and capacity",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_b8fb3467002b6d13",
+    "zh": "获取可用模型",
+    "en": "Fetch available models",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_168e845a86bc3703",
+    "zh": "添加模型",
+    "en": "Add model",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_4f4b04917348ff6b",
+    "zh": "不修改目录会保留服务商原有模型和能力。",
+    "en": "Unchanged catalogs retain the provider's models and capabilities.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_ff468c99b27ecdf6",
+    "zh": "API Key 不应包含空格或换行。",
+    "en": "API keys must not contain whitespace.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_d37ca58c747ecd3a",
+    "zh": "请先填写有效的 HTTP/HTTPS API 地址。",
+    "en": "Enter a valid HTTP/HTTPS endpoint first.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_f8334f99bcfcf631",
+    "zh": "未发现模型",
+    "en": "No models found",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_05d18eb727c343f3",
+    "zh": "服务商没有返回可用模型。现有模型目录保持不变。",
+    "en": "The provider returned no available models. The current catalog is unchanged.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_b12d52448447da84",
+    "zh": "（已在目录）",
+    "en": " (already in catalog)",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_de36c1b4dd3fb659",
+    "zh": "选择可用模型",
+    "en": "Choose available models",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_be00f6dbc9d83f8f",
+    "zh": "合并所选模型",
+    "en": "Add selected models",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_2ec9377030a4adb4",
+    "zh": "所选模型已在目录中，现有详情保持不变。",
+    "en": "The selected models are already in the catalog. Existing details were preserved.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_c372e2b9169543a2",
+    "zh": " 个模型合并到草稿；保存后同步到 Web UI。",
+    "en": " models to the draft. Save to sync them with Web UI.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_e0af03d94875d6ca",
+    "zh": "模型详情",
+    "en": "Model details",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_bb074b86a98f6911",
+    "zh": "上下文窗口",
+    "en": "Context window",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_d60669bb26a22f5d",
+    "zh": "留空使用默认值",
+    "en": "Leave blank for default",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_56627c94a9decee6",
+    "zh": "最大输出 Token",
+    "en": "Maximum output tokens",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_f1fff850de6df26a",
+    "zh": "支持图片输入",
+    "en": "Supports image input",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_f5c2506e70b16997",
+    "zh": "保存模型",
+    "en": "Save model",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_49364f00a11387bb",
+    "zh": "请检查模型 ID、重复项和正整数容量。",
+    "en": "Check model ID, duplicates and positive integer capacities.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_e4ce701bb8484c54",
+    "zh": "从目录移除此模型",
+    "en": "Remove from catalog",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_322201de8266d0f3",
+    "zh": "只编辑此服务商的附加字段；模型目录和密钥由主表单管理。",
+    "en": "Edit additional provider fields. Models and credentials use the main form.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_2354c137ceb3b688",
+    "zh": "应用到草稿",
+    "en": "Apply to draft",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_f82b221023f95742",
+    "zh": "请输入 JSON 对象，连接、请求头、模型和密钥请在主表单修改。",
+    "en": "Enter a JSON object. Edit connection, headers, models and credentials in the main form.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_dfee4d44fb3b5b04",
+    "zh": "请检查请求头：名称不能重复，值不能包含换行，不可覆盖连接与传输字段。",
+    "en": "Check headers: unique names, no line breaks, and no connection or transport fields.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_bfa689969e0961db",
+    "zh": "提供方标识需以小写字母开头，用短横线连接，且不能重复。",
+    "en": "Provider IDs must start with a lowercase letter, use hyphens and be unique.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_2f158b5fee5f1fe8",
+    "zh": "请填写有效的 HTTP/HTTPS API 地址。",
+    "en": "Enter a valid HTTP/HTTPS endpoint.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_a41bb66cff52d3df",
+    "zh": "请选择连接协议。",
+    "en": "Select a protocol.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_d0c751076d34c61f",
+    "zh": "请检查模型目录：ID 不能重复，容量必须是正整数。",
+    "en": "Check models: unique IDs and positive integer capacities are required.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ModelSetupActivity.java"
+  },
+  {
+    "id": "source_3618afa25fc68586",
+    "zh": "从备份恢复",
+    "en": "Restore a backup",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_dd1c2be7e5ad5628",
+    "zh": "导出、导入和自动备份集中在这里。",
+    "en": "Export, import and automatic backups in one place.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_1219ff92f4df0a38",
+    "zh": "选择范围和项目后，设置密码保存加密副本。",
+    "en": "Choose data and projects, then protect the export with a password.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_07fe2424b7818bac",
+    "zh": "先验证备份密码与内容，再确认恢复范围。",
+    "en": "Verify the password and contents before confirming what to restore.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_15b6b3f592e512fe",
+    "zh": "运行环境不可用时，也能检查并保护可读取的数据。",
+    "en": "Inspect and protect readable data even when the runtime is unavailable.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_9bf79639ee77264e",
+    "zh": "数据范围",
+    "en": "Data scope",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_8fe24017bc5974a6",
+    "zh": "设置备份密码",
+    "en": "Protect your backup",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_8fcb83c57ae1eed9",
+    "zh": "选择并验证",
+    "en": "Select and verify",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_ec217804074ac0bd",
+    "zh": "导入备份",
+    "en": "Import backup",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_a26c63635be02169",
+    "zh": "自动备份与记录",
+    "en": "Automatic backups and history",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_1d4ef99af81bcb1d",
+    "zh": "保留数据",
+    "en": "Retained data",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_6f1e9a67edc524f6",
+    "zh": "查看保留副本、旧环境和插件原件；检查与恢复分别处理。",
+    "en": "Browse retained copies, old environments, and original plugins. Inspection and restoration are separate actions.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_e3d1c3d4c6fef16a",
+    "zh": "导出自动备份",
+    "en": "Export automatic backup",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_a405fd24d16971f6",
+    "zh": "这是此备份的解密密码。请另行保存，换机或卸载后仍需它恢复。",
+    "en": "Save this decryption password separately. It is required after reinstalling or moving to another device.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_f468cebf749195c7",
+    "zh": "复制密码并选择保存位置",
+    "en": "Copy password and choose destination",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_cc9f984b13d66cc3",
+    "zh": "所选数据已保存。Profile 设置尚未应用：请进入「保留副本与旧树」逐个 profile 检查差异、选择字段并读回；插件和代码仍待审阅。",
+    "en": "Selected data saved. Profile settings are pending: open Retained copies and old trees to inspect each profile, select fields and verify readback. Plugins and code still require review.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_e27198d494666ef4",
+    "zh": "\n原生 API Key 未恢复，请到模型配置确认凭据。",
+    "en": "\nThe native API key was not restored; verify credentials in Model configuration.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_93ab94f166d3d99e",
+    "zh": "数据已恢复，但备份中的 API Key 无法读取；请到模型配置重新填写。",
+    "en": "Data restored, but the selected API key could not be read. Enter it again in Model configuration.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_9a8ba2ef00af767a",
+    "zh": "数据已恢复；本次备份未包含 API Key，请到模型配置填写。",
+    "en": "Data restored; this backup did not include an API key. Enter it in Model configuration.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/NativeDataActivity.java"
+  },
+  {
+    "id": "source_416f88ec6c7a9780",
+    "zh": "为第一次启动做准备",
+    "en": "Prepare your first launch",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingPrepareActivity.java"
+  },
+  {
+    "id": "source_71854f3afad20090",
+    "zh": "内置 Ubuntu 与运行组件将部署到应用私有目录。",
+    "en": "Ubuntu and runtime components live in the app’s private storage.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingPrepareActivity.java"
+  },
+  {
+    "id": "source_cb1cbe6a5b67da89",
+    "zh": "设备架构",
+    "en": "Architecture",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingPrepareActivity.java"
+  },
+  {
+    "id": "source_716be8afc0103b5b",
+    "zh": "系统与版本",
+    "en": "System",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingPrepareActivity.java"
+  },
+  {
+    "id": "source_9eadf702f426109b",
+    "zh": "兼容版",
+    "en": "Compatibility",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingPrepareActivity.java"
+  },
+  {
+    "id": "source_424bf6079a940e94",
+    "zh": "标准版",
+    "en": "Standard",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingPrepareActivity.java"
+  },
+  {
+    "id": "source_cec82ccb6e81e727",
+    "zh": "可用空间",
+    "en": "Free space",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingPrepareActivity.java"
+  },
+  {
+    "id": "source_9c320cc7909ff27b",
+    "zh": "安装方式",
+    "en": "Installation",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingPrepareActivity.java"
+  },
+  {
+    "id": "source_2fbd419e867e159f",
+    "zh": "随包离线部署",
+    "en": "Bundled offline runtime",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingPrepareActivity.java"
+  },
+  {
+    "id": "source_90eafb4261b30240",
+    "zh": "环境准备会进行真实检查。现有环境和个人数据会按原有维护规则处理；设备控制权限可以稍后单独设置。",
+    "en": "Setup performs real checks and preserves existing data through the maintenance workflow. Device permissions remain optional.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingPrepareActivity.java"
+  },
+  {
+    "id": "source_49782dbc9ab0431d",
+    "zh": "继续模型配置",
+    "en": "Continue to model setup",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingPrepareActivity.java"
+  },
+  {
+    "id": "source_d775fa44427f4c68",
+    "zh": "安装内置环境",
+    "en": "Install bundled runtime",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingPrepareActivity.java"
+  },
+  {
+    "id": "source_a1b544bfd503278a",
+    "zh": "返回介绍",
+    "en": "Back to introduction",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingPrepareActivity.java"
+  },
+  {
+    "id": "source_1eac2f7ccd59c9f9",
+    "zh": "你的工作台，准备好了。",
+    "en": "Your workspace is ready.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingReadyActivity.java"
+  },
+  {
+    "id": "source_470d7835420170e9",
+    "zh": "运行环境需要检查",
+    "en": "The runtime needs attention",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingReadyActivity.java"
+  },
+  {
+    "id": "source_f29ea35cff09bb9b",
+    "zh": "从一段对话开始，也可以随时调整模型和插件。",
+    "en": "Start a conversation, and adjust models or plugins whenever you need.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingReadyActivity.java"
+  },
+  {
+    "id": "source_85ab227ee09d6a9b",
+    "zh": "需要检查",
+    "en": "Needs attention",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingReadyActivity.java"
+  },
+  {
+    "id": "source_027e44a593153557",
+    "zh": "模型凭据由实际模型设置保存。你可以在启动页继续配置。",
+    "en": "Credentials are saved by the real model editor. You can continue setup from the launch page.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingReadyActivity.java"
+  },
+  {
+    "id": "source_53aeb9c198193038",
+    "zh": "进入 DSHA",
+    "en": "Open DSHA",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OnboardingReadyActivity.java"
+  },
+  {
+    "id": "source_c5d4b70c2c69cb44",
+    "zh": "在其他应用中，轻量查看任务进展。",
+    "en": "Follow progress while using other apps.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OverlayFragment.java"
+  },
+  {
+    "id": "source_992b7b8e7ca3aa2f",
+    "zh": "显示悬浮条",
+    "en": "Show floating status",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OverlayFragment.java"
+  },
+  {
+    "id": "source_803bdb4d644efb8c",
+    "zh": "DSHA · 样式预览\n正在整理工作区中的文件…",
+    "en": "DSHA · Style preview\nOrganizing files in the workspace…",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OverlayFragment.java"
+  },
+  {
+    "id": "source_57db0fb4f24bd7d0",
+    "zh": "预览悬浮条",
+    "en": "Preview floating status",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OverlayFragment.java"
+  },
+  {
+    "id": "source_e29ccffe638d5ad5",
+    "zh": "需要悬浮窗权限，正在打开系统设置…",
+    "en": "Overlay permission is required; opening system settings…",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OverlayFragment.java"
+  },
+  {
+    "id": "source_5df7ee2b64018bfb",
+    "zh": "系统悬浮条预览已显示，调整下面的选项会立即刷新。",
+    "en": "System overlay preview is shown; changes below update it immediately.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OverlayFragment.java"
+  },
+  {
+    "id": "source_f7c418671968d6db",
+    "zh": "显示系统悬浮条预览",
+    "en": "Show system overlay preview",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OverlayFragment.java"
+  },
+  {
+    "id": "source_8964c7e1b8e11423",
+    "zh": "最多显示行数",
+    "en": "Maximum lines",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OverlayFragment.java"
+  },
+  {
+    "id": "source_e56d42220f94536c",
+    "zh": " 秒（当前）",
+    "en": " seconds (current)",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OverlayFragment.java"
+  },
+  {
+    "id": "source_c678238b57a5cea1",
+    "zh": "背景样式",
+    "en": "Background style",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OverlayFragment.java"
+  },
+  {
+    "id": "source_e0c9080ca066bc36",
+    "zh": "显示执行命令",
+    "en": "Show executed commands",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OverlayFragment.java"
+  },
+  {
+    "id": "source_7e35cb6e2066781c",
+    "zh": "保存样式",
+    "en": "Save style",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OverlayFragment.java"
+  },
+  {
+    "id": "source_0ab551a91fa64718",
+    "zh": "DSHA · 样式预览\n",
+    "en": "DSHA · Style preview\n",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OverlayFragment.java"
+  },
+  {
+    "id": "source_6cc7c7b3ab07aa83",
+    "zh": "悬浮窗权限已开启",
+    "en": "Overlay permission is enabled",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OverlayFragment.java"
+  },
+  {
+    "id": "source_09515e9bc92c32d8",
+    "zh": "需要悬浮窗权限，点击“预览悬浮条”即可授权。",
+    "en": "Overlay permission is required; tap “Preview floating status” to grant it.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OverlayFragment.java"
+  },
+  {
+    "id": "source_d920cf7dc66118a8",
+    "zh": "请在系统设置中允许 DSHA 显示在其他应用上层。",
+    "en": "Allow DSHA to display over other apps in system settings.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/OverlayFragment.java"
+  },
+  {
+    "id": "source_e42ae4adc3148e4f",
+    "zh": "查看保留预览",
+    "en": "View retained preview",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/PluginFragment.java"
+  },
+  {
+    "id": "source_77b9d0a61b6d7228",
+    "zh": "重试清理",
+    "en": "Retry cleanup",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/PluginFragment.java"
+  },
+  {
+    "id": "source_bf639a51feec00c4",
+    "zh": "稍后处理",
+    "en": "Handle later",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/PluginFragment.java"
+  },
+  {
+    "id": "source_4a09c5c9e0f20f92",
+    "zh": "\n清理未确认；预览已保留。点此重试或稍后处理。",
+    "en": "\nCleanup is unconfirmed; the preview is retained. Tap to retry or handle it later.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/PluginFragment.java"
+  },
+  {
+    "id": "source_a7e9c4b6ca057d4f",
+    "zh": "未提供路径",
+    "en": "Path not provided",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/PluginFragment.java"
+  },
+  {
+    "id": "source_68661f508c52f508",
+    "zh": "随包内置",
+    "en": "Bundled",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/PluginFragment.java"
+  },
+  {
+    "id": "source_c59f19020d93ad55",
+    "zh": "DSH 官方组件",
+    "en": "Official DSH component",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/PluginFragment.java"
+  },
+  {
+    "id": "source_3b310b2975b901e3",
+    "zh": "来源未记录",
+    "en": "Source not recorded",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/PluginFragment.java"
+  },
+  {
+    "id": "source_4042c483c4ba6725",
+    "zh": "正式环境维护失败时，可在这里启动独立的空白 DSH。它可以读取相关故障文件并向当前模型服务发送内容，提出修复方案；每次正式数据写入都需在此确认。",
+    "en": "Start a separate, empty DSH when the regular environment fails. It can read affected files and send their contents to your model service to propose repairs. Confirm each write to regular data here.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_08e79e51c88168a5",
+    "zh": "临时 API Key（可选，仅本次应急会话使用）",
+    "en": "Temporary API key (optional, this emergency session only)",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_d5d910048a9b2e7c",
+    "zh": "留空时尝试已有可读凭据",
+    "en": "Leave blank to try an existing readable key",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_b8dcb53b3a7a2bac",
+    "zh": "进入空白应急 Web",
+    "en": "Open emergency Web",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_fc11c7dea928c8bb",
+    "zh": "需要更换临时密钥时，请先停止应急 DSH，再填写并重新启动。",
+    "en": "To change the temporary key, stop emergency DSH, enter the key, then start it again.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_cef04c41e5fea0dc",
+    "zh": "查看原生诊断",
+    "en": "View native diagnostics",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_81a9ed1e2b7a28fa",
+    "zh": "应急服务尚未启动；可先查看错误日志。",
+    "en": "The emergency service has not started. You can view error logs first.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_7feaebd0b48c79a0",
+    "zh": "诊断结果",
+    "en": "Diagnostics",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_234db17e7815bd39",
+    "zh": "查看无需模型的修复选项",
+    "en": "Review repairs without a model",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_b60bd7295241fa7d",
+    "zh": "查看并下载错误日志",
+    "en": "View and export error logs",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_bca54af9015bb1db",
+    "zh": "备份与保留数据",
+    "en": "Backups and retained data",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_e729945f1413d3fe",
+    "zh": "返回正式环境恢复页",
+    "en": "Return to regular environment recovery",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_098c2d8969849c61",
+    "zh": "请先启动应急服务；无需配置模型。",
+    "en": "Start the emergency service first. A model is not required.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_b0be7ac183b14a08",
+    "zh": "修复受管运行时",
+    "en": "Repair managed runtime",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_1b75b7d8f4c90bde",
+    "zh": "重建 Web 基础配置（原件留存）",
+    "en": "Rebuild basic Web configuration (retain originals)",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_7620a829a8ace162",
+    "zh": "重建全局配置补丁（影响所有 Profile）",
+    "en": "Rebuild global patch (all profiles)",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_3a69cbab77e7344c",
+    "zh": "选择要预览的修复",
+    "en": "Choose a repair to preview",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_ed31fbb483ee1b0a",
+    "zh": "操作",
+    "en": "Operation",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_57060c88a36bf3d0",
+    "zh": "目标",
+    "en": "Target",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_5bbd4045c010c035",
+    "zh": "原件 SHA-256",
+    "en": "Original SHA-256",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_1dedf4a92ad50a01",
+    "zh": "修改前",
+    "en": "Before",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_3ef2d6aad767a069",
+    "zh": "候选修改后",
+    "en": "Proposed after",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_b2dc4268beddb8ed",
+    "zh": "确认这一次修复",
+    "en": "Confirm this repair",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_a937dba729babb04",
+    "zh": "保存原件并执行",
+    "en": "Save original and apply",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_efeae833c2051d43",
+    "zh": "正在核验停止屏障、源摘要并执行修复…",
+    "en": "Verifying stopped processes and source hashes, then applying the repair…",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_d19dbe61f00910a7",
+    "zh": "拒绝提案",
+    "en": "Reject",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_00f596328be1c1d3",
+    "zh": "修复提案",
+    "en": "Repair proposals",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_c76769a9e2321ed0",
+    "zh": "应急 DSH 提出方案后在此查看和确认。尚未确认的提案不会修改正式数据。",
+    "en": "Review and confirm proposals here after emergency DSH creates them. Unconfirmed proposals do not change regular data.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_a8b0bd9c65f7fad5",
+    "zh": "待确认",
+    "en": "Awaiting confirmation",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_97e69531014a47de",
+    "zh": "已执行并核验",
+    "en": "Applied and verified",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_f098218a3032a625",
+    "zh": "已拒绝",
+    "en": "Rejected",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_2fe5a8d0eee9f14c",
+    "zh": "已失效",
+    "en": "Expired",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryActivity.java"
+  },
+  {
+    "id": "source_bc42a81690a11fe1",
+    "zh": "应急 DSH · 修复提案",
+    "en": "Emergency DSH · Repairs",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryWebActivity.java"
+  },
+  {
+    "id": "source_2a6118a5b253584e",
+    "zh": "重载",
+    "en": "Reload",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryWebActivity.java"
+  },
+  {
+    "id": "source_4cad4315ea9ba48d",
+    "zh": "重新加载应急页面",
+    "en": "Reload emergency page",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryWebActivity.java"
+  },
+  {
+    "id": "source_5b627004b9319dac",
+    "zh": "应急服务尚未就绪，请返回查看启动状态。",
+    "en": "The emergency service is not ready. Return to review its status.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryWebActivity.java"
+  },
+  {
+    "id": "source_e98a841567d1a080",
+    "zh": "本次应急启动未取得模型密钥。诊断页仍可用；发送对话前，请返回应急页停止服务并填写临时 API Key 后重新启动。",
+    "en": "No model key was available at recovery startup. Diagnostics remain available. To chat, return to Recovery, stop the service, enter a temporary API key, and restart.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryWebActivity.java"
+  },
+  {
+    "id": "source_631c36d21969404d",
+    "zh": "返回应急页配置",
+    "en": "Open recovery settings",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryWebActivity.java"
+  },
+  {
+    "id": "source_4add6708e225c79d",
+    "zh": "应急网页无法加载：",
+    "en": "Cannot load the emergency page: ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryWebActivity.java"
+  },
+  {
+    "id": "source_47dba9b590914c58",
+    "zh": "应急服务已停止或代次已变化，请返回恢复页。",
+    "en": "The emergency service stopped or changed. Return to Recovery.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RecoveryWebActivity.java"
+  },
+  {
+    "id": "source_53b17590436959c3",
+    "zh": "插件预览已保留。点此重新打开、重试清理或稍后处理。",
+    "en": "The plugin preview is retained. Tap to reopen, retry cleanup, or handle it later.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_477242be26048982",
+    "zh": "保留的插件预览",
+    "en": "Retained plugin preview",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_0a6cf07d5bac8b65",
+    "zh": "预览仍在；请选择后续处理。",
+    "en": "The preview remains. Choose what to do next.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_18b326ef9f6223da",
+    "zh": "重新打开预览",
+    "en": "Reopen preview",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_f01a9f167e5ff0d5",
+    "zh": "历史清单已变化，已刷新到第一页。",
+    "en": "History changed; refreshed to the first page.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_1a73de967293deb9",
+    "zh": "待恢复 profile 设置",
+    "en": "Profile settings to restore",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_3d9ddc498112674e",
+    "zh": "旧 Agent 预设候选",
+    "en": "Legacy Agent preset candidate",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_38ab97d591c2c6aa",
+    "zh": "rc1 迁移记录",
+    "en": "rc1 migration records",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_080a104a3dde28e3",
+    "zh": "迁移待重试或待处理",
+    "en": "Migration pending retry or review",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_21081bea42cccb29",
+    "zh": "同 ID 重复原件；操作拒绝",
+    "en": "Duplicate ID; actions blocked",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_6941fb405a30daca",
+    "zh": "完成历史",
+    "en": "Completed history",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_2ebce3d75e2dca6b",
+    "zh": "活动目录",
+    "en": "Active directory",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_05a19d4d0fb418cd",
+    "zh": "已显示 ",
+    "en": "Showing ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_37fcd76651b72e8e",
+    "zh": " 条 · 第 ",
+    "en": " records · Page ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_853c09db3104f8ad",
+    "zh": "检查设置差异",
+    "en": "Review settings differences",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_72ea078414358cf9",
+    "zh": "检查并审阅预设",
+    "en": "Inspect and review preset",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_1d9a51facdd3a398",
+    "zh": "检查 profile 设置",
+    "en": "Inspect profile settings",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_480834ce3efb49bc",
+    "zh": "将停止 Web、终端和写任务，在独立服务中读取当前 schema 并验证候选；活动设置在确认差异前保持原位。可执行配置和插件构成继续隔离。",
+    "en": "Web, terminals and writers will stop. An isolated service will validate the candidate against the current schema. Active settings remain unchanged until you confirm the differences; executable configuration and plugin composition stay quarantined.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_3c852b2cfc182235",
+    "zh": "开始检查",
+    "en": "Inspect",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_a20cfa3aae311800",
+    "zh": "正在隔离验证设置；可使用取消检查。",
+    "en": "Validating settings in isolation; Cancel inspection is available.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_0640fbf0de3d978b",
+    "zh": "所选设置已事务提交并由实际设置服务读回确认。其它配置和原件保留；可重新进入 Web。",
+    "en": "Selected settings were committed and read back by the actual settings service. Other configuration and originals remain; you can reopen Web.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_d5d6e0da8f9408e1",
+    "zh": "设置操作未完成，原件保留。可重新检查后继续。\n",
+    "en": "Settings operation incomplete; originals retained. Inspect again to continue.\n",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_ce686f34ede2f09c",
+    "zh": "请选择需要恢复的字段；未选字段保持当前值。",
+    "en": "Select fields to restore. Unselected fields retain their current values.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_effd1a845d03d24d",
+    "zh": "已验证的设置差异",
+    "en": "Validated settings differences",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_0c0380911e4d753e",
+    "zh": "保留待处理",
+    "en": "Keep pending",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_fc6689eaa2f3f1c4",
+    "zh": "应用所选并读回",
+    "en": "Apply selection and read back",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_b1ef332861a22559",
+    "zh": "已检查 ",
+    "en": "Inspected ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_103de8774fc1b158",
+    "zh": "；通过 ",
+    "en": "; passed ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_b43ae10ae891bb99",
+    "zh": "；未通过 ",
+    "en": "; failed ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RetainedDataActivity.java"
+  },
+  {
+    "id": "source_b24193847d7f4cea",
+    "zh": "先核对兼容性，通过隔离试运行后再切换。",
+    "en": "Compatibility and an isolated trial are required before switching.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RuntimeRecoveryUi.java"
+  },
+  {
+    "id": "source_32e97bcad22fe5a3",
+    "zh": "回退确认",
+    "en": "Review rollback",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RuntimeRecoveryUi.java"
+  },
+  {
+    "id": "source_01a0d420c9049aa0",
+    "zh": "个人数据",
+    "en": "Personal data",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RuntimeRecoveryUi.java"
+  },
+  {
+    "id": "source_6edf0161f35eb8b9",
+    "zh": "保持原位",
+    "en": "Kept in place",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RuntimeRecoveryUi.java"
+  },
+  {
+    "id": "source_32669f77ee162381",
+    "zh": "将停止 Web、终端和写入任务，复核保留文件，随后在当前 APK 下重新进行隔离试运行。不会恢复旧对话快照。",
+    "en": "Stop Web, terminals and writers, recheck retained files, then run an isolated trial under this APK. Old conversation snapshots are not restored.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RuntimeRecoveryUi.java"
+  },
+  {
+    "id": "source_d657cd07736e8c87",
+    "zh": "验证并回退",
+    "en": "Validate and roll back",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RuntimeRecoveryUi.java"
+  },
+  {
+    "id": "source_ba00e2bbb0228282",
+    "zh": "当前有任务或维护记录需要处理，请稍后重试。",
+    "en": "A task or maintenance record needs attention. Retry later.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/RuntimeRecoveryUi.java"
+  },
+  {
+    "id": "source_086d34fa9be71e03",
+    "zh": "启动独立应急 DSH",
+    "en": "Start independent emergency DSH",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_005c3444a889886f",
+    "zh": "保护数据并修复运行环境",
+    "en": "Protect data and repair runtime",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_64396ecc41c2f042",
+    "zh": "运行环境的 Bash、启动链接或加载器缺失。请先修复运行环境；对话和配置会单独保护。",
+    "en": "Bash, its startup link or loader is missing. Repair the runtime first; conversations and configuration will be protected separately.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_47d5cd3e98321ca0",
+    "zh": "重试启动",
+    "en": "Retry startup",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_ea9b126f683bcf34",
+    "zh": "安全启动基础界面",
+    "en": "Start the basic interface in safe mode",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_331751789c59b11d",
+    "zh": "新建配置文件",
+    "en": "Create configuration file",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_64ef6a14fefa0463",
+    "zh": "恢复中断的配置修复",
+    "en": "Recover interrupted configuration repair",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_1e9b80fc16ab8c26",
+    "zh": "恢复修复前配置",
+    "en": "Restore the configuration from before the repair",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_e2ddb5626da79431",
+    "zh": "将使用修复前的快照回退中断的配置写入，然后才能重新启动。",
+    "en": "Roll back the interrupted configuration changes using the saved pre-repair copy before restarting.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_ab9e6a9583a85668",
+    "zh": "环境安装与修复",
+    "en": "Environment installation and repair",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_f88a190d27077d1f",
+    "zh": "查看并下载日志",
+    "en": "View and download logs",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_e537b2c882d650d4",
+    "zh": "刷新恢复记录",
+    "en": "Refresh recovery records",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_aa38d967314d090d",
+    "zh": "\n\n操作会停止 Web 和终端，并保留修复前配置。",
+    "en": "\n\nThis stops Web and terminal sessions and saves the configuration before making changes.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_144acfe0f0165ccf",
+    "zh": "已有任务进行中，请完成后重试。",
+    "en": "Another task is in progress. Retry when it finishes.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_b715833b9e1ff467",
+    "zh": "Web 启动配置",
+    "en": "Web startup configuration",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_85c3c3ff981973ac",
+    "zh": "共享设置（settings.yaml）",
+    "en": "Shared settings (settings.yaml)",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_810018d5e30083b3",
+    "zh": "共享补丁（cordis.patch.yml）",
+    "en": "Shared patch (cordis.patch.yml)",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_56ed0c2e4abe28cc",
+    "zh": "选择新建的配置文件",
+    "en": "Choose the configuration to create",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_570fc5f91abbfeec",
+    "zh": "将以默认内容替换所选配置。原文件保存到修复前快照，插件文件、会话和原生 API Key 保留。",
+    "en": "Replace the selected configuration with defaults. Save the original files in a pre-repair snapshot and retain plugin files, sessions, and the native API key.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_821af311eeb115a1",
+    "zh": "运行环境尚未就绪，可先修复配置或导出数据，再进入安装与修复。",
+    "en": "The runtime is not ready. Repair configuration or export data, then open installation and repair.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_b073db9c0bd6f2ed",
+    "zh": "就绪",
+    "en": "Ready",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_f006455e3baf2b0b",
+    "zh": "已停止",
+    "en": "Stopped",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_1af38b9009fa4682",
+    "zh": "启动中／已中断",
+    "en": "Starting / interrupted",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_c7bac3e25ba14587",
+    "zh": "还没有启动记录。下一次启动会自动记录。",
+    "en": "No startup records yet. The next start will be recorded automatically.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_9f8b4155d1d6275e",
+    "zh": "启动记录暂不可用：",
+    "en": "Startup records are currently unavailable: ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_dfbf63600bf86cfb",
+    "zh": "快照损坏，已禁止恢复：",
+    "en": "Snapshot is damaged and cannot be restored: ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_f0a3315ac8a03859",
+    "zh": "健康启动",
+    "en": "Healthy start",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_aec52efccf22bf66",
+    "zh": "修复之前",
+    "en": "Before repair",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_f59289d0d1eef20a",
+    "zh": "\n快照中原本不存在，将恢复为缺失：",
+    "en": "\nAbsent in this snapshot; restore to absence: ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_70d731afe8b134bd",
+    "zh": "恢复所选配置快照",
+    "en": "Restore selected configuration snapshot",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_3a96e35e62885720",
+    "zh": "\n只恢复这些配置文件；已卸载的插件不会自动重新安装。",
+    "en": "\nRestore only these configuration files. Removed plugins are not automatically reinstalled.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_06bc14b60f3598a3",
+    "zh": "卸载",
+    "en": "Remove",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_e2ca15718accf4f4",
+    "zh": "卸载插件",
+    "en": "Remove plugin",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_fca82214a64b7c79",
+    "zh": "\n仅卸载所选插件，使用现有插件管理器核验结果。",
+    "en": "\nRemove only the selected plugin and verify the result with the plugin manager.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_ba0d972631ca39c3",
+    "zh": "插件清单暂不可读；可先恢复或新建配置。\n",
+    "en": "Cannot read the plugin list. Restore or create configuration first.\n",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_6d0d26029dc9933d",
+    "zh": "配置修复未完成，请使用“恢复中断的配置修复”。",
+    "en": "Configuration repair is incomplete. Select Recover interrupted configuration repair.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_fd04338196ae4ce9",
+    "zh": "环境任务正在执行，完成后刷新即可。",
+    "en": "An environment task is running. Refresh when it finishes.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_3103aea8ac395c39",
+    "zh": "配置文件使用软链接，已保留原文件。请手动检查链接目标。",
+    "en": "A configuration file uses a symbolic link. The original was retained. Check the link target manually.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_a9435dd272b85a05",
+    "zh": "配置快照校验失败，未应用修复。",
+    "en": "Configuration snapshot validation failed. The repair was not applied.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_bfdb7e914858eabe",
+    "zh": "配置或快照已变化，请刷新后重新选择。",
+    "en": "The configuration or snapshot changed. Refresh and select it again.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_bdf2108f6c102ae4",
+    "zh": "配置文件超过快照大小限制或不是普通文件，原文件保留。",
+    "en": "A configuration file exceeds the snapshot size limit or is not a regular file. The original was retained.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryActivity.java"
+  },
+  {
+    "id": "source_8bd3ffcda093cf20",
+    "zh": "进入原因：",
+    "en": "Reason: ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryLayout.java"
+  },
+  {
+    "id": "source_33f74a9a37c1f742",
+    "zh": "此页面不依赖 Web。可查看最近启动记录、恢复配置快照，或卸载出错的插件。",
+    "en": "This page works independently of Web. Review recent starts, restore configuration snapshots, or remove faulty plugins.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryLayout.java"
+  },
+  {
+    "id": "source_35b5bf5a3e0d88f5",
+    "zh": "恢复与修复",
+    "en": "Recovery & repair",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryLayout.java"
+  },
+  {
+    "id": "source_87b6784c02dac2b4",
+    "zh": "通过以下操作尝试解决启动问题",
+    "en": "Try these actions to resolve startup problems",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryLayout.java"
+  },
+  {
+    "id": "source_da83883e170a2865",
+    "zh": "其他工具",
+    "en": "Other tools",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryLayout.java"
+  },
+  {
+    "id": "source_a3b47e431d25b0c8",
+    "zh": "更多高级选项，帮助排查和解决问题",
+    "en": "More options to diagnose and resolve problems",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryLayout.java"
+  },
+  {
+    "id": "source_471864784f718e14",
+    "zh": "最近五次启动",
+    "en": "Last five starts",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryLayout.java"
+  },
+  {
+    "id": "source_65b25f9f5ea7311a",
+    "zh": "配置快照",
+    "en": "Configuration snapshots",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryLayout.java"
+  },
+  {
+    "id": "source_5bc6ca89b4e510f0",
+    "zh": "保留三次健康启动与三次修复前快照；仅保存配置，不复制会话、工作区或依赖目录。",
+    "en": "Keeps three healthy-start and three pre-repair snapshots. Saves configuration only, without sessions, workspaces, or dependency directories.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryLayout.java"
+  },
+  {
+    "id": "source_909939c8fec9a639",
+    "zh": "插件卸载",
+    "en": "Remove plugins",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StartupRecoveryLayout.java"
+  },
+  {
+    "id": "source_0d1a938960ddffef",
+    "zh": "存储与文件",
+    "en": "Storage and files",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_4d215d0416d3e8d4",
+    "zh": "完整 Linux 环境约占 1 GB。历史环境和回退副本另行保留；它们不等于聊天数据。以下为文件大小估算。",
+    "en": "The full Linux environment uses about 1 GB. Older environments and rollback copies are retained separately from chats. Sizes below are estimates.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_5b6ab837b38aa53b",
+    "zh": "通过系统文件选择器或 MT 管理器访问 DSHA",
+    "en": "Access DSHA from the system file picker or MT Manager",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_70caa22089b05d2f",
+    "zh": "在文件管理器中添加本地存储，选择 DocumentsProvider → DSHA。找不到 DSHA 时，先打开本 App 后重试。",
+    "en": "Add local storage in your file manager and select DocumentsProvider → DSHA. Open this app first if DSHA is missing.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_dfefd6f6c5e9e344",
+    "zh": "清理可再生缓存与多余运行时副本",
+    "en": "Clean reproducible caches and excess runtime copies",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_3a3f595df70ec8ff",
+    "zh": "清理存储空间",
+    "en": "Clean storage",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_46f6b344028e3e50",
+    "zh": "清理前会安全停止 DSH 和终端，再清理历史验收缓存，以及超过保留数量且已核验的受管回退副本。对话、附件、设置、插件、手动备份和无法核验的原件保留。",
+    "en": "DSH and terminals are stopped safely before cleanup. Removes old verification caches and verified excess managed rollback copies. Keeps chats, attachments, settings, plugins, manual backups and unverified originals.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_d86dc01442237cc6",
+    "zh": "开始清理",
+    "en": "Clean",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_9e61f0ba5b48d6ed",
+    "zh": "重新统计",
+    "en": "Refresh sizes",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_574ec7517de1474c",
+    "zh": "正在处理…",
+    "en": "Working…",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_33c6fe0e2350c4c4",
+    "zh": " + 部分不可读",
+    "en": " + unreadable entries",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_d057b81be20e1cd9",
+    "zh": "已释放 ",
+    "en": "Freed ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_d7dacb3804ef56ce",
+    "zh": "已完成统计。清理只移除可再生缓存和已核验的多余运行时副本，个人数据与备份保留。",
+    "en": "Sizes updated. Cleanup removes only reproducible caches and verified excess runtime copies. Personal data and backups are retained.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_95198f655f9f84d2",
+    "zh": "当前 Linux 与 DSH",
+    "en": "Current Linux and DSH",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_2de618f023887e73",
+    "zh": "运行时回退副本",
+    "en": "Runtime rollback copies",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_fef484b1da79d4bb",
+    "zh": "环境重建保护副本",
+    "en": "Environment protection copies",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_448e1d798114f480",
+    "zh": "旧版更新记录",
+    "en": "Legacy update records",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_78b4b03d99831c1c",
+    "zh": "备份副本",
+    "en": "Backup copies",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_f2c1730c38dce5b4",
+    "zh": "兼容浏览器数据",
+    "en": "Compatibility browser data",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_3f5927cb06e0ddfa",
+    "zh": "宿主个人数据",
+    "en": "Persistent user data",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_fe114fb6ac3ed46c",
+    "zh": "应用缓存",
+    "en": "App cache",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/StorageActivity.java"
+  },
+  {
+    "id": "source_470817f66bcb98d2",
+    "zh": "DSHA 0.1.7-rc2\n\n• 修复旧 Web PID 被复用时的启动阻塞，以及应急对话请求扩展失败。\n• 补齐录音与音频设备权限，支持 WebView、Gecko 和应急页面的按需麦克风授权。\n• 相同应急归档在安装包内只存一份，保留独立离线恢复能力并减少约 208 MB。\n• 新增独立应急 DSH：正式环境维护失败时仍可准备空白修复工作台。\n• AI 通过受控工具诊断、提出候选；原生页面逐次确认，核验停止屏障和原件后执行修复。\n• 应急运行时单独锁定，启动、鉴权、进程与正式环境分开记录。\n• 内置移动插件同步 3.0.3 源码修订 a094288，保留手机快捷键搜索，改善插件返回、弹层焦点与短屏操作。\n• DSH 继续为 0.1.7-rc.2，保留既有迁移和数据保护流程。",
+    "en": "DSHA 0.1.7-rc2\n\n• Fixed startup blocking after a stale Web PID is reused and an emergency chat request-extension failure.\n• Added recording and audio-device permissions for on-demand microphone access in WebView, Gecko and emergency pages.\n• Store identical emergency archives once, saving about 208 MB while retaining independent offline recovery.\n• Added an independent emergency DSH workspace for failures in the regular environment.\n• Controlled AI tools diagnose and propose repairs. Each write requires native confirmation, verified process shutdown and original-data protection.\n• Emergency runtime assets, authentication and process identities are tracked separately.\n• Updated mobile plugin 3.0.3 to source revision a094288, retaining phone shortcut search and improving plugin navigation, focus and short-screen controls.\n• DSH remains 0.1.7-rc.2 with existing migration and data protection.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/UpdateActivity.java"
+  },
+  {
+    "id": "source_4b73bd8ccaae068c",
+    "zh": "查看当前环境与包内运行组件。",
+    "en": "Review the current environment and bundled components.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/UpdateActivity.java"
+  },
+  {
+    "id": "source_87dd3e7a2a0a0131",
+    "zh": "检查后展示实际差异；确认更新时停止 Web 与终端，准备候选并完成隔离试运行。",
+    "en": "Review actual differences first. Updating stops Web and terminals, prepares a candidate and verifies it in an isolated trial.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/UpdateActivity.java"
+  },
+  {
+    "id": "source_127ef470c10e129b",
+    "zh": "检查更新计划",
+    "en": "Review update plan",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/UpdateActivity.java"
+  },
+  {
+    "id": "source_c489abb7bf50b0d0",
+    "zh": "了解数据与权限",
+    "en": "Data and permissions",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/WelcomeActivity.java"
+  },
+  {
+    "id": "source_1d00c48a8cfebfc6",
+    "zh": "开始准备环境",
+    "en": "Prepare the environment",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/WelcomeActivity.java"
+  },
+  {
+    "id": "source_571b187391774979",
+    "zh": "备份与维护记录",
+    "en": "Backup and maintenance history",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/WorkspaceFragment.java"
+  },
+  {
+    "id": "source_dec645b6ccddbb3a",
+    "zh": "先停止 Web、终端和写任务，在隔离服务中重置当前 web profile 的普通设置并读回，再事务提交与工作目录 .env。插件构成、对话和凭据保留；原配置可恢复。无法确认时保留原件并显示原因。",
+    "en": "Stop Web, terminals and writers. Reset ordinary settings of the web profile in an isolated service, read them back, then commit together with the workspace .env. Plugin composition, conversations and credentials are retained. Failures preserve originals and report the reason.",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/WorkspaceFragment.java"
+  },
+  {
+    "id": "source_2f367c5a0706febb",
+    "zh": "还没有手动导出备份",
+    "en": "No manually exported backup yet",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/WorkspaceFragment.java"
+  },
+  {
+    "id": "source_87a3f04e81689905",
+    "zh": "最近手动备份：",
+    "en": "Latest manual backup: ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/WorkspaceFragment.java"
+  },
+  {
+    "id": "source_ad7c7be40c844c53",
+    "zh": "最近自动副本：",
+    "en": "Latest automatic copy: ",
+    "source": "app/src/main/java/com/deepseekharness/app/ui/WorkspaceFragment.java"
+  },
+  {
+    "id": "source_4f51303839f6fb86",
+    "zh": "当前步骤被系统拒绝访问，尚不能判断是文件权限还是进程核验失败。请保持 DSHA 在前台，先点“恢复中断维护”重试；应用会保留原件，不会把失败显示成已恢复。\nPermission denied",
+    "en": "The system denied access during this step. Keep DSHA in the foreground and retry Recover interrupted maintenance; originals stay protected and a failed recovery is never shown as complete.\nPermission denied",
+    "source": "app/src/main/java/com/deepseekharness/app/util/MaintenanceErrorText.java"
+  },
+  {
+    "id": "source_60390828d922a346",
+    "zh": "维护历史记录已达到安全上限；原件和失败候选均未删除。请打开“保留数据”检查后再重试。",
+    "en": "The safe maintenance-history limit was reached. Originals and failed candidates were retained. Review Retained data, then retry.",
+    "source": "app/src/main/java/com/deepseekharness/app/util/MaintenanceErrorText.java"
+  },
+  {
+    "id": "source_a080182b90e0c8aa",
+    "zh": "检测到未完成的维护事务；请先选择“恢复中断维护”，确认原环境回切后再继续。",
+    "en": "An interrupted maintenance transaction was found. Recover interrupted maintenance and confirm the original environment before continuing.",
+    "source": "app/src/main/java/com/deepseekharness/app/util/MaintenanceErrorText.java"
+  },
+  {
+    "id": "source_f3778c79edd57f0a",
+    "zh": "请先停止 DSH、终端和正在运行的数据作业；原件未改动，稍后可重试。",
+    "en": "Stop DSH, terminals, and active data jobs first. Originals were not changed; retry shortly.",
+    "source": "app/src/main/java/com/deepseekharness/app/util/MaintenanceErrorText.java"
+  },
+  {
+    "id": "source_42336967bb0511bd",
+    "zh": "系统拒绝了旧 Web 进程信号。应用会保留原环境；请保持 DSHA 前台并再次点“恢复中断维护”，系统将只对本次已登记的 Web 启动器执行优雅退出。",
+    "en": "The system denied the signal to the old Web process. The original environment is retained. Keep DSHA in the foreground and retry Recover interrupted maintenance; only this run's registered Web launcher will be asked to exit gracefully.",
+    "source": "app/src/main/java/com/deepseekharness/app/util/MaintenanceErrorText.java"
+  },
+  {
+    "id": "source_80fe3d4f37f8f44d",
+    "zh": "新运行时试运行未通过；原运行环境和个人数据已保留。请查看日志后重试或回退。",
+    "en": "The new runtime did not pass its trial. The original runtime and personal data were retained. Review the log, then retry or roll back.",
+    "source": "app/src/main/java/com/deepseekharness/app/util/MaintenanceErrorText.java"
+  },
+  {
+    "id": "source_8e464cfc14567d48",
+    "zh": "可用空间不足；原件未删除。请先清理可再生缓存或导出副本后重试。",
+    "en": "There is not enough free space. Originals were retained. Clean reproducible caches or export a copy, then retry.",
+    "source": "app/src/main/java/com/deepseekharness/app/util/MaintenanceErrorText.java"
+  },
+  {
+    "id": "source_e64297b2d035d05f",
+    "zh": "文件访问权限不足；原件未改动，请重新授权后重试。",
+    "en": "File access was denied. Originals were not changed; restore permission and retry.",
+    "source": "app/src/main/java/com/deepseekharness/app/util/MaintenanceErrorText.java"
+  },
+  {
+    "id": "source_a8fe4c4d9cc44cc2",
+    "zh": "操作已取消；如果已进入提交阶段，系统会先恢复一致状态。",
+    "en": "The operation was cancelled. If commit had started, the system will converge to a consistent state first.",
+    "source": "app/src/main/java/com/deepseekharness/app/util/MaintenanceErrorText.java"
+  },
+  {
+    "id": "source_3a7f47f9d936902c",
+    "zh": "创建或复用虚拟屏",
+    "en": "Create or reuse virtual screen",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_fc9cd074eb35b791",
+    "zh": "调整预览大小",
+    "en": "Adjust preview size",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_c35bd83b94b433f4",
+    "zh": "竖屏",
+    "en": "Portrait",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_055a6b3a3de7a788",
+    "zh": "横屏",
+    "en": "Landscape",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_63c73c4730f4473e",
+    "zh": "应用",
+    "en": "App",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_864200bbb241e067",
+    "zh": "键盘",
+    "en": "Keyboard",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_980d64be46d296c9",
+    "zh": "控件树",
+    "en": "AI tree",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_f54592c5d78a33d9",
+    "zh": "选择应用后会自动填入包名",
+    "en": "Choose an app to fill its package",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_c11330b85234f9c0",
+    "zh": "选择",
+    "en": "Choose",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_e0db0f552e400117",
+    "zh": "本机键盘输入（中文需无障碍）",
+    "en": "Keyboard input (accessibility for Unicode)",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_edecf0ae6e5144f9",
+    "zh": "发送",
+    "en": "Send",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_3e86ff127314e902",
+    "zh": "兼容版暂不支持虚拟屏，请使用标准版",
+    "en": "Virtual screen is not available in the Low build yet; use Standard",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_d6ca8d1d748aaa98",
+    "zh": "虚拟屏需要 Android 11 及以上",
+    "en": "Requires Android 11 or later",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_c93a418b5e2b368d",
+    "zh": "选择已安装应用",
+    "en": "Choose installed app",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_5f967f54c15ba093",
+    "zh": "控件树（给 AI 使用）",
+    "en": "Accessibility tree for AI",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_99ddd128a7cdd644",
+    "zh": "操作完成",
+    "en": "Done",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_a797aad68e48a241",
+    "zh": "画面已变化，请看最新画面后再操作",
+    "en": "The view changed. Observe again.",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_3ceeadb3552cb929",
+    "zh": "请先在设备能力授权中连接通道",
+    "en": "Connect a device channel first",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_7035af021774c556",
+    "zh": "中文输入需要开启无障碍服务",
+    "en": "Enable accessibility for Unicode input",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_28980d81550f339e",
+    "zh": "未完成：",
+    "en": "Not completed: ",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenActivity.java"
+  },
+  {
+    "id": "source_9dd606a8ae1f723f",
+    "zh": "虚拟屏 · 拖动",
+    "en": "Virtual screen · drag",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenForeground.java"
+  },
+  {
+    "id": "source_91aa68cfeadd5017",
+    "zh": "隐藏预览",
+    "en": "Hide preview",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenForeground.java"
+  },
+  {
+    "id": "source_2790494b2c2e7528",
+    "zh": "打开虚拟屏控制",
+    "en": "Open virtual screen controls",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenForeground.java"
+  },
+  {
+    "id": "source_8f23689165748128",
+    "zh": "允许悬浮窗后，可再次点悬浮预览。",
+    "en": "Allow overlays, then tap Float preview again.",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenOverlayController.java"
+  },
+  {
+    "id": "source_9af30bafb7dd0694",
+    "zh": "虚拟屏 · 拖动此处 · 点此隐藏",
+    "en": "Virtual screen · drag / tap to hide",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenOverlayController.java"
+  },
+  {
+    "id": "source_31c1209e7e84a364",
+    "zh": "无法显示悬浮预览",
+    "en": "Unable to show overlay",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenOverlayController.java"
+  },
+  {
+    "id": "source_b34fa5ba40eaf4aa",
+    "zh": "虚拟屏预览，双指缩放",
+    "en": "Virtual screen preview, pinch to zoom",
+    "source": "app/src/main/java/com/deepseekharness/app/vscreen/VirtualScreenPreviewView.java"
+  },
+  {
+    "id": "source_11c14711e5a5fd8b",
+    "zh": "DeepSeek · 自定义服务商 · 模型目录",
+    "en": "DeepSeek · Custom providers · Model catalog",
+    "source": "app\\src\\main\\res\\values\\alpha1_strings.xml"
+  },
+  {
+    "id": "source_482d656c9425cb4d",
+    "zh": "使用 proroot 静态加载器",
+    "en": "Use the proroot static loader",
+    "source": "app\\src\\main\\res\\values\\alpha1_strings.xml"
+  },
+  {
+    "id": "source_e5abb05c1c3279b7",
+    "zh": "禁用 proot seccomp 加速",
+    "en": "Disable proot seccomp acceleration",
+    "source": "app\\src\\main\\res\\values\\alpha1_strings.xml"
+  },
+  {
+    "id": "source_63c7d8f1c6ab8b60",
+    "zh": "仅在运行环境不兼容时调整；实际运行方式与失败记录可在诊断中查看。",
+    "en": "Adjust only for runtime incompatibilities. Diagnostics record the actual route and failures.",
+    "source": "app\\src\\main\\res\\values\\alpha1_strings.xml"
+  },
+  {
+    "id": "source_e17230d082b32d12",
+    "zh": "系统画中画设置",
+    "en": "System picture-in-picture",
+    "source": "app\\src\\main\\res\\values\\picture_in_picture_strings.xml"
+  },
+  {
+    "id": "source_05156d6dee2817f4",
+    "zh": "画中画只由 Android 系统设置控制。",
+    "en": "Picture-in-picture is controlled only by Android system settings.",
+    "source": "app\\src\\main\\res\\values\\picture_in_picture_strings.xml"
+  },
+  {
+    "id": "source_f20ca3c738d94671",
+    "zh": "系统已允许；切到桌面或其他应用时保留对话小窗。",
+    "en": "Allowed by the system; the chat stays in a small window when you go Home or switch apps.",
+    "source": "app\\src\\main\\res\\values\\picture_in_picture_strings.xml"
+  },
+  {
+    "id": "source_8ff695d7defd9388",
+    "zh": "系统已关闭；切到后台时不显示小窗。点此更改。",
+    "en": "Disabled by the system; no small window appears in the background. Tap to change.",
+    "source": "app\\src\\main\\res\\values\\picture_in_picture_strings.xml"
+  },
+  {
+    "id": "source_972cf52d7ddf0a55",
+    "zh": "请在系统设置中允许 DSHA 使用画中画。",
+    "en": "Allow picture-in-picture for DSHA in system settings.",
+    "source": "app\\src\\main\\res\\values\\picture_in_picture_strings.xml"
+  },
+  {
+    "id": "source_e5fc5acaa01c1b16",
+    "zh": "无法打开系统画中画设置。",
+    "en": "Could not open the system picture-in-picture settings.",
+    "source": "app\\src\\main\\res\\values\\picture_in_picture_strings.xml"
+  },
+  {
+    "id": "source_572c03d5625917f3",
+    "zh": "离线部署  ·  无需 ROOT  ·  0.1.7-rc2",
+    "en": "Offline setup  ·  No root  ·  0.1.7-rc2",
+    "source": "app\\src\\main\\res\\values\\ui_iteration.xml"
+  },
+  {
+    "id": "source_0cf3d17d8bd681b4",
+    "zh": "自动化与存储",
+    "en": "Automation and storage",
+    "source": "app\\src\\main\\res\\values\\ui_iteration.xml"
+  },
+  {
+    "id": "source_96bf703718a78fd0",
+    "zh": "开关、备份时机与最近副本",
+    "en": "Switch, schedule and recent copies",
+    "source": "app\\src\\main\\res\\values\\ui_iteration.xml"
+  },
+  {
+    "id": "source_26de3dd933ce00e3",
+    "zh": "存储空间",
+    "en": "Storage",
+    "source": "app\\src\\main\\res\\values\\ui_iteration.xml"
+  },
+  {
+    "id": "source_f78934c6eece961c",
+    "zh": "查看占用与清理缓存",
+    "en": "Review usage and clean caches",
+    "source": "app\\src\\main\\res\\values\\ui_iteration.xml"
+  },
+  {
+    "id": "source_43f694492b6e061a",
+    "zh": "导出、导入和自动备份",
+    "en": "Export, import and automatic backups",
+    "source": "app\\src\\main\\res\\values\\ui_iteration.xml"
+  },
+  {
+    "id": "source_4f33a6fdd628fea5",
+    "zh": "空间占用、缓存清理和文件共享",
+    "en": "Storage usage, cache cleanup and file sharing",
+    "source": "app\\src\\main\\res\\values\\ui_iteration.xml"
+  },
+  {
+    "id": "source_8b14db540832b134",
+    "zh": "环境修复与数据救援",
+    "en": "Environment and data recovery",
+    "source": "app\\src\\main\\res\\values\\ui_iteration.xml"
+  },
+  {
+    "id": "source_aae41104771082f0",
+    "zh": "版本码",
+    "en": "Version code",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_2b9b574f920d9f42",
+    "zh": "当前版本类型",
+    "en": "Edition",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_14821e170da4669d",
+    "zh": "查看候选版本",
+    "en": "View candidate release",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_b99b1c8b15786744",
+    "zh": "更新记录、大小与安装方式",
+    "en": "Release notes, size and installation",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_e45163f2c142c57c",
+    "zh": "本版本更新记录",
+    "en": "This release",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_74875407572f3cd9",
+    "zh": "0.1.7-rc2 · 定时任务、插件与长对话修复",
+    "en": "0.1.7-rc2 · Scheduled tasks, plugins and long-chat fixes",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_2fd56ce020d7c15d",
+    "zh": "启动记录",
+    "en": "Startup records",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_8f5334db880484a2",
+    "zh": "阶段、实际错误与退出码",
+    "en": "Stages, actual errors and exit codes",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_0ea78aee7d6469f4",
+    "zh": "启动故障处理",
+    "en": "Startup recovery",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_15188f6bfce2503f",
+    "zh": "查看问题与恢复方式",
+    "en": "Review issues and recovery options",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_992c272c0b40a7d3",
+    "zh": "配对地址",
+    "en": "Pairing address",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_af6141f740c517fc",
+    "zh": "留空自动发现本机地址",
+    "en": "Leave blank to discover this device",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_5c3f9670863358cc",
+    "zh": "配对端口",
+    "en": "Pairing port",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_2fcbcc67c6a0bc22",
+    "zh": "六位码弹窗的端口，可自动发现",
+    "en": "Port in pairing-code dialog; auto discovery supported",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_106553b21e04cc83",
+    "zh": "断开 ADB 连接",
+    "en": "Disconnect ADB",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_ee327bc23754d418",
+    "zh": "已 Root 的手机：开启开关，在 Magisk / KernelSU 等管理器允许 DSHA，再点验证。未 Root 可用下方通道。",
+    "en": "Rooted device: enable, authorize DSHA in Magisk / KernelSU, then verify. Other devices can use the channels below.",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_d8ec48848d35086a",
+    "zh": "先在 Shizuku 管理器启动服务，再返回授权。手机重启后通常需要重新启动服务。",
+    "en": "Start Shizuku in its manager, then authorize DSHA here. Usually restart the service after reboot.",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_be246976fe521b33",
+    "zh": "Android 11+：在同一 Wi-Fi 下配对无线调试。无需 Root；网络变化后可验证或重新配对。",
+    "en": "Android 11+: pair wireless debugging on the same Wi-Fi. No root needed. Verify or re-pair after network changes.",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_c3b484353e515559",
+    "zh": "设置屏幕操作 · 两步完成",
+    "en": "Set up screen control · Two steps",
+    "source": "app\\src\\main\\res\\values\\ui_refinement.xml"
+  },
+  {
+    "id": "source_0d7c2ca6eb666af4",
+    "zh": "3380（1—65535，避开 3381 / 3390）",
+    "en": "3380 (1–65535; avoid 3381 / 3390)",
+    "source": "app\\src\\main\\res\\values\\ui_strings.xml"
+  },
+  {
+    "id": "source_9c23cadfe81ccc29",
+    "zh": "DeepSeek Harness 一键启动器\n\n内置 Linux 环境，无需 Termux，\n自动安装并启动，开箱即用。",
+    "en": "DeepSeek Harness launcher\n\nIncludes a Linux environment. No Termux required.\nInstalls and starts automatically.",
+    "source": "app\\src\\main\\res\\values\\ui_strings.xml"
+  },
+  {
+    "id": "source_9382172d4e878f83",
+    "zh": "在本机 Web 运行时，通过 3381 端口供同一 Wi-Fi 的设备访问对话。需要局域网权限，请仅在可信网络开启。",
+    "en": "While the local Web service is running, devices on the same Wi-Fi can access conversations through port 3381. LAN permission is required. Enable only on trusted networks.",
+    "source": "app\\src\\main\\res\\values\\ui_strings.xml"
+  },
+  {
+    "id": "source_82febb7e4504ea91",
+    "zh": "普通对话、插件和 App 自身的通知等功能不需要 ADB。\n\nADB 用于助手执行受支持的 Android 设备命令，例如查看应用与系统状态、读取有限日志、操作允许目录内的文件。所有命令仍需通过 DSHA 策略检查；开启 ADB 不会放开静默装卸应用、修改系统设置或刷机。\n\n短信查询需在「设置 → 设备能力授权」中预授权，或逐次确认。屏幕点击与输入使用下方的屏幕操作权限。\n\n使用无线配对需要 Android 11+ 的「无线调试」功能；部分厂商可能限制。更低版本可在可用时使用 Shizuku，或继续使用无需 ADB 的功能。",
+    "en": "Regular conversations, plugins and DSHA notifications do not require ADB.\n\nADB lets the assistant run supported Android device commands, such as inspecting app and system status, reading limited logs and working with files in allowed directories. Every command must still pass DSHA's policy checks. Enabling ADB does not allow silent app installation or removal, system setting changes or firmware flashing.\n\nSMS queries require preauthorization in Settings → Device permissions or confirmation for each query. Screen taps and typing use the screen-control permission below.\n\nWireless pairing requires Android 11+ Wireless debugging and may be restricted by your device manufacturer. On older versions, use Shizuku where available or continue using features that do not require ADB.",
+    "source": "app\\src\\main\\res\\values\\ui_strings.xml"
+  },
+  {
+    "id": "source_d85ed840c1ee9d21",
+    "zh": "首选端口被占用时会自动使用空闲端口，实际地址见启动页。",
+    "en": "If the preferred port is in use, an available port is used automatically. See the Start page for the actual address.",
+    "source": "app\\src\\main\\res\\values\\web_port.xml"
+  },
+  {
+    "id": "source_2d4ec9d529e123df",
+    "zh": "标准版 · Android 11+ · 系统 WebView",
+    "en": "Standard · Android 11+ · System WebView",
+    "source": "app\\src\\standard\\res\\values\\edition.xml"
+  },
+  {
+    "id": "source_ea58ac1bea650591",
+    "zh": "使用系统 WebView，请保持 Android System WebView / Chrome 更新。",
+    "en": "Uses system WebView. Keep Android System WebView / Chrome up to date.",
+    "source": "app\\src\\standard\\res\\values\\edition.xml"
+  },
+  {
+    "id": "source_15777809b3dce899",
+    "zh": "兼容版 · Android 6+ · WebView / Gecko",
+    "en": "Compatibility · Android 6+ · WebView / Gecko",
+    "source": "app\\src\\low\\res\\values\\edition.xml"
+  },
+  {
+    "id": "source_08948413bca9cc2b",
+    "zh": "旧系统 WebView 自动使用内置 Gecko；可手动开启兼容内核。",
+    "en": "Older systems and WebViews use bundled Gecko automatically. You can also enable the compatibility browser manually.",
+    "source": "app\\src\\low\\res\\values\\edition.xml"
   }
 ]

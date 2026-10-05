@@ -1,0 +1,30 @@
+{
+  "dshVersion": "0.1.7-rc.2",
+  "module": "@deepseek-ai/dsh-experimental-client-ui-agent-team/lib/client.js",
+  "patches": [
+    {
+      "before": "ctx.locale.register(NS, {\n\t\t\t\tzh,\n\t\t\t\ten\n\t\t\t})",
+      "after": "ctx.locale.register(NS, {\n\t\t\t\tzh,\n\t\t\t\ten,\n\t\t\t\tru: {\"trigger\": \"Агенты\", \"loading\": \"Загрузка команды…\", \"unavailable\": \"Команда недоступна\", \"failure\": \"Некорректная сохранённая запись команды: {message}\", \"empty\": \"Субагентов пока нет\", \"roster\": \"Участники\", \"agent\": \"Агент чата\", \"subagents\": \"Субагенты\", \"tasks\": \"Общие задачи\", \"model\": \"Модель\", \"open\": \"Открыть диалог участника\", \"current\": \"Текущий чат\", \"owner\": \"Исполнитель\", \"unowned\": \"Без исполнителя\", \"blockedBy\": \"Зависит от\", \"writeScopes\": \"Области записи\", \"ready\": \"Готово\", \"blocked\": \"Заблокировано зависимостями\", \"task.expand\": \"Показать больше\", \"task.collapse\": \"Свернуть\", \"memberStatus.running\": \"В работе\", \"memberStatus.inactive\": \"Неактивен\", \"memberStatus.provisioning\": \"Подготовка\", \"memberStatus.failed\": \"Ошибка\", \"status.pending\": \"Ожидает\", \"status.in_progress\": \"В работе\", \"status.completed\": \"Завершено\"}\n\t\t\t})"
+    },
+    {
+      "before": "const opening = useSession((snapshot) => snapshot.openState === \"loading\");",
+      "after": "const activity = useSessionStatus((state) => state);\n\t\t\tconst catalogEntries = useSessions((state) => state.projectionsBySession[leadSessionId]?.values.subagentCatalog ?? []);\n\t\t\tconst currentMember = team?.members.find((member) => member.id === sessionId) ?? team?.members.find((member) => member.id === leadSessionId) ?? team?.members[0];\n\t\t\tconst running = (id) => activity?.get?.(id)?.running === true || activity?.[id]?.running === true;\n\t\t\tconst teamBusy = running(sessionId) || catalogEntries.some((entry) => running(entry.id));\n\t\t\tconst opening = useSession((snapshot) => snapshot.openState === \"loading\");"
+    },
+    {
+      "before": "\"data-team-action\": true,",
+      "after": "\"data-team-action\": true,\n\t\t\t\t\"data-team-running\": teamBusy || void 0,"
+    },
+    {
+      "before": "children: team.members.map((member) =>",
+      "after": "children: [currentMember, ...catalogEntries.map((entry) => ({ id: entry.id, name: entry.label ?? entry.id, phase: \"active\" }))].filter(Boolean).map((member) =>"
+    },
+    {
+      "before": "const [error, setError] = (0, react.useState)(null);",
+      "after": "const [error, setError] = (0, react.useState)(null);\n\t\t\tconst [mobileView, setMobileView] = (0, react.useState)(\"subagents\");"
+    },
+    {
+      "before": "(0, react_jsx_runtime.jsxs)(\"section\", { children: [(0, react_jsx_runtime.jsxs)(\"h3\", { children: [t(\"roster\")",
+      "after": "(0, react_jsx_runtime.jsxs)(\"section\", { className: \"dsha-agent-section\", \"data-dsha-agent-view\": mobileView, children: [(0, react_jsx_runtime.jsxs)(\"div\", { className: \"dsha-agent-switcher\", role: \"tablist\", children: [(0, react_jsx_runtime.jsxs)(\"button\", { type: \"button\", role: \"tab\", \"aria-selected\": mobileView === \"subagents\", className: mobileView === \"subagents\" ? \"is-active\" : void 0, onClick: () => setMobileView(\"subagents\"), children: [t(\"subagents\"), \" (\", catalogEntries.length, \")\"] }), (0, react_jsx_runtime.jsxs)(\"button\", { type: \"button\", role: \"tab\", \"aria-selected\": mobileView === \"agent\", className: mobileView === \"agent\" ? \"is-active\" : void 0, onClick: () => setMobileView(\"agent\"), children: [t(\"agent\"), \" (1)\"] })] }), (0, react_jsx_runtime.jsxs)(\"h3\", { children: [t(\"roster\")"
+    }
+  ]
+}

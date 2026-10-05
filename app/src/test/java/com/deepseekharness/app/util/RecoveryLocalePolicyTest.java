@@ -22,6 +22,7 @@ public class RecoveryLocalePolicyTest {
         assertFalse(RecoveryLocalePolicy.sameOrigin(base,"http://localhost:3081@evil.test/chat"));
         assertTrue(RecoveryLocalePolicy.supportedLanguage("zh"));
         assertTrue(RecoveryLocalePolicy.supportedLanguage("en"));
+        assertTrue(RecoveryLocalePolicy.supportedLanguage("ru"));
         assertFalse(RecoveryLocalePolicy.supportedLanguage("fr"));
         assertTrue(RecoveryLocalePolicy.pageScript("en").contains("window.__DSHA_LANGUAGE__='en'"));
         assertThrows(IllegalArgumentException.class,()->RecoveryLocalePolicy.pageScript("javascript:alert(1)"));

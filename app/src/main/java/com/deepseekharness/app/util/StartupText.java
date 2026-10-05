@@ -46,15 +46,22 @@ public final class StartupText {
         for (Map.Entry<String,String> entry : PREFIXES.entrySet()) {
             String prefix = text.startsWith(entry.getKey()) ? entry.getKey()
                     : text.startsWith(entry.getValue()) ? entry.getValue() : null;
+            String ru=UiMessages.RU.get(entry.getKey());
+            if(prefix==null&&ru!=null&&text.startsWith(ru))prefix=ru;
             if (prefix != null) return choose(language,entry.getKey(),entry.getValue()) + exact(text.substring(prefix.length()),language);
         }
         return text;
     }
-    public static String choose(String language,String zh,String en) { return "en".equals(language)?en:zh; }
+    public static String choose(String language,String zh,String en) {
+        return "ru".equals(language)?UiMessages.RU.getOrDefault(zh,en):"en".equals(language)?en:zh;
+    }
     private static String exact(String value, String language) {
-        if ("en".equals(language)) return UiMessages.EN.getOrDefault(value,value);
+        String source=value;
         for (Map.Entry<String,String> entry : UiMessages.EN.entrySet())
-            if (entry.getValue().equals(value)) return entry.getKey();
-        return value;
+            if (entry.getValue().equals(value)) {source=entry.getKey();break;}
+        if(source.equals(value))for(Map.Entry<String,String> entry:UiMessages.RU.entrySet())
+            if(entry.getValue().equals(value)){source=entry.getKey();break;}
+        if("ru".equals(language))return UiMessages.RU.getOrDefault(source,UiMessages.EN.getOrDefault(source,value));
+        return "en".equals(language)?UiMessages.EN.getOrDefault(source,value):source;
     }
 }

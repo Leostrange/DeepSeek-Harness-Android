@@ -30,6 +30,10 @@ export async function browserFixture(runtime=process.env.DSHA_TEST_RUNTIME||JSON
   const browser=await playwright.chromium.launch({headless:true});
   const page=await browser.newPage({viewport:{width:360,height:800},deviceScaleFactor:1,hasTouch:true});
   const errors=[];page.on('pageerror',e=>errors.push(String(e)));
+  if(process.env.DSHA_NATIVE_DOCUMENT_START==='1') {
+    const scripts=['es-compat.js','compat.js','mobile-layout.js','startup.js'];
+    await page.addInitScript({content:scripts.map(name=>fs.readFileSync('app/src/main/assets/web-integration/'+name,'utf8')).join('\n')});
+  }
   await page.goto(`http://127.0.0.1:${server.address().port}/`);
   await page.waitForFunction(()=>globalThis.auditModules);
   return {page,browser,errors,async close(){await browser.close();await new Promise(resolve=>server.close(resolve));},
@@ -37,11 +41,22 @@ export async function browserFixture(runtime=process.env.DSHA_TEST_RUNTIME||JSON
       let source=fs.readFileSync(path.resolve(runtime,'node_modules/@deepseek-ai',name,'lib/client.js'),'utf8');
       for(const recipe of recipes)for(const patch of recipe.patches){
         if(source.split(patch.before).length!==2)throw Error('Patch anchor: '+patch.before.slice(0,80));
-        source=source.replace(patch.before,(patch.prependAsset?fs.readFileSync('app/src/main/assets/'+patch.prependAsset,'utf8')+'\n':'')+patch.after);
+        source=source.replace(patch.before,()=>(patch.prependAsset?fs.readFileSync('app/src/main/assets/'+patch.prependAsset,'utf8')+'\n':'')+patch.after);
       }
-      source=source.replace('return module.exports;',extra+'\nreturn module.exports;');
+      const exportAt=source.lastIndexOf('return module.exports;');
+      if(exportAt<0)throw Error('Client factory export boundary changed');
+      source=source.slice(0,exportAt)+extra+'\n'+source.slice(exportAt);
       await page.addScriptTag({content:source});
       const css=path.resolve(runtime,'node_modules/@deepseek-ai',name,'lib/client.css');
       if(fs.existsSync(css))await page.addStyleTag({content:fs.readFileSync(css,'utf8')});
     }};
+}
+
+// Include every shipped mobile stylesheet; generic sheet rules affect headless modals.
+export async function installShippedMobileStyles(page){
+  const {default:vm}=await import('node:vm');
+  const source=fs.readFileSync('app/src/main/assets/builtin-plugins/dsh-web-mobile/lib/client.js','utf8');
+  const matches=[...source.matchAll(/exports\.(?:BASE|LAYOUT|COMPAT|MISC)_CSS = (`[\s\S]*?`);/g)];
+  if(matches.length!==4)throw Error('Mobile stylesheet anchors changed');
+  for(const match of matches)await page.addStyleTag({content:vm.runInNewContext(match[1])});
 }

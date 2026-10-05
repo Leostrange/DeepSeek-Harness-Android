@@ -32,7 +32,7 @@ public final class NativeDataLocations {
     private final GuestDataResolver resolver;
     public NativeDataLocations(Context context)throws IOException{
         this.context=context.getApplicationContext();fs=new AndroidBackupFileSystem();files=context.getFilesDir().getCanonicalFile();rootfs=new File(files,"linux/ubuntu");
-        publicStorage=Environment.getExternalStorageDirectory().getCanonicalFile();publicData=new File(publicStorage,"Documents/dshdata");
+        publicStorage=Environment.getExternalStorageDirectory().getCanonicalFile();publicData=new File(publicStorage,com.deepseekharness.app.util.AppIdentity.PUBLIC_DATA_PATH);
         resolver=new GuestDataResolver(fs,rootfs,publicStorage,Arrays.asList(new File(files,"user-data-v5"),publicData));
     }
     public File files(){return files;}

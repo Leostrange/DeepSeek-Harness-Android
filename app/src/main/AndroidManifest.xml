@@ -56,6 +56,8 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.DeepseekHarness">
 
+        <activity android:name=".ui.LanguageOnboardingActivity" android:exported="false" />
+
         <activity android:name=".ui.ModelSetupActivity" android:exported="false" />
         <activity android:name=".ui.CommunityActivity" android:exported="false" />
         <activity android:name=".ui.OnboardingPrepareActivity" android:exported="false" />

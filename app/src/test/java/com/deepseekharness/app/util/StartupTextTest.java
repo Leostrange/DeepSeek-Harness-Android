@@ -3,6 +3,18 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class StartupTextTest {
+    @Test public void russianStagesAndOwnedPrefixesKeepRawOutputVerbatim() {
+        StartupTrace trace=new StartupTrace();trace.begin(1,0,false);
+        trace.stage(1,1,"加载 DSH 和已启用插件");
+        trace.owned(1,2,"正在加载插件：my-custom-plugin");
+        trace.add(1,3,"配置检查：这是用户命令输出");
+        StartupTrace.Snapshot russian=trace.snapshot(4,"ru");
+        assertEquals(UiMessages.RU.get("加载 DSH 和已启用插件"),russian.stage);
+        assertTrue(russian.log.contains(UiMessages.RU.get("正在加载插件：")+"my-custom-plugin"));
+        assertTrue(russian.log.contains("配置检查：这是用户命令输出"));
+        assertEquals("Loading DSH and enabled plugins",StartupText.render(russian.stage,"en"));
+        assertEquals("加载 DSH 和已启用插件",StartupText.render(russian.stage,"zh"));
+    }
     @Test public void historicalStagesAndObserverEventsFollowCurrentLanguage() {
         StartupTrace trace=new StartupTrace();trace.begin(1,0,false);
         trace.stage(1,1,"等待鉴权链接");trace.owned(1,2,"配置检查：plugin-a @ 1.0");

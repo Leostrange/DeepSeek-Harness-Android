@@ -323,7 +323,7 @@ public class LaunchFragment extends Fragment {
                     + (controller.isWebCompatibilityFallback() ? com.deepseekharness.app.util.UiText.text(" · 已兼容切换 proot") : "")
                     : controller.isUserStopped() ? getString(R.string.ui2_stopped) : getString(R.string.ui2_stopped));
             ((TextView)root.findViewById(R.id.launch_port)).setText(ready?String.valueOf(controller.getWebPort()):"—");
-            ((TextView)root.findViewById(R.id.launch_environment)).setText(EnvironmentUiStatus.get(requireContext()).ready?"READY":"—");
+            ((TextView)root.findViewById(R.id.launch_environment)).setText(EnvironmentUiStatus.get(requireContext()).ready?com.deepseekharness.app.util.UiText.choose("已就绪","Ready"):"—");
             ((TextView)root.findViewById(R.id.launch_subtitle)).setText(ready?
                     (controller.isWebCompatibilityFallback()?"proot":controller.proot().runtime().id())+" · dsh "+com.deepseekharness.app.util.Constants.DSH_VERSION:getString(R.string.ui2_launch_hint));
             root.findViewById(R.id.launch_status).setVisibility(starting||stopping||!trace.issues.isEmpty()?View.VISIBLE:View.GONE);

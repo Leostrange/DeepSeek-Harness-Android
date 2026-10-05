@@ -1,0 +1,136 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import vm from 'node:vm';
+import {pathToFileURL} from 'node:url';
+import {browserFixture,installShippedMobileStyles} from './rc1-browser-fixture.mjs';
+const installed=path.resolve('app/build/locked-dsh-runtime/node_modules');
+const yaml=await import(pathToFileURL(path.join(installed,'js-yaml/index.js')));
+const {entryListSchema,Include}=await import(pathToFileURL(path.join(installed,'@deepseek-ai/cordis-plugin-include/lib/index.js')));
+const raw=await fs.readFile(path.join(installed,'@deepseek-ai/dsh-agent-preset-registry/lib/index.js'),'utf8');
+const validator=raw.slice(raw.indexOf('function entryListProblem('),raw.indexOf('//#endregion',raw.indexOf('function entryListProblem(')));
+const context=vm.createContext({load:yaml.load,entryListSchema});
+vm.runInContext(validator+'\n'+await fs.readFile('app/src/main/assets/preset-editor-host.js','utf8')+'\nthis.save=dshaSavePreset;',context);
+const folder=await fs.mkdtemp(path.join(os.tmpdir(),'dsha-preset-'));
+try {
+  let writes=0, updates=0;
+  const config={id:'devtools',name:'DevTools',plugins:[{name:'@deepseek-ai/dsh-agent-prompt',config:{prompt:'Original user prompt'}}]};
+  const previous=structuredClone(config);
+  const boot=await fs.readFile(path.join(installed,'@deepseek-ai/dsh-app-boot/lib/index.js'),'utf8');
+  const start=boot.indexOf('var Include = class extends EntryTree');const stop=boot.indexOf('//#endregion',start);
+  const scope=vm.createContext({EntryTree:class{},EntryGroup:{key:Symbol()},Service:{init:Symbol()},yaml,schema:entryListSchema,writeFile:fs.writeFile,rename:fs.rename,setTimeout,clearTimeout,retryableWriteError:()=>false});
+  vm.runInContext(boot.slice(start,stop)+'\nthis.BootInclude=Include;',scope);
+  const BootInclude=scope.BootInclude;
+  const tree={filename:path.join(folder,'preset.yaml'),type:'application/yaml',readonly:false,
+    writeQueue:Promise.resolve(),context:{emit(){}},ctx:{root:{logger(){return {warn(){}};}}},
+    writeFile:BootInclude.prototype.writeFile,flushWrite:BootInclude.prototype.flushWrite,
+    _writeFile:BootInclude.prototype._writeFile,write(){writes++;return BootInclude.prototype.write.call(this);}};
+  const entry={options:{name:'@deepseek-ai/dsh-agent-preset',config},async update({config}){updates++;this.options.config=config;record.config=config;},parent:{tree}};
+  tree.root={data:[entry.options]};
+  const record={config,context:{fiber:{entry}}};
+  const registry={definitions:new Map([['devtools',record]]),owner:{loader:{async await(){}}},async readDocument(id){return {agentPreset:id,content:yaml.dump(record.config.plugins,{schema:entryListSchema,noRefs:true,lineWidth:-1})};}};
+  const expected=(await registry.readDocument('devtools')).content;
+  const candidate='- name: "@deepseek-ai/dsh-agent-prompt"\n  config:\n    prompt: "Мой новый prompt"\n- name: "@deepseek-ai/dsh-tool-shell"\n';
+  for(const id of ['standard','ptc','minimal','cordis'])await assert.rejects(context.save(registry,id,candidate,expected),/read-only/);
+  await assert.rejects(context.save(registry,'devtools','not a list',expected),/top-level list/);
+  await assert.rejects(context.save(registry,'devtools',candidate,'stale document'),/changed/);
+  assert.equal(writes,0);assert.equal(updates,0);
+  entry.parent.tree.readonly=true;
+  await assert.rejects(context.save(registry,'devtools',candidate,expected),/not editable/);
+  entry.parent.tree.readonly=false;
+  const saved=await context.save(registry,'devtools',candidate,expected);
+  const reopened=yaml.load(await fs.readFile(path.join(folder,'preset.yaml'),'utf8'))[0].config;
+  assert.equal(reopened.plugins[0].config.prompt,'Мой новый prompt');assert.equal(reopened.plugins.length,2);
+  assert.equal(previous.plugins[0].config.prompt,'Original user prompt');
+  await assert.rejects(context.save(registry,'devtools',candidate,expected),/changed/);
+  assert.equal(writes,1);
+  assert.match(saved.content,/Мой новый prompt/);
+  const keep=structuredClone(record.config);
+  entry.parent.tree._writeFile=async()=>{await new Promise(resolve=>setTimeout(resolve,20));throw Error('disk full');};
+  await assert.rejects(context.save(registry,'devtools',expected,saved.content),/disk full/);
+  assert.deepEqual(JSON.parse(JSON.stringify(record.config)),keep,'Failed persistence restores live config');
+} finally {await fs.rm(folder,{recursive:true,force:true});}
+const fixture=await browserFixture(process.env.DSHA_TEST_RUNTIME);
+try {
+  const {page}=fixture;
+  const recipe=JSON.parse(await fs.readFile('app/src/main/assets/ru-preset-picker-patch.json','utf8'));
+  await fixture.load('dsh-client-ui-agent-preset',[recipe],'module.exports.audit={DshaPresetEditor};');
+  await page.addScriptTag({path:'app/src/main/assets/web-integration/mobile-layout.js'});
+  await installShippedMobileStyles(page);
+  await fixture.load('dsh-client-ui-theme',[],'module.exports.audit={installThemeStyles};');
+  await page.evaluate(()=>auditExports['@deepseek-ai/dsh-client-ui-theme'].audit.installThemeStyles({effect:run=>run()}));
+  await page.addStyleTag({content:'body{font-family:var(--dsw-font-family);color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base)}'});
+  await page.setViewportSize({width:360,height:800});
+  await page.evaluate(()=>{
+    window.__DSHA_LANGUAGE__='ru';window.saves=[];window.editorCloses=0;window.failure=true;
+    const React=auditModules.react.default||auditModules.react;
+    const ReactDOM=auditModules['react-dom'].default||auditModules['react-dom'];
+    const Editor=auditExports['@deepseek-ai/dsh-client-ui-agent-preset'].audit.DshaPresetEditor;
+    const root=ReactDOM.createRoot(document.getElementById('root'));
+    window.renderEditor=(editable,content='original',id='custom')=>root.render(React.createElement(Editor,{key:String(editable)+content+id,viewed:{id,title:id==='devtools'?'DevTools':'Custom',content},editable,t:key=>key==='close'?'Закрыть':key,close:()=>editorCloses++,save:async(id,content,expected)=>{if(failure)throw Error('Disk unavailable');saves.push({id,content,expected});}}));
+    renderEditor(true);
+  });
+  const input=page.getByRole('textbox',{name:'Состав режима и prompt'});
+  await input.fill('Новый prompt');
+  const header=page.locator('.dsha-editor-header');
+  assert.equal(await header.getByRole('button',{name:'На весь экран',exact:true}).count(),0);
+  assert.equal(await header.getByRole('button',{name:'Закрыть',exact:true}).count(),1);
+  assert.equal(await input.inputValue(),'Новый prompt');
+  const initialBox=await page.locator('.dsha-preset-editor').boundingBox();
+  const editorLayout=await page.locator('.dsha-preset-editor').evaluate(el=>({style:getComputedStyle(el).cssText,position:getComputedStyle(el).position,left:getComputedStyle(el).left,top:getComputedStyle(el).top,margin:getComputedStyle(el).margin,transform:getComputedStyle(el).transform,parent:el.parentElement?.className,parentStyle:el.parentElement?{padding:getComputedStyle(el.parentElement).padding,position:getComputedStyle(el.parentElement).position,transform:getComputedStyle(el.parentElement).transform}:null}));
+  assert.ok(initialBox.x<=1&&initialBox.y<=1&&initialBox.width>=359&&initialBox.height>=799,'Mobile editor opens as a real full-screen surface: '+JSON.stringify({initialBox,editorLayout}));
+  for(const width of [280,360,600]){
+    await page.setViewportSize({width,height:640});
+    await page.waitForTimeout(30);
+    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth<=1));
+    const box=await page.locator('.dsha-preset-editor').boundingBox();
+    assert.ok(box.x<=1&&box.width>=width-1&&box.height>=639,'Full-screen editor follows the available viewport');
+  }
+  await page.getByRole('button',{name:'Сохранить',exact:true}).click();
+  await page.getByRole('alert').waitFor();assert.equal(await input.inputValue(),'Новый prompt');
+  assert.equal(await page.evaluate(()=>editorCloses),0);
+  await page.evaluate(()=>failure=false);
+  await page.getByRole('button',{name:'Сохранить',exact:true}).click();
+  await page.waitForFunction(()=>editorCloses===1);
+  assert.deepEqual(await page.evaluate(()=>saves),[{id:'custom',content:'Новый prompt',expected:'original'}]);
+  await page.evaluate(()=>renderEditor(false));
+  await page.waitForFunction(()=>document.querySelector('textarea')?.readOnly);
+  assert.equal(await page.getByRole('button',{name:'Сохранить',exact:true}).count(),0);
+  const composition='- id: persona\n  name: "@deepseek-ai/dsh-persona"\n  config:\n    prefix: Original prompt\n    suffix: Working in {{cwd}}\n- name: "@deepseek-ai/dsh-tool-shell"\n  disabled: !!js "ctx.os.platform === \'win32\'"\n- name: "@deepseek-ai/dsh-tool-fs"\n';
+  await page.evaluate(content=>renderEditor(true,content),composition);
+  await page.getByRole('textbox',{name:'Основной промпт',exact:true}).fill('Мой Android prompt');
+  await page.getByRole('tab',{name:'Состав',exact:true}).click();
+  const checks=page.getByRole('checkbox');
+  const cardFit=await page.locator('.dsha-editor-component').evaluateAll(cards=>cards.map(card=>{const box=card.getBoundingClientRect();return {width:card.scrollWidth-card.clientWidth,escaped:[...card.querySelectorAll('button,input,label')].some(node=>{const child=node.getBoundingClientRect();return child.left<box.left-1||child.right>box.right+1||child.bottom>box.bottom+1;})};}));
+  assert.ok(cardFit.every(card=>card.width<=1&&!card.escaped),'Every component action fits its own card: '+JSON.stringify(cardFit));
+  assert.equal(await checks.nth(1).isDisabled(),true,'Conditional expressions cannot be overwritten by the toggle');
+  await checks.nth(2).uncheck();
+  await page.getByRole('button',{name:'Переместить вверх'}).nth(2).click();
+  await page.setViewportSize({width:360,height:800});
+  await page.screenshot({path:'app/build/reports/custom-editor-composition-mobile.png',fullPage:true});
+  await page.getByRole('button',{name:'Сохранить',exact:true}).click();
+  await page.waitForFunction(()=>saves.length===2);
+  const structured=(await page.evaluate(()=>saves))[1];
+  const parsed=yaml.load(structured.content,{schema:entryListSchema});
+  assert.equal(parsed[0].config.prefix,'Мой Android prompt');
+  assert.equal(parsed[1].name,'@deepseek-ai/dsh-tool-fs');assert.equal(parsed[1].disabled,true);
+  assert.equal(parsed[2].disabled.__jsExpr,"ctx.os.platform === 'win32'");assert.equal(structured.expected,composition);
+  for(const width of [280,360,600]){
+    await page.setViewportSize({width,height:640});
+    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth<=1),'Structured composition fits a narrow screen');
+  }
+  const builtIn=await fs.readFile('app/src/main/assets/builtin-presets/devtools.patch.yml','utf8');
+  const definition=yaml.load(builtIn,{schema:entryListSchema})[0].insert[0].config;
+  assert.equal(definition.id,'devtools');assert.equal(definition.name,'DevTools');
+  const supplied=yaml.load(await fs.readFile('../devtools-source/devtools/agent.cordis.yml','utf8'),{schema:entryListSchema});
+  assert.deepEqual(definition.plugins,supplied,'Built-in composition preserves the supplied preset');
+  await page.evaluate(content=>renderEditor(true,content,'devtools'),yaml.dump(definition.plugins,{schema:entryListSchema,noRefs:true}));
+  await page.getByRole('textbox',{name:/^Основной промпт/}).first().waitFor();
+  assert.equal(await page.getByRole('textbox',{name:/^Основной промпт/}).first().getAttribute('readonly'),null);
+  assert.equal(await page.getByRole('button',{name:'Сохранить',exact:true}).count(),1);
+  await page.setViewportSize({width:360,height:800});
+  await page.screenshot({path:'app/build/reports/devtools-editor-ru.png',fullPage:true});
+  assert.deepEqual(fixture.errors,[]);
+  console.log('PASS preset validation, stale-write rejection, built-in protection, YAML persist/reopen, failed-write rollback, editor draft retention and mobile-first full screen');
+} finally {await fixture.close();}

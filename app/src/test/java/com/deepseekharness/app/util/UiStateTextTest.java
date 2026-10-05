@@ -23,8 +23,19 @@ public class UiStateTextTest {
         assertEquals("这是用户的插件 description",UiStateText.render("这是用户的插件 description"));
     }
     @Test public void templatesHaveMatchingParameterCounts() {
-        for(String[] pair:UiMessages.FORMATS)
+        for(String[] pair:UiMessages.FORMATS) {
             assertEquals(pair[0],pair[0].split("%s",-1).length,pair[1].split("%s",-1).length);
+            assertEquals(pair[0],pair[0].split("%s",-1).length,pair[2].split("%s",-1).length);
+        }
+    }
+    @Test public void russianCachedStateCanSwitchBackWithoutChangingParameters() {
+        String path="/root/中文/English/русский";
+        String zh="操作失败："+path;
+        UiText.setLanguage("ru");
+        String ru=UiStateText.render(zh);
+        assertNotEquals(zh,ru);assertTrue(ru.endsWith(path));
+        UiText.setLanguage("zh");assertEquals(zh,UiStateText.render(ru));
+        UiText.setLanguage("en");assertEquals("Operation failed: "+path,UiStateText.render(ru));
     }
     @Test public void cachedNativeResetResultChangesLanguageWithoutTranslatingItsPath() {
         String path="/data/user/0/com.dsh.client/files/原件 English";

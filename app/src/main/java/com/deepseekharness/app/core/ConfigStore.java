@@ -128,7 +128,7 @@ public class ConfigStore {
 
     public int getPortInt() {
         int p = parsePort(text(Constants.KEY_PORT, String.valueOf(Constants.DSH_WEB_PORT)));
-        return p == Constants.LAN_BRIDGE_PORT || p == Constants.SHELL_BRIDGE_PORT ? Constants.DSH_WEB_PORT : p;
+        return com.deepseekharness.app.util.WebPortPolicy.reserved(p) ? Constants.DSH_WEB_PORT : p;
     }
 
     public void setPort(String v) {

@@ -14,11 +14,11 @@ public final class Constants {
 
     // ================= 端口契约（框架不变式，见 AGENTS.md） =================
     /** WebUI 默认端口 */
-    public static final int DSH_WEB_PORT = 3080;
+    public static final int DSH_WEB_PORT = AppIdentity.WEB_PORT;
     /** App 能力桥（agent 调 Android）端口 */
-    public static final int SHELL_BRIDGE_PORT = 3090;
+    public static final int SHELL_BRIDGE_PORT = AppIdentity.BRIDGE_PORT;
     /** 局域网反向代理端口 */
-    public static final int LAN_BRIDGE_PORT = 3081;
+    public static final int LAN_BRIDGE_PORT = AppIdentity.LAN_PORT;
     /** ADB 传统连接端口（兜底，非可靠路径） */
     public static final int ADB_DEFAULT_CONNECT_PORT = 5555;
 

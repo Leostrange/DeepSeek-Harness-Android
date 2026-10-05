@@ -14,7 +14,7 @@ public final class MaintenanceDataSnapshot {
     private final List<BackupSource> sources=new ArrayList<>();private final Map<String,Object> destinations=new LinkedHashMap<>();
     private final Map<File,String> registries=new LinkedHashMap<>();
     public MaintenanceDataSnapshot(BackupFileSystem fs,File files,File task,File publicRoot){this.fs=fs;this.files=files;this.task=task;this.publicRoot=publicRoot;rootfs=new File(files,"linux/ubuntu");
-        resolver=new GuestDataResolver(fs,rootfs,publicRoot,List.of(new File(files,"user-data-v5"),new File(publicRoot,"Documents/dshdata")));}
+        resolver=new GuestDataResolver(fs,rootfs,publicRoot,List.of(new File(files,"user-data-v5"),new File(publicRoot,com.deepseekharness.app.util.AppIdentity.PUBLIC_DATA_PATH)));}
     public File archive(){return new File(task,"data.dshdata");}
     public File mapping(){return new File(task,"data-roots.json");}
     private static String id(String relative){return "local-"+NativeDataLocations.hash(relative);}

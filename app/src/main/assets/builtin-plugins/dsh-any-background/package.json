@@ -1,0 +1,127 @@
+{
+  "name": "dsh-any-background",
+  "version": "0.2.8",
+  "description": "Цвет темы, фон из изображений и видео, генераторы фона, прозрачность и размытие отдельных областей, профили оформления.",
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "plugin",
+    "dsh-plugin",
+    "theme",
+    "wallpaper",
+    "web-ui"
+  ],
+  "homepage": "https://github.com/Tkingxiao/dsh-any-background#readme",
+  "bugs": {
+    "url": "https://github.com/Tkingxiao/dsh-any-background/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tkingxiao/dsh-any-background.git"
+  },
+  "license": "MIT",
+  "author": "Tkingxiao",
+  "type": "module",
+  "engines": {
+    "dsh": ">=0.1.5-rc.2"
+  },
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./invariant": {
+      "default": "./lib/invariant.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/invariant.js",
+    "lib/client.js",
+    "lib/client.js.map",
+    "cordis.patch.yml"
+  ],
+  "scripts": {
+    "bundle": "tsdown",
+    "watch": "tsdown --watch",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@deepseek-ai/dsh-home-paths": "^0.1.0-rc.6",
+    "@types/node": "^26.2.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "tsdown": "^0.22.2",
+    "typescript": "^7.0.2",
+    "unrun": "^0.3.1"
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh-home-paths": "^0.1.0-rc.6"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.2",
+    "@deepseek-ai/dsh-client-locale": "^0.1.2-alpha.2",
+    "@deepseek-ai/dsh-client-store": "^0.1.2-alpha.2",
+    "@deepseek-ai/dsh-client-connection": "^0.1.2-alpha.2",
+    "@deepseek-ai/dsh-client-ui-settings": "^0.1.2-alpha.2",
+    "@deepseek-ai/dsh-client-ui-theme": "^0.1.2-alpha.2",
+    "@deepseek-ai/dsh-invariants": "^0.1.2-alpha.2",
+    "react": "^18.2.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "@deepseek-ai/cordis": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-client-store": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-client-connection": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-client-ui-settings": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-client-ui-theme": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-client-locale": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-invariants": {
+      "optional": true
+    }
+  },
+  "dsh": {
+    "compatibility": {
+      "dshReleases": {
+        "0.1.5-rc.2": "compatible"
+      }
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-store",
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-client-ui-theme",
+        "@deepseek-ai/dsh-client-ui-settings"
+      ],
+      "immediately": true
+    },
+    "displayName": "Оформление и фон"
+  },
+  "packageManager": "pnpm@10.32.1+sha512.a706938f0e89ac1456b6563eab4edf1d1faf3368d1191fc5c59790e96dc918e4456ab2e67d613de1043d2e8c81f87303e6b40d4ffeca9df15ef1ad567348f2be"
+}

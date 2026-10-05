@@ -38,7 +38,12 @@ public final class BuiltinPlugins {
                     "dsh-web-mobile",
                     "dsh-computer-use-android",
                     "dsh-auto-review",
-                    "dsh-tool-vscreen"));
+                    "dsh-tool-vscreen",
+                    "dsh-peak-chip",
+                    "dsh-batch-tool-calls",
+                    "dsh-any-background",
+                    "dsh-session-health",
+                    "dsh-subagent-model-picker"));
 
     /** 当前签名 APK 独占的系统插件；旧 profile/归档不得提供同名源码。 */
     public static final List<String> SIGNED_BUILTINS;

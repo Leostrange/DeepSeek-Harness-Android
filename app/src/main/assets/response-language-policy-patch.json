@@ -1,0 +1,10 @@
+{
+  "dshVersion": "0.1.7-rc.2",
+  "module": "@deepseek-ai/dsh-system-prompt/lib/index.js",
+  "patches": [
+    {
+      "before": "function renderPrompt(assembly) {\n\treturn assembly.sections.map((section) => section.interpolate === false ? section.text : interpolate(section, assembly.variables, \"section\")).filter((text) => text.length > 0).join(\"\\n\\n\");\n}",
+      "after": "const DSHA_RESPONSE_LANGUAGE_POLICIES = {\n\tru: \"Use Russian for every user-facing response, visible reasoning or progress update, and natural-language tool-call description. Preserve commands, code, paths, identifiers, file contents, and quoted text verbatim. If the user explicitly requests another response language, follow that request for that response.\",\n\ten: \"Use English for every user-facing response, visible reasoning or progress update, and natural-language tool-call description. Preserve commands, code, paths, identifiers, file contents, and quoted text verbatim. If the user explicitly requests another response language, follow that request for that response.\",\n\tzh: \"Use Simplified Chinese for every user-facing response, visible reasoning or progress update, and natural-language tool-call description. Preserve commands, code, paths, identifiers, file contents, and quoted text verbatim. If the user explicitly requests another response language, follow that request for that response.\"\n};\nfunction responseLanguagePolicy() {\n\tconst language = process.env.DSHA_UI_LANGUAGE;\n\treturn Object.hasOwn(DSHA_RESPONSE_LANGUAGE_POLICIES, language) ? DSHA_RESPONSE_LANGUAGE_POLICIES[language] : \"\";\n}\nfunction renderPrompt(assembly) {\n\tconst prompt = assembly.sections.map((section) => section.interpolate === false ? section.text : interpolate(section, assembly.variables, \"section\")).filter((text) => text.length > 0).join(\"\\n\\n\");\n\treturn [prompt, responseLanguagePolicy()].filter((text) => text.length > 0).join(\"\\n\\n\");\n}"
+    }
+  ]
+}

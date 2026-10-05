@@ -63,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
 
         if(savedInstanceState!=null)openedRecovery=savedInstanceState.getString("opened_startup_recovery","");
         ConfigStore config = new ConfigStore(this);
+        if (!getSharedPreferences(com.deepseekharness.app.util.Constants.PREFS, MODE_PRIVATE)
+                .getBoolean("language_onboarding_complete", false)) {
+            startActivity(new Intent(this, LanguageOnboardingActivity.class));finish();return;
+        }
         HarnessController controller = HarnessController.get(this);
         boolean skipExtract = com.deepseekharness.app.BuildConfig.DEBUG && getIntent().getBooleanExtra("skip_extract", false);
 

@@ -70,7 +70,7 @@ public final class DeviceShellExecutor {
     static String installedDshaApkPath() throws IOException {
         try {
             Context system = com.deepseekharness.app.runtime.PrivilegedPackageContext.systemContext();
-            android.content.pm.ApplicationInfo info = system.getPackageManager().getApplicationInfo("com.dsh.client", 0);
+            android.content.pm.ApplicationInfo info = system.getPackageManager().getApplicationInfo(com.deepseekharness.app.util.AppIdentity.APPLICATION_ID, 0);
             File source = new File(info.sourceDir);
             String canonical = source.getCanonicalPath();
             if (!source.isFile() || !source.getPath().equals(canonical)

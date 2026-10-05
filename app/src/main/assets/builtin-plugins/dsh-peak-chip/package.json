@@ -1,0 +1,30 @@
+{
+  "name": "dsh-peak-chip",
+  "version": "4.1.8",
+  "description": "Пиковый и льготный тарифы DeepSeek, баланс аккаунта, пополнения и расходы за день.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "license": "MIT",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ],
+      "platform": "web"
+    },
+    "displayName": "Тарифы и расходы DeepSeek"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-credentials": "^0.1.5-rc.2",
+    "@deepseek-ai/dsh-settings": "^0.1.5-rc.2",
+    "@deepseek-ai/schemastery": "^1.0.0"
+  }
+}

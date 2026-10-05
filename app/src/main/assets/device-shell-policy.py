@@ -224,7 +224,7 @@ def stop_targets(plan, shell):
     plan['groups'] = groups
     by_name = {app['name']: app for app in apps}
     protected = {uid for app in apps if app['system'] or any(uid % 100000 < 10000 for uid in app['uids'])
-                 or app['name'] in ('com.dsh.client', 'moe.shizuku.privileged.api') for uid in app['uids']}
+                 or app['name'] in ('com.dsh.client', 'com.dsh.client.rc2ru', 'moe.shizuku.privileged.api') for uid in app['uids']}
     requested = list(plan['operands'])
     if plan['argv'][0] == 'kill':
         rows = checked(shell(argv_command(['ps', '-A', '-o', 'PID,UID,NAME']))).splitlines()

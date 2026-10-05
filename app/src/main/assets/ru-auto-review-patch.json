@@ -1,0 +1,14 @@
+{
+  "dshVersion": "0.1.7-rc.2",
+  "module": "@deepseek-ai/dsh-experimental-auto-review/lib/index.js",
+  "patches": [
+    {
+      "before": "zh: \"Auto review 拒绝了此调用。\"",
+      "after": "zh: \"Auto review 拒绝了此调用。\",\n\t\t\tru: \"Авторевью отклонило этот вызов.\""
+    },
+    {
+      "before": "zh: `Auto review 拒绝了此调用：${reason}`",
+      "after": "zh: `Auto review 拒绝了此调用：${reason}`,\n\t\t\tru: `Авторевью отклонило этот вызов: ${reason}`"
+    }
+  ]
+}

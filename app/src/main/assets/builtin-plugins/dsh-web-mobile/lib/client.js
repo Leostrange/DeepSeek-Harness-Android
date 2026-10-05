@@ -661,6 +661,26 @@ function statsAnchorAlive(el) {
     // marker's own subtree position changed, not its container relationship.
     return el.closest('[class*="_composerStack"]') !== null;
 }
+// Cache-hit detail is available by tapping the token pill. Remove only that
+// suffix from the compact strip; keep turns, steps, speed and total tokens.
+function simplifyStatsSegments() {
+    for (const pill of document.querySelectorAll('[data-mobile-nav="stats"] [class*="_pill"]')) {
+        const text = pill.textContent || '';
+        if (!/cache|кэш|缓存/i.test(text))
+            continue;
+        const label = pill.querySelector('[class*="_label"]');
+        if (label === null)
+            continue;
+        for (const node of Array.from(label.childNodes)) {
+            if (node.nodeType === Node.TEXT_NODE && /\d/.test(node.textContent || '')) {
+                const text = (node.textContent || '').trim();
+                if (label.textContent !== text)
+                    label.textContent = text;
+                break;
+            }
+        }
+    }
+}
 function createStatsLineTask() {
     // React-owned nodes must never be relocated (issue #104): on unmount React
     // calls parent.removeChild(child) against the parent it rendered the node
@@ -702,10 +722,7 @@ function createStatsLineTask() {
         if (styled.style.top !== `${top}px`)
             styled.style.top = `${top}px`;
     };
-    // The composer root renders the TPS readout ("TPS 89.4 tok/s") as its own
-    // row BELOW the status strip; fold it into the strip so every metric sits
-    // on one line. Idempotent: the placeholder's text mirrors the readout and
-    // the readout itself is overlaid on the placeholder's box.
+    // Fold a separately rendered TPS readout into the same compact strip.
     const moveTps = (stats) => {
         const stack = stats.closest('[class*="_composerStack"]');
         if (stack === null)
@@ -734,9 +751,6 @@ function createStatsLineTask() {
                 continue;
             ensurePositioned(tpsRow, 'stats-tps-row');
             placeOverlay(el, reserve);
-            // The strip's last child is the flex shrink group: mirror whatever
-            // width the placeholder settled on so the overlay clips with the same
-            // ellipsis instead of overlapping the neighbouring group.
             const width = reserve.getBoundingClientRect().width;
             const styled = el;
             if (styled.style.maxWidth !== `${width}px`)
@@ -783,7 +797,6 @@ function createStatsLineTask() {
         if (anchor === null)
             return;
         moveTps(anchor);
-        moveRing(anchor);
     };
     const mark = () => {
         // Keyboard open/close and viewport rotations relayout the composer without
@@ -800,7 +813,6 @@ function createStatsLineTask() {
         const anchor = document.querySelector('[data-mobile-nav="stats"]');
         if (anchor !== null && statsAnchorAlive(anchor)) {
             moveTps(anchor);
-            moveRing(anchor);
             return;
         }
         // Stale marker on a node that left the composer stack/phase context:
@@ -842,7 +854,7 @@ function createStatsLineTask() {
             if (buttons.length > 0 && ![...buttons].every((button) => button.getAttribute('aria-haspopup') !== null))
                 continue;
             const text = root.textContent ?? '';
-            if (!/(turns|steps|\bLLM\b|轮|步)/.test(text))
+            if (!/(turns|steps|витк|шаг|\bLLM\b|轮|步)/i.test(text))
                 continue;
             // Composer card must never be mistaken for the status strip; exclude
             // its input region across both composer DOMs (textarea / Lexical
@@ -851,7 +863,6 @@ function createStatsLineTask() {
                 continue;
             root.setAttribute('data-mobile-nav', 'stats');
             moveTps(root);
-            moveRing(root);
             return;
         }
     };
@@ -3064,27 +3075,59 @@ function installPhoneChrome(ctx) {
         // reachable. No keyboard-padding implementation is assumed here.
         let stableVh = 0;
         let stableWidth = 0;
-        const syncStableViewport = () => {
+        let visibleFrame = 0;
+        let stableFrame = 0;
+        let stableTimer = 0;
+        let viewportDisposed = false;
+        const applyVisibleViewport = () => {
+            visibleFrame = 0;
+            if (viewportDisposed)
+                return;
             const height = window.innerHeight;
-            const width = window.innerWidth;
             const visible = window.visualViewport;
             const available = Math.max(1, Math.min(height, visible?.height ?? height));
             root.style.setProperty('--dsha-mobile-visible-vh', `${available}px`);
             root.style.setProperty('--dsha-mobile-viewport-top', `${visible?.offsetTop ?? 0}px`);
+        };
+        const applyStableViewport = () => {
+            stableFrame = 0;
+            if (viewportDisposed)
+                return;
+            const height = window.innerHeight;
+            const width = window.innerWidth;
             if (stableVh === 0 || height > stableVh || width !== stableWidth) {
                 stableVh = height;
                 stableWidth = width;
                 root.style.setProperty(exports.STABLE_VIEWPORT_VAR, `${height}px`);
             }
         };
-        syncStableViewport();
-        window.addEventListener('resize', syncStableViewport);
-        window.visualViewport?.addEventListener('resize', syncStableViewport);
-        window.visualViewport?.addEventListener('scroll', syncStableViewport);
+        const syncViewport = () => {
+            if (visibleFrame === 0)
+                visibleFrame = requestAnimationFrame(applyVisibleViewport);
+            if (stableTimer !== 0)
+                clearTimeout(stableTimer);
+            stableTimer = window.setTimeout(() => {
+                stableTimer = 0;
+                if (stableFrame === 0)
+                    stableFrame = requestAnimationFrame(applyStableViewport);
+            }, 100);
+        };
+        applyVisibleViewport();
+        applyStableViewport();
+        window.addEventListener('resize', syncViewport);
+        window.visualViewport?.addEventListener('resize', syncViewport);
+        window.visualViewport?.addEventListener('scroll', syncViewport);
         return () => {
-            window.removeEventListener('resize', syncStableViewport);
-            window.visualViewport?.removeEventListener('resize', syncStableViewport);
-            window.visualViewport?.removeEventListener('scroll', syncStableViewport);
+            viewportDisposed = true;
+            window.removeEventListener('resize', syncViewport);
+            window.visualViewport?.removeEventListener('resize', syncViewport);
+            window.visualViewport?.removeEventListener('scroll', syncViewport);
+            if (visibleFrame !== 0)
+                cancelAnimationFrame(visibleFrame);
+            if (stableFrame !== 0)
+                cancelAnimationFrame(stableFrame);
+            if (stableTimer !== 0)
+                clearTimeout(stableTimer);
             root.style.removeProperty('--dsha-mobile-visible-vh');
             root.style.removeProperty('--dsha-mobile-viewport-top');
             root.style.removeProperty(exports.STABLE_VIEWPORT_VAR);
@@ -6114,7 +6157,7 @@ exports.LAYOUT_CSS = `/* ---------- mobile-only layout (narrow viewport AND touc
      "shortcuts" on this one — gating on that attribute (not on a hashed
      class) keeps the official centered card, the same treatment the
      export dialog gets. */
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]) {
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor) {
     position: absolute !important;
     left: 8px !important;
     /* Fixed top (no translateY): a transform on the panel combined with the
@@ -6124,8 +6167,8 @@ exports.LAYOUT_CSS = `/* ---------- mobile-only layout (narrow viewport AND touc
     top: calc(env(safe-area-inset-top, 0px) + 12px) !important;
     width: calc(100vw - 16px);
     max-width: calc(100vw - 16px);
-    /* Height follows the content (no dead space under a short page); it
-       caps at the KEYBOARD-LESS viewport height minus 24 (less the safe-area
+     /* Keep the sheet height stable while sections expand and tabs switch;
+        the contents scroll inside the KEYBOARD-LESS viewport height minus 24 (less the safe-area
        top) and the options area scrolls only then. STABLE_VIEWPORT_VAR, not
        100dvh: measured 2026-09-25 on Android 16 WebView (adjustResize), the
        soft keyboard takes the layout viewport 754 -> 471 and vh / svh / lvh /
@@ -6133,7 +6176,7 @@ exports.LAYOUT_CSS = `/* ---------- mobile-only layout (narrow viewport AND touc
        shortcut modal's search field raises the keyboard — the reporter's
        「又闪一下」. The variable never moves for the keyboard, so the sheet
        keeps its size and the keyboard covers its lower half instead. */
-    height: auto;
+     height: min(800px, calc(var(--dsh-web-mobile-vh, 100dvh) - 24px - env(safe-area-inset-top, 0px)));
     max-height: min(800px, calc(100vh - 24px - env(safe-area-inset-top, 0px)));
     max-height: min(800px, calc(var(--dsh-web-mobile-vh, 100dvh) - 24px - env(safe-area-inset-top, 0px)));
     /* Only a real viewport change (rotation / window resize) reaches this now,
@@ -6145,12 +6188,12 @@ exports.LAYOUT_CSS = `/* ---------- mobile-only layout (narrow viewport AND touc
   }
   /* The settings sheet's dimmed mask fades in with the panel (the mask is
      the first child of the overlay that directly contains the sheet). */
-  :has(> [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"])) > :first-child {
+  :has(> [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor)) > :first-child {
     animation: dsh-web-mobile-fade .18s var(--ds-ease-out, ease-in-out);
   }
   @media (prefers-reduced-motion: reduce) {
-    [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]),
-    :has(> [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"])) > :first-child {
+    [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor),
+    :has(> [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor)) > :first-child {
       animation: none !important;
     }
   }
@@ -6162,14 +6205,14 @@ exports.LAYOUT_CSS = `/* ---------- mobile-only layout (narrow viewport AND touc
   /* Nav bar: hide the "Settings" caption (redundant on a full-width sheet)
      and wrap the tab list so every tab is visible — a horizontal scroll cut
      the last tab ("Plugins") off with no affordance to scroll. */
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]) > :first-child {
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor) > :first-child {
     width: 100%;
     flex-direction: row !important;
     align-items: center;
     gap: 6px;
     padding: 10px 12px 8px;
   }
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]) > :first-child > :first-child {
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor) > :first-child > :first-child {
     display: none !important;
   }
   /* The tab strip stays clear of the toolbar: the toolbar (the close ✕ on
@@ -6196,7 +6239,7 @@ exports.LAYOUT_CSS = `/* ---------- mobile-only layout (narrow viewport AND touc
      2026-09-24) reproduces the reparent-era scroller geometry (its box
      ended 6px short of the toolbar). The strip must be anchored by its
      class. */
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]) > :first-child [class*="_navList"] {
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor) > :first-child [class*="_navList"] {
     flex: 1 1 auto;
     min-width: 0;
     flex-direction: row !important;
@@ -6212,20 +6255,20 @@ exports.LAYOUT_CSS = `/* ---------- mobile-only layout (narrow viewport AND touc
      reads fat on a phone; 2px keeps the scroll affordance without the
      bulk. (Portal-aware copies of the frame-scoped rules in compat.css,
      which died with the rc.2 portal move.) */
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]) > :first-child [class*="_navList"]::-webkit-scrollbar {
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor) > :first-child [class*="_navList"]::-webkit-scrollbar {
     height: 2px !important;
   }
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]) > :first-child [class*="_navList"]::-webkit-scrollbar-thumb {
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor) > :first-child [class*="_navList"]::-webkit-scrollbar-thumb {
     background: var(--dsw-alias-border-l2, rgba(0, 0, 0, .22)) !important;
     border-radius: 1px !important;
   }
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]) > :first-child [class*="_navList"]::-webkit-scrollbar-track {
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor) > :first-child [class*="_navList"]::-webkit-scrollbar-track {
     background: transparent !important;
   }
   /* Cells stay whole inside the scroller: no shrink, no wrap, compact
      metrics. (Portal-aware copies of the frame-scoped rules in compat.css,
      which died with the rc.2 portal move.) */
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]) > :first-child [class*="_navCell"] {
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor) > :first-child [class*="_navCell"] {
     flex: 0 0 auto !important;
     white-space: nowrap !important;
     padding: 6px 8px !important;
@@ -6233,7 +6276,7 @@ exports.LAYOUT_CSS = `/* ---------- mobile-only layout (narrow viewport AND touc
     font-size: 13px !important;
     justify-content: flex-start !important;
   }
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]) > :first-child [class*="_navCell"] svg {
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor) > :first-child [class*="_navCell"] svg {
     width: 14px !important;
     height: 14px !important;
     flex: none !important;
@@ -6267,7 +6310,7 @@ exports.LAYOUT_CSS = `/* ---------- mobile-only layout (narrow viewport AND touc
      settings-toolbar-reparent task. Card headers live deeper — inside
      the options scroll area — and match neither, so no per-plugin hash
      guards are needed. */
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]) > :last-child > [class*="_header"]:not([class*="_headerActions"]) {
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor) > :last-child > [class*="_header"]:not([class*="_headerActions"]) {
     position: absolute;
     top: 10px;
     right: 12px;
@@ -6298,11 +6341,11 @@ exports.LAYOUT_CSS = `/* ---------- mobile-only layout (narrow viewport AND touc
     height: 32px;
     min-height: 32px;
   }
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]) > :last-child > [class*="_header"]:not([class*="_headerActions"]) > * {
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor) > :last-child > [class*="_header"]:not([class*="_headerActions"]) > * {
     margin-left: 0 !important;
     margin-right: 0 !important;
   }
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]) > :last-child > [class*="_header"]:not([class*="_headerActions"]) > :last-child {
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor) > :last-child > [class*="_header"]:not([class*="_headerActions"]) > :last-child {
     position: relative;
     width: 32px;
     height: 32px;
@@ -6320,7 +6363,7 @@ exports.LAYOUT_CSS = `/* ---------- mobile-only layout (narrow viewport AND touc
      button starts ~13px under the ✕'s bottom edge and must keep its own
      top-right corner. Anchored to the button (position:relative above),
      so the extension travels with the pinned toolbar. */
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]) > :last-child > [class*="_header"]:not([class*="_headerActions"]) > :last-child::after {
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor) > :last-child > [class*="_header"]:not([class*="_headerActions"]) > :last-child::after {
     content: "";
     position: absolute;
     inset: -6px -6px 0 -6px;
@@ -6337,7 +6380,7 @@ exports.LAYOUT_CSS = `/* ---------- mobile-only layout (narrow viewport AND touc
      Desktop keeps the button: this whole block sits inside the mobile
      media wrapper. (Portal-aware replacement for the frame-scoped rule in
      compat.css, which died with the rc.2 portal move.) */
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]) > :last-child > [class*="_header"]:not([class*="_headerActions"]) [class*="_actions"] {
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor) > :last-child > [class*="_header"]:not([class*="_headerActions"]) [class*="_actions"] {
     display: none !important;
   }
   /* Appearance mode cards: the official cube row renders three tall
@@ -6358,12 +6401,15 @@ exports.LAYOUT_CSS = `/* ---------- mobile-only layout (narrow viewport AND touc
   }
   /* Content: the options scroll area gets bottom breathing room so the last
      row never sits flush against the sheet's rounded corner. */
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]) > :last-child {
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor) > :last-child {
     flex: 1 1 auto;
     min-height: 0;
   }
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]) > :last-child > :last-child {
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor) > :last-child > :last-child {
     padding: 0 12px 24px;
+    min-width: 0;
+    box-sizing: border-box;
+    scrollbar-gutter: stable;
   }
   /* 0.1.6-alpha.2 宿主的插件管理页（dsh-client-ui-plugin-manager 渲染的
      section[data-plugin-panel]）。FAB 是全站恒定的左上角控件（用户明确
@@ -6416,7 +6462,7 @@ exports.LAYOUT_CSS = `/* ---------- mobile-only layout (narrow viewport AND touc
   [data-mobile-nav="frame"] section[data-plugin-panel] [data-plugin-row-detail] button[class*="_crumb"] {
     margin-left: var(--dsh-web-mobile-panel-clearance) !important;
   }
-  /* 快捷键弹层在手机上的落地形态。上面那条 :not([data-shortcut-modal="shortcuts"])
+  /* 快捷键弹层在手机上的落地形态。上面那条 :not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor)
      只是把它从设置面板家族里摘出来、还它官方的内部排版（2026-09-25 实测：纵向列
      回来了、标题「快捷键」回来了、列表 441px 可滚、无横向溢出、docScrollWidth
      恒 390）。但官方的外框在手机上仍会「抽搐」：宿主 Modal 的 _root 是
@@ -6463,7 +6509,7 @@ exports.LAYOUT_CSS = `/* ---------- mobile-only layout (narrow viewport AND touc
   }
 
   /* DSHA 可见区域边界：分屏、短横屏、软键盘和 visualViewport 平移均可达。 */
-  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]),
+  [aria-modal="true"]:has(> :first-child > :last-child > button):not(:has([role="navigation"])):not(:has([class*="ZuhsRW"])):not([data-shortcut-modal="shortcuts"]):not(.dsha-preset-editor),
   [aria-modal="true"][data-shortcut-modal="shortcuts"] {
     top: calc(env(safe-area-inset-top, 0px) + 12px + var(--dsha-mobile-viewport-top, 0px)) !important;
     max-height: max(1px, calc(var(--dsha-mobile-visible-vh, 100vh) - 24px - env(safe-area-inset-top, 0px))) !important;
@@ -7360,13 +7406,8 @@ exports.COMPAT_CSS = `@media (max-width: 1023px) and (pointer: coarse) {
     overflow: hidden !important;
     text-overflow: ellipsis !important;
   }
-  [data-mobile-nav="stats-tps"] * {
-    white-space: nowrap !important;
-  }
-  [data-mobile-nav="stats-tps"] span {
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    min-width: 0 !important;
+  [data-mobile-nav="stats-tps-reserve"] {
+    display: inline-block !important;
   }
   /* overlay 的定位上下文：宿主自己没定位时才生效（无 !important，宿主样式随时
      可以接管；stats-line 每帧按真实 positioned ancestor 计算，不受影响）。 */

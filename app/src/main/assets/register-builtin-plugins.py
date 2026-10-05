@@ -62,6 +62,11 @@ DEFAULT_BUILTINS = (
     "dsh-computer-use-android",
     "dsh-auto-review",
     "dsh-tool-vscreen",
+    "dsh-peak-chip",
+    "dsh-batch-tool-calls",
+    "dsh-any-background",
+    "dsh-session-health",
+    "dsh-subagent-model-picker",
     "dsh-app-integration",
 )
 

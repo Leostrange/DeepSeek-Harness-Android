@@ -4,19 +4,23 @@
   "patches": [
     {
       "before": "onClick: openTitle === void 0 ? () => {",
-      "after": "\"data-dsha-lineage-trigger\": true,\n                        onClick: openTitle === void 0 ? () => {"
+      "after": "\"data-dsha-lineage-trigger\": true,\n\t\t\t\t\tonClick: openTitle === void 0 ? () => {"
     },
     {
       "before": "const scheduleHoverOpen = () => {",
-      "after": "const scheduleHoverOpen = () => {\n                if (window.matchMedia(\"(pointer: coarse)\").matches) return;"
+      "after": "const scheduleHoverOpen = () => {\n\t\t\t\tif (window.matchMedia(\"(pointer: coarse)\").matches) return;"
     },
     {
       "before": "const scheduleHoverClose = () => {",
-      "after": "const scheduleHoverClose = () => {\n                if (window.matchMedia(\"(pointer: coarse)\").matches) return;"
+      "after": "const scheduleHoverClose = () => {\n\t\t\t\tif (window.matchMedia(\"(pointer: coarse)\").matches) return;"
     },
     {
       "before": "className: SubagentHeaderLineage_module_css_default.menu,",
       "after": "className: SubagentHeaderLineage_module_css_default.menu + \" dsha-lineage-menu\","
+    },
+    {
+      "before": "ctx.slots.inject(\"conversation.session.header.actions\", () => ctx.slots.register({\n\t\t\t\tname: \"conversation.session.header.actions\",\n\t\t\t\tid: \"subagent-catalog\",\n\t\t\t\torder: -30,\n\t\t\t\tlocale: NS,\n\t\t\t\tinject: catalogActions\n\t\t\t}, SubagentCatalogAction));",
+      "after": "/* Subagents are rendered as the right column of the single Agents panel. */"
     }
   ]
 }

@@ -110,7 +110,7 @@ def main():
         # 固定的应用设置操作，没有接收任意命令的“内部跳过”入口。
         try:
             result = adb.connect_with_retry(AdbDeviceTls, PythonRSASigner,
-                'pm grant com.dsh.client android.permission.WRITE_SECURE_SETTINGS',
+                'pm grant com.dsh.client.rc2ru android.permission.WRITE_SECURE_SETTINGS',
                 a.connect_port, a.host, connect_timeout=15, command_timeout=10)
             print(result.output); print('[EXIT=%d]' % result.exit_code)
             return result.exit_code

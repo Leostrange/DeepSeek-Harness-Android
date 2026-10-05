@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class HttpShellService {
 
-    public static final int PORT = 3090;
+    public static final int PORT = com.deepseekharness.app.util.AppIdentity.BRIDGE_PORT;
     private static final String CONFIRM_CHANNEL = "dsh_confirm_channel";
     private static final int CONFIRM_NOTIF_ID = Constants.NOTIF_SHELL_CONFIRM;
     /** 智能体通知：与确认通知使用不同 id / requestCode，互不覆盖。 */

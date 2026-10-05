@@ -16,6 +16,17 @@ public class RecoveryStatusTextTest {
 
     @After public void reset() { UiText.setLanguage("zh"); }
 
+    @Test public void russianRecoveryNoticeRoundTripsWithoutTranslatingUnknownDiagnostics() {
+        UiText.setLanguage("ru");
+        String expected=UiMessages.RU.get(READ_ONLY_ZH)+UiMessages.RU.get(NO_KEY_ZH);
+        assertEquals(expected,RecoveryStatusText.render("READY_READ_ONLY",READ_ONLY_EN+NO_KEY_EN));
+        assertEquals(expected,RecoveryStatusText.render("READY_READ_ONLY",expected));
+        String raw=READ_ONLY_EN+" unknown plugin output";
+        assertEquals(raw,RecoveryStatusText.render("READY_READ_ONLY",raw));
+        UiText.setLanguage("en");
+        assertEquals(READ_ONLY_EN+NO_KEY_EN,RecoveryStatusText.render("READY_READ_ONLY",expected));
+    }
+
     @Test public void readyAndCredentialNoticesFollowLanguage() {
         UiText.setLanguage("zh");
         assertEquals(READY_ZH, RecoveryStatusText.render("READY", READY_EN));

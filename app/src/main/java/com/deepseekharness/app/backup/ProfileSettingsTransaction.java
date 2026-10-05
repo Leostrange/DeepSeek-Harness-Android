@@ -26,7 +26,7 @@ public final class ProfileSettingsTransaction implements HostDataTransaction.Tar
     }
     public static File resolveHome(Context context,BackupFileSystem fs,File files,File home)throws IOException {
         File publicRoot=Environment.getExternalStorageDirectory().getCanonicalFile();
-        return new GuestDataResolver(fs,new File(files,"linux/ubuntu"),publicRoot,List.of(new File(files,"user-data-v5"),new File(publicRoot,"Documents/dshdata"))).resolve(home).file;
+        return new GuestDataResolver(fs,new File(files,"linux/ubuntu"),publicRoot,List.of(new File(files,"user-data-v5"),new File(publicRoot,com.deepseekharness.app.util.AppIdentity.PUBLIC_DATA_PATH))).resolve(home).file;
     }
     @Override public File resolve(String id)throws IOException {
         if(id.equals("environment")&&record.get("workspace") instanceof String){

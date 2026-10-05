@@ -1,13 +1,13 @@
 package com.deepseekharness.app.util;
 
 /**
- * 界面语言偏好：<b>跟随系统</b> / 中文 / 英文。
+ * 界面语言偏好：<b>跟随系统</b> / 中文 / 英文 / 俄文。
  *
  * <p>构建契约见 AGENTS.md「中英文界面默认中文」：仅当用户显式选择语言时才偏离系统，
  * 其余情况都跟随系统 —— 系统是中文（或无法识别）落中文，系统的首选语言是英文落英文，
- * 其他语言也落英文（英语是唯一可用的国际语言，比中文更可能被看懂）。
+ * 俄语落俄文，其他语言落英文（未提供专用翻译时使用英语）。
  *
- * <p>偏好值只有三个：{@code system}（默认）、{@code zh}、{@code en}。旧版本只写过
+ * <p>偏好值有四个：{@code system}（默认）、{@code zh}、{@code en}、{@code ru}。旧版本只写过
  * {@code zh}/{@code en}，所以老用户升级后保持原语言；从未设置过的用户视为 {@code system}。
  */
 public final class UiLanguagePreference {
@@ -18,20 +18,23 @@ public final class UiLanguagePreference {
     public static final String ZH = "zh";
     /** 英文。 */
     public static final String EN = "en";
+    /** Русский。 */
+    public static final String RU = "ru";
 
     private UiLanguagePreference() {
     }
 
-    /** 规范化偏好值：只认显式选择的 en/zh，其余（含 null、旧脏值）一律跟随系统。 */
+    /** 规范化偏好值：只认显式选择的 en/zh/ru，其余（含 null、旧脏值）一律跟随系统。 */
     public static String normalize(String value) {
         if (EN.equals(value)) return EN;
         if (ZH.equals(value)) return ZH;
+        if (RU.equals(value)) return RU;
         return SYSTEM;
     }
 
-    /** 这个值是否是可保存的偏好（三个之一）。 */
+    /** 这个值是否是可保存的偏好（四个之一）。 */
     public static boolean supported(String value) {
-        return SYSTEM.equals(value) || ZH.equals(value) || EN.equals(value);
+        return SYSTEM.equals(value) || ZH.equals(value) || EN.equals(value) || RU.equals(value);
     }
 
     /** 偏好是否表示「跟随系统」。 */
@@ -51,6 +54,7 @@ public final class UiLanguagePreference {
         if (languageTag == null || languageTag.trim().isEmpty()
                 || "und".equalsIgnoreCase(languageTag.trim())
                 || !languageTag.trim().matches("(?i)[a-z]{2,8}([_-][a-z0-9]{1,8})*")) return ZH;
+        if (languageTag.trim().matches("(?i)ru([_-].*)?")) return RU;
         return isChinese(languageTag) ? ZH : EN;
     }
 

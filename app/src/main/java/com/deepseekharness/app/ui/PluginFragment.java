@@ -552,8 +552,8 @@ public class PluginFragment extends Fragment {
                     String action = actions.get(which);
                     if (action.equals("查看详情")) {
                         new com.deepseekharness.app.ui.DshaDialogBuilder(requireContext()).setTitle(item.name)
-                                .setMessage(item.description + com.deepseekharness.app.util.UiText.text("\n\n版本：") + item.version
-                                        + (item.location.isEmpty() ? "" : com.deepseekharness.app.util.UiText.text("\n位置：") + item.location)
+                                .setMessage(descriptionText(item) + com.deepseekharness.app.util.UiText.text("\n\n版本：") + item.version
+                                        + (item.location.isEmpty() ? "" : com.deepseekharness.app.util.UiText.text("\n位置：") + com.deepseekharness.app.util.UiStateText.render(item.location))
                                         + (item.source.isEmpty() ? "" : com.deepseekharness.app.util.UiText.text("\n来源：") + item.source)
                                         + (item.latestVersion.isEmpty() ? "" : com.deepseekharness.app.util.UiText.text("\n上次检查版本：") + item.latestVersion)
                                         + (item.updateMessage.isEmpty() ? "" : "\n" + com.deepseekharness.app.util.UiStateText.render(item.updateMessage))
@@ -593,6 +593,10 @@ public class PluginFragment extends Fragment {
         if (isAdded()) Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
     }
 
+    private String descriptionText(PluginRepository.Item item) {
+        return com.deepseekharness.app.util.UiStateText.render(item.description);
+    }
+
     private class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         class Holder extends RecyclerView.ViewHolder {
             final TextView name, state, description;
@@ -616,7 +620,7 @@ public class PluginFragment extends Fragment {
         @Override public void onBindViewHolder(@NonNull Holder holder, int position) {
             if (getItemViewType(position) != 1) return;
             PluginRepository.Item item = visibleItems.get(position - 1);
-            holder.name.setText(item.name);
+            holder.name.setText(com.deepseekharness.app.util.UiStateText.render(item.name));
             holder.state.setText((item.dynamic ? (item.enabled ? com.deepseekharness.app.util.UiText.text("临时插件 · 已运行") : com.deepseekharness.app.util.UiText.text("临时插件 · 未运行"))
                     : item.available ? (item.enabled ? com.deepseekharness.app.util.UiText.text("已启用") : item.detected ? com.deepseekharness.app.util.UiText.text("已检测，可开启以加入 Web") : com.deepseekharness.app.util.UiText.text("已禁用")) : com.deepseekharness.app.util.UiText.text("实体缺失，请重新导入"))
                     + (item.version.isEmpty() ? "" : " · " + item.version)
@@ -642,9 +646,9 @@ public class PluginFragment extends Fragment {
             holder.itemView.findViewById(R.id.pluginActions).setContentDescription(com.deepseekharness.app.util.UiText.text("更多操作：") + item.name);
             android.widget.Button expand=holder.itemView.findViewById(R.id.pluginExpand),delete=holder.itemView.findViewById(R.id.pluginDelete);
             TextView details=holder.itemView.findViewById(R.id.pluginDetails);
-            String location=item.location.isEmpty()?com.deepseekharness.app.util.UiText.choose("未提供路径", "Path not provided"):item.location;
+            String location=item.location.isEmpty()?com.deepseekharness.app.util.UiText.choose("未提供路径", "Path not provided"):com.deepseekharness.app.util.UiStateText.render(item.location);
             String source=item.source.isEmpty()?(item.builtin?com.deepseekharness.app.util.UiText.choose("随包内置", "Bundled"):item.official?com.deepseekharness.app.util.UiText.choose("DSH 官方组件", "Official DSH component"):com.deepseekharness.app.util.UiText.choose("来源未记录", "Source not recorded")):item.source;
-            details.setText(item.description+"\n\n"+com.deepseekharness.app.util.UiText.choose("版本：", "Version: ")+item.version+"\n"+com.deepseekharness.app.util.UiText.choose("位置：", "Location: ")+location+"\n"+com.deepseekharness.app.util.UiText.choose("来源：", "Source: ")+source);
+            details.setText(descriptionText(item)+"\n\n"+com.deepseekharness.app.util.UiText.choose("版本：", "Version: ")+item.version+"\n"+com.deepseekharness.app.util.UiText.choose("位置：", "Location: ")+location+"\n"+com.deepseekharness.app.util.UiText.choose("来源：", "Source: ")+source);
             details.setVisibility(expandedPlugins.contains(item.name)?View.VISIBLE:View.GONE);
             expand.setText(expandedPlugins.contains(item.name)?com.deepseekharness.app.util.UiText.choose("收起详情", "Collapse details"):com.deepseekharness.app.util.UiText.choose("展开插件详情", "Plugin details"));
             expand.setOnClickListener(v->{if(!expandedPlugins.add(item.name))expandedPlugins.remove(item.name);int at=holder.getAdapterPosition();if(at!=RecyclerView.NO_POSITION)notifyItemChanged(at);});

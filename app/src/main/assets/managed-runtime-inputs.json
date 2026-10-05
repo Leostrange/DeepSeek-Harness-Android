@@ -276,6 +276,331 @@
       "asset": "dsha-runtime-env.sh",
       "target": "etc/profile.d/dsha-runtime-env.sh",
       "executable": false
+    },
+    {
+      "asset": "builtin-presets/devtools.patch.yml",
+      "target": "usr/local/lib/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/dsh-web-app/presets/devtools.patch.yml",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-peak-chip/cordis.patch.yml",
+      "target": "root/dsha-peak-chip/cordis.patch.yml",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-peak-chip/lib/client.js",
+      "target": "root/dsha-peak-chip/lib/client.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-peak-chip/lib/index.js",
+      "target": "root/dsha-peak-chip/lib/index.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-peak-chip/LICENSE",
+      "target": "root/dsha-peak-chip/LICENSE",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-peak-chip/package.json",
+      "target": "root/dsha-peak-chip/package.json",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-peak-chip/README.md",
+      "target": "root/dsha-peak-chip/README.md",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-peak-chip/依赖.md",
+      "target": "root/dsha-peak-chip/依赖.md",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-peak-chip/声明.md",
+      "target": "root/dsha-peak-chip/声明.md",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-peak-chip/开发日志.md",
+      "target": "root/dsha-peak-chip/开发日志.md",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-peak-chip/故障记录/2026-09-20-其它端消费被误判失效.md",
+      "target": "root/dsha-peak-chip/故障记录/2026-09-20-其它端消费被误判失效.md",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-peak-chip/故障记录/2026-09-20-误判一笔充值.md",
+      "target": "root/dsha-peak-chip/故障记录/2026-09-20-误判一笔充值.md",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-peak-chip/维修手册.md",
+      "target": "root/dsha-peak-chip/维修手册.md",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-peak-chip/计费算法说明.md",
+      "target": "root/dsha-peak-chip/计费算法说明.md",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-batch-tool-calls/cordis.patch.yml",
+      "target": "root/dsha-batch-tool-calls/cordis.patch.yml",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-batch-tool-calls/lib/index.js",
+      "target": "root/dsha-batch-tool-calls/lib/index.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-batch-tool-calls/LICENSE",
+      "target": "root/dsha-batch-tool-calls/LICENSE",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-batch-tool-calls/package.json",
+      "target": "root/dsha-batch-tool-calls/package.json",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-batch-tool-calls/README.md",
+      "target": "root/dsha-batch-tool-calls/README.md",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-any-background/cordis.patch.yml",
+      "target": "root/dsha-any-background/cordis.patch.yml",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-any-background/lib/client.js",
+      "target": "root/dsha-any-background/lib/client.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-any-background/lib/index.js",
+      "target": "root/dsha-any-background/lib/index.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-any-background/lib/invariant.js",
+      "target": "root/dsha-any-background/lib/invariant.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-any-background/LICENSE",
+      "target": "root/dsha-any-background/LICENSE",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-any-background/package.json",
+      "target": "root/dsha-any-background/package.json",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-any-background/README.md",
+      "target": "root/dsha-any-background/README.md",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-any-background/README.zh.md",
+      "target": "root/dsha-any-background/README.zh.md",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/cordis.patch.yml",
+      "target": "root/dsha-session-health/cordis.patch.yml",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/assess.d.ts",
+      "target": "root/dsha-session-health/lib/assess.d.ts",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/assess.js",
+      "target": "root/dsha-session-health/lib/assess.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/client.d.ts",
+      "target": "root/dsha-session-health/lib/client.d.ts",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/client.js",
+      "target": "root/dsha-session-health/lib/client.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/command.d.ts",
+      "target": "root/dsha-session-health/lib/command.d.ts",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/command.js",
+      "target": "root/dsha-session-health/lib/command.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/config.d.ts",
+      "target": "root/dsha-session-health/lib/config.d.ts",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/config.js",
+      "target": "root/dsha-session-health/lib/config.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/index.d.ts",
+      "target": "root/dsha-session-health/lib/index.d.ts",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/index.js",
+      "target": "root/dsha-session-health/lib/index.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/overview.d.ts",
+      "target": "root/dsha-session-health/lib/overview.d.ts",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/overview.js",
+      "target": "root/dsha-session-health/lib/overview.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/pricing.d.ts",
+      "target": "root/dsha-session-health/lib/pricing.d.ts",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/pricing.js",
+      "target": "root/dsha-session-health/lib/pricing.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/projection.d.ts",
+      "target": "root/dsha-session-health/lib/projection.d.ts",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/projection.js",
+      "target": "root/dsha-session-health/lib/projection.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/schemas.d.ts",
+      "target": "root/dsha-session-health/lib/schemas.d.ts",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/schemas.js",
+      "target": "root/dsha-session-health/lib/schemas.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/tool.d.ts",
+      "target": "root/dsha-session-health/lib/tool.d.ts",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/tool.js",
+      "target": "root/dsha-session-health/lib/tool.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/types.d.ts",
+      "target": "root/dsha-session-health/lib/types.d.ts",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/types.js",
+      "target": "root/dsha-session-health/lib/types.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/usage.d.ts",
+      "target": "root/dsha-session-health/lib/usage.d.ts",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/usage.js",
+      "target": "root/dsha-session-health/lib/usage.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/util.d.ts",
+      "target": "root/dsha-session-health/lib/util.d.ts",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/lib/util.js",
+      "target": "root/dsha-session-health/lib/util.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/package.json",
+      "target": "root/dsha-session-health/package.json",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/README.md",
+      "target": "root/dsha-session-health/README.md",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-session-health/README.zh.md",
+      "target": "root/dsha-session-health/README.zh.md",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-subagent-model-picker/cordis.patch.yml",
+      "target": "root/dsha-subagent-model-picker/cordis.patch.yml",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-subagent-model-picker/lib/index.d.ts",
+      "target": "root/dsha-subagent-model-picker/lib/index.d.ts",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-subagent-model-picker/lib/index.js",
+      "target": "root/dsha-subagent-model-picker/lib/index.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-subagent-model-picker/lib/tools.d.ts",
+      "target": "root/dsha-subagent-model-picker/lib/tools.d.ts",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-subagent-model-picker/lib/tools.js",
+      "target": "root/dsha-subagent-model-picker/lib/tools.js",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-subagent-model-picker/package.json",
+      "target": "root/dsha-subagent-model-picker/package.json",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-subagent-model-picker/README.md",
+      "target": "root/dsha-subagent-model-picker/README.md",
+      "executable": false
+    },
+    {
+      "asset": "builtin-plugins/dsh-subagent-model-picker/README.zh.md",
+      "target": "root/dsha-subagent-model-picker/README.zh.md",
+      "executable": false
     }
   ],
   "assetFiles": [
@@ -298,8 +623,24 @@
     "plugin-manager-navigation-patch.json",
     "plugin-manager-policy-patch.json",
     "pnpm-runtime.bin",
+    "preset-editor-client.js",
+    "preset-editor-host.js",
+    "preset-editor-yaml.js",
     "profile-settings-review.js",
     "rc1-settings-migration-patch.json",
+    "response-language-policy-patch.json",
+    "ru-agent-team-patch.json",
+    "ru-jobs-patch.json",
+    "ru-stats-strip-patch.json",
+    "ru-plugin-inventory-patch.json",
+    "ru-plugin-manager-copy-patch.json",
+    "ru-auto-review-patch.json",
+    "ru-devtools-package-patch.json",
+    "ru-permission-patch.json",
+    "ru-preset-editor-backend-patch.json",
+    "ru-preset-editor-host-patch.json",
+    "ru-preset-editor-remote-client-patch.json",
+    "ru-preset-picker-patch.json",
     "runtime-trial-page.js",
     "runtime-trial-plugin.js",
     "session-interaction-patch.json",
@@ -317,28 +658,43 @@
     "app/src/main/java/com/deepseekharness/app/runtime"
   ],
   "launcherSources": [
-    "util/IsolatedCommand.java",
-    "util/PluginDownloadSource.java",
+    "DeviceShellExecutor.java",
+    "DshaApp.java",
+    "HttpShellService.java",
+    "LanProxyService.java",
+    "PtySession.java",
+    "backup/FactoryReset.java",
+    "backup/HostMaintenancePending.java",
+    "backup/MaintenanceDataSnapshot.java",
+    "backup/NativeDataLocations.java",
+    "backup/NativeRestoreTargets.java",
+    "backup/ProfileSettingsTransaction.java",
     "backup/RuntimeTrialRecords.java",
-    "util/WebProcSel.java",
-    "util/WebPidIdentity.java",
-    "util/ManagedRuntimeLayout.java",
+    "core/ConfigStore.java",
+    "core/EnvironmentMaintenance.java",
+    "core/HarnessController.java",
+    "core/MaintenanceCoordinator.java",
+    "core/RuntimeTasks.java",
+    "core/SimpleTerminalBackend.java",
+    "core/TerminalSessionOwner.java",
+    "util/AppIdentity.java",
+    "util/ConfigInput.java",
+    "util/Constants.java",
+    "util/GuestCommandOutcome.java",
+    "util/IsolatedCommand.java",
+    "util/MaintenanceGate.java",
     "util/ManagedAssetVersion.java",
     "util/ManagedInstallPath.java",
-    "util/MaintenanceGate.java",
+    "util/ManagedRuntimeLayout.java",
+    "util/PluginDownloadSource.java",
+    "util/ProgressInputStream.java",
     "util/RuntimeWorkPort.java",
-    "util/GuestCommandOutcome.java",
-    "backup/HostMaintenancePending.java",
-    "core/RuntimeTasks.java",
-    "core/MaintenanceCoordinator.java",
-    "core/ConfigStore.java",
-    "core/HarnessController.java",
-    "core/TerminalSessionOwner.java",
-    "core/SimpleTerminalBackend.java",
-    "util/TerminalSession.java",
     "util/TerminalReady.java",
+    "util/TerminalSession.java",
     "util/TerminalTabs.java",
-    "DshaApp.java",
-    "PtySession.java"
+    "util/WebPidIdentity.java",
+    "util/WebPortPolicy.java",
+    "util/WebProcSel.java",
+    "vscreen/VirtualScreenCore.java"
   ]
 }

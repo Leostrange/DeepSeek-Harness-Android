@@ -1,0 +1,14 @@
+{
+  "dshVersion": "0.1.7-rc.2",
+  "module": "@deepseek-ai/dsh-client-ui-plugin-manager/lib/client.js",
+  "patches": [
+    {
+      "before": "title: pkg.meta?.title === void 0 ? pkg.name : resolveText(pkg.meta.title),",
+      "after": "title: resolveText(pkg.meta?.title ?? pkg.name),"
+    },
+    {
+      "before": "title: row.meta?.title === void 0 ? row.moduleName : resolveText(row.meta.title),",
+      "after": "title: resolveText(row.meta?.title ?? row.moduleName),"
+    }
+  ]
+}

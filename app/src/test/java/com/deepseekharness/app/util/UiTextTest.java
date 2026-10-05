@@ -26,4 +26,17 @@ public class UiTextTest {
         assertEquals("Environment task running: Plugin operation",UiText.status(original));
         assertTrue(original.startsWith("环境任务进行中"));
     }
+    @Test public void russianLabelsAndUserContentUseSeparateBoundaries() {
+        UiText.setLanguage("ru");
+        assertEquals("Далее",UiText.choose("下一步","Next"));
+        assertEquals("Далее",UiText.text("下一步"));
+        assertEquals("Fallback",UiText.choose("未登记的应用文案","Fallback"));
+        String command="printf 'user text 中文 русский'";
+        assertSame(command,UiText.toolStatus(command));
+    }
+    @Test public void pairingInitialStatusIsTranslated() {
+        UiText.setLanguage("ru");
+        assertEquals("Введите код сопряжения и начинайте; порт будет найден заново.",
+                UiText.text("输入配对码后开始；端口会重新发现。"));
+    }
 }

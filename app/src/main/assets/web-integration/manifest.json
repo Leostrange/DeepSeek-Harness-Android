@@ -29,6 +29,7 @@
         "http://127.0.0.1/*"
       ],
       "js": [
+        "mobile-layout.js",
         "page.js",
         "content.js"
       ],

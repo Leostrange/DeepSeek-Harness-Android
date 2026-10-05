@@ -1,0 +1,5 @@
+# dsh-peak-chip bundle patch
+# 只插入插件行；全部逻辑在浏览器半边（lib/client.js）。
+- insert:
+    - id: peak-chip
+      name: 'dsh-peak-chip'

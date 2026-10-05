@@ -132,7 +132,7 @@ public final class VirtualScreenCore {
     }
 
     private static String installedDshaApkPath(Context system) throws Exception {
-        String source=system.getPackageManager().getApplicationInfo("com.dsh.client",0).sourceDir;
+        String source=system.getPackageManager().getApplicationInfo(com.deepseekharness.app.util.AppIdentity.APPLICATION_ID,0).sourceDir;
         String canonical=new File(source).getCanonicalPath();
         if(!source.equals(canonical)||!com.deepseekharness.app.util.DeviceShellPolicy.canonicalApkPath(canonical))
             throw new SecurityException("INVALID_CLASSPATH");

@@ -87,7 +87,7 @@ def build(archive: Path, assets: Path, dsh_version: str):
     language = json.loads((assets / 'language-patch.json').read_text(encoding='utf8'))
     if language.get('dshVersion') != dsh_version \
             or language.get('module') != TARGETS['client-locale.js'].removeprefix(PREFIX) \
-            or not isinstance(language.get('patches'), list) or len(language['patches']) != 3 \
+            or not isinstance(language.get('patches'), list) or len(language['patches']) != 4 \
             or language['patches'][0].get('prependAsset') != 'web-integration/language.js' \
             or any('prependAsset' in patch for patch in language['patches'][1:]):
         raise ValueError('RECOVERY_LANGUAGE_RECIPE_PATH')

@@ -17,7 +17,10 @@ public class FactoryResetTest {
     @Test public void removesOnlyLegacyDshaDataTree() throws Exception {
         File storage = temporary.newFolder("storage");
         File documents = new File(storage, "Documents");
-        File data = new File(documents, "dshdata/sessions");
+        File alpha = new File(documents, "dshdata/sessions/original.json");
+        assertTrue(alpha.getParentFile().mkdirs());
+        java.nio.file.Files.writeString(alpha.toPath(), "alpha data");
+        File data = new File(documents, "dshdata-rc2ru/sessions");
         assertTrue(data.mkdirs());
         put(new File(data, "session.json"), "private conversation");
         File keep = new File(documents, "keep.txt");
@@ -26,7 +29,8 @@ public class FactoryResetTest {
         FactoryReset.eraseLegacyPublicData(new JvmBackupFileSystem(), storage,
                 new BackupControl(null));
 
-        assertFalse(new File(documents, "dshdata").exists());
+        assertFalse(new File(documents, "dshdata-rc2ru").exists());
+        assertEquals("alpha data", java.nio.file.Files.readString(alpha.toPath()));
         assertEquals("user file", java.nio.file.Files.readString(keep.toPath()));
 
         File privateRoot = temporary.newFolder("private-root");
@@ -53,15 +57,15 @@ public class FactoryResetTest {
 
     @Test public void publicFuseSyncFailureIsWarningAfterLegacyDataWasRemoved() throws Exception {
         File storage=temporary.newFolder("fuse-storage"),documents=new File(storage,"Documents");
-        assertTrue(new File(documents,"dshdata").mkdirs());
-        put(new File(documents,"dshdata/session.json"),"session");
+        assertTrue(new File(documents,"dshdata-rc2ru").mkdirs());
+        put(new File(documents,"dshdata-rc2ru/session.json"),"session");
         File keep=new File(documents,"keep.txt");put(keep,"keep");
         FaultFs fs=new FaultFs();fs.failSync=documents.getAbsoluteFile();
 
         String warning=FactoryReset.eraseLegacyPublicDataBestEffort(fs,storage,new BackupControl(null));
 
         assertTrue(warning.contains("FILESYSTEM_22"));
-        assertFalse(new File(documents,"dshdata").exists());
+        assertFalse(new File(documents,"dshdata-rc2ru").exists());
         assertEquals("keep",java.nio.file.Files.readString(keep.toPath()));
     }
 

@@ -1,0 +1,7 @@
+# dsh-subagent-model-picker bundle layer: registers the `subagent_model`
+# delegation tool (per-call provider / model / max_tokens overrides) and the
+# `subagent_models` catalog tool. Apply as a profile bundle
+# (`dsh plugin add dsh-subagent-model-picker`) or via a profile overlay.
+- insert:
+    - id: subagent-model-picker
+      name: 'dsh-subagent-model-picker'

@@ -33,7 +33,7 @@
     <string name="ui_m0025" formatted="false">"No logs yet."</string>
     <string name="ui_m0026" formatted="false">"Pairing and ports"</string>
     <string name="ui_m0027" formatted="false">"Restart"</string>
-    <string name="ui_m0028" formatted="false">"3080 (1–65535; avoid 3081 / 3090)"</string>
+    <string name="ui_m0028" formatted="false">"3380 (1–65535; avoid 3381 / 3390)"</string>
     <string name="ui_m0029" formatted="false">"6-digit pairing code"</string>
     <string name="ui_m0030" formatted="false">"ADB is off. Leave it off if you do not use wireless debugging."</string>
     <string name="ui_m0031" formatted="false">"Wireless ADB pairing"</string>
@@ -97,7 +97,7 @@
     <string name="ui_m0090" formatted="false">"Enable ADB device access (off by default)"</string>
     <string name="ui_m0091" formatted="false">"Four pages"</string>
     <string name="ui_m0092" formatted="false">"Enable ADB in DSHA's Device permissions and keep your phone connected to Wi-Fi."</string>
-    <string name="ui_m0093" formatted="false">"While the local Web service is running, devices on the same Wi-Fi can access conversations through port 3081. LAN permission is required. Enable only on trusted networks."</string>
+    <string name="ui_m0093" formatted="false">"While the local Web service is running, devices on the same Wi-Fi can access conversations through port 3381. LAN permission is required. Enable only on trusted networks."</string>
     <string name="ui_m0094" formatted="false">"View releases in browser"</string>
     <string name="ui_m0095" formatted="false">"Open in browser"</string>
     <string name="ui_m0096" formatted="false">"Basic tools"</string>

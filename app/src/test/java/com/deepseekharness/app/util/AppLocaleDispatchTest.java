@@ -39,4 +39,13 @@ public class AppLocaleDispatchTest {
         assertThrows(IllegalArgumentException.class,()->AppLocaleDispatch.apply(23,"fr",writer));
         assertTrue(calls.isEmpty());
     }
+    @Test public void russianReachesBothSupportedPlatformPaths() {
+        List<String> calls=new ArrayList<>();
+        AppLocaleDispatch.Writer writer=new AppLocaleDispatch.Writer(){
+            public void platform(String language){calls.add("platform:"+language);}
+            public void compat(String language){calls.add("compat:"+language);}
+        };
+        AppLocaleDispatch.apply(33,"ru",writer);AppLocaleDispatch.apply(23,"ru",writer);
+        assertEquals(List.of("platform:ru","compat:ru"),calls);
+    }
 }

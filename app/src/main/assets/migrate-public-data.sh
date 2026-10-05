@@ -1,5 +1,5 @@
 #!/system/bin/sh
-# DSH_HOME 里的热数据迁移到公开目录（/sdcard/Documents/dshdata），原位留私有符号
+# DSH_HOME 里的热数据迁移到公开目录（/sdcard/Documents/dshdata-rc2ru），原位留私有符号
 # 链接指向公开副本。会话/设置/附件在文件管理器里可见、可备份、卸载重装不丢
 # （前提是用户保留 Documents 目录）。
 #
@@ -23,7 +23,7 @@
 # 那是真实的数据丢失。宁可留一份 .conflict 让用户自己选。
 
 set -u
-PUB="/sdcard/Documents/dshdata"
+PUB="/sdcard/Documents/dshdata-rc2ru"
 HOME_DIR="/root/.dsh"
 
 ITEMS="sessions storages attachments settings.yaml"

@@ -313,7 +313,8 @@ public class WebPreviewActivity extends PictureInPictureActivity implements WebF
                         // 网页只有「中文 / English」两个显式选项，不接受 system：
                         // 把网页当成用户显式选择，避免页面误传偏好值后行为含糊。
                         if(com.deepseekharness.app.util.UiLanguagePreference.EN.equals(language)
-                                ||com.deepseekharness.app.util.UiLanguagePreference.ZH.equals(language))
+                                ||com.deepseekharness.app.util.UiLanguagePreference.ZH.equals(language)
+                                ||com.deepseekharness.app.util.UiLanguagePreference.RU.equals(language))
                             LanguageController.select(this,language);
                     } catch(IllegalStateException ignored) { }
                 });
@@ -375,11 +376,12 @@ public class WebPreviewActivity extends PictureInPictureActivity implements WebF
             progress.setVisibility(View.GONE);
             if (!WebPreviewPolicy.sameService(baseUrl, url)) return;
             retained.ready = true; refreshPictureInPicture();
+            updatePictureInPictureDocumentState(isInPictureInPictureMode());
             // 新内核已经在文档起始执行兼容脚本；这里只做轻量能力核验，避免每次页面完成
             // 又把数十 KB 的 polyfill 注入一次。旧内核没有 DOCUMENT_START_SCRIPT 时仍保留
             // 原来的页面完成注入路径。
             String compatibility = retained != null && retained.compatibilityScript != null
-                    ? CAPABILITY_CHECK
+                    ? WebPageScripts.layout(WebPreviewActivity.this)+"\n"+CAPABILITY_CHECK
                     : WebPageScripts.compatibility(WebPreviewActivity.this)+"\n"+CAPABILITY_CHECK;
             view.evaluateJavascript(compatibility, result -> {
                 if (webView != view || pageFailed || isFinishing() || isDestroyed()) return;
@@ -591,12 +593,23 @@ public class WebPreviewActivity extends PictureInPictureActivity implements WebF
 
     @Override protected void onResume() {
         super.onResume();
+        updatePictureInPictureDocumentState(isInPictureInPictureMode());
         if (!pictureInPictureActiveOrTransitioning() && webView != null) WebFrameRate.apply(this, webView);
         if(webView!=null&&WebPreviewPolicy.sameService(baseUrl,webView.getUrl())) {
             updateDocumentLanguage(webView);webView.evaluateJavascript(WebPageScripts.language(this),null);
         }
         String current = com.deepseekharness.app.core.HarnessController.get(this).getWebAuthUrl();
         if (previewAuth != null && !current.isEmpty() && !current.equals(authUrl)) loadSession();
+    }
+
+    @Override public void onPictureInPictureModeChanged(boolean inPicture, android.content.res.Configuration config) {
+        super.onPictureInPictureModeChanged(inPicture, config);
+        updatePictureInPictureDocumentState(inPicture);
+    }
+
+    private void updatePictureInPictureDocumentState(boolean inPicture) {
+        if (webView == null || !WebPreviewPolicy.sameService(baseUrl, webView.getUrl())) return;
+        webView.evaluateJavascript("document.documentElement.toggleAttribute('data-dsha-pip'," + inPicture + ")", null);
     }
 
     @Override protected void onDestroy() {

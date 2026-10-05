@@ -1,0 +1,30 @@
+{
+  "dshVersion": "0.1.7-rc.2",
+  "module": "@deepseek-ai/dsh-agent-preset-registry/lib/index.js",
+  "patches": [
+    {
+      "before": "import { dump } from \"js-yaml\";",
+      "after": "import { dump, load } from \"js-yaml\";"
+    },
+    {
+      "before": "let AgentPresetRegistry = (() => {",
+      "after": "// 自定义预设保存使用原 Loader 的配置写入；活动会话保留其旧 generation。\nasync function dshaSavePreset(registry, id, content, expected) {\n    if (['standard', 'ptc', 'minimal', 'shell', 'cordis'].includes(id)) throw new Error('Built-in presets are read-only');\n    if (typeof content !== 'string' || content.length > 262144 || typeof expected !== 'string')\n        throw new Error('Preset document is too large or invalid');\n    const record = registry.definitions.get(id);\n    if (!record) throw new Error('Preset no longer exists');\n    const current = await registry.readDocument(id);\n    if (current.content !== expected) throw new Error('Preset changed. Reopen it before saving');\n    const plugins = load(content, {schema: entryListSchema});\n    const problem = entryListProblem(plugins);\n    if (problem) throw new Error(problem);\n    const entry = record.context.fiber.entry;\n    if (!entry || entry.options.config?.id !== id || entry.options.name !== '@deepseek-ai/dsh-agent-preset'\n        || typeof entry.parent.tree.writeFile !== 'function' || entry.parent.tree.readonly\n        || typeof entry.parent.tree.write !== 'function'\n        || typeof entry.parent.tree.flushWrite !== 'function') throw new Error('Preset source is not editable');\n    // 保存期间另一写入不能通过相同旧内容；旧注册的 context 也必须仍是当前对象。\n    if (registry.definitions.get(id) !== record || (await registry.readDocument(id)).content !== expected)\n        throw new Error('Preset changed. Reopen it before saving');\n    const previous = entry.options.config;\n    await entry.update({config: {...previous, plugins}}, false, true);\n    try {\n        entry.parent.tree.write();\n        await entry.parent.tree.flushWrite();\n    }\n    catch (error) {\n        await entry.update({config: previous}, false, true);\n        throw error;\n    }\n    await registry.owner.loader.await();\n    return registry.readDocument(id);\n}\n\nlet AgentPresetRegistry = (() => {"
+    },
+    {
+      "before": "\tlet _readDocument_decorators;",
+      "after": "\tlet _readDocument_decorators;\n\tlet _saveDocument_decorators;"
+    },
+    {
+      "before": "_readDocument_decorators = [Remote(\"read\")];",
+      "after": "_readDocument_decorators = [Remote(\"read\")];\n            _saveDocument_decorators = [Remote(\"save\")];"
+    },
+    {
+      "before": "\t\t\t__esDecorate(this, null, _readDocument_decorators, {\n\t\t\t\tkind: \"method\",\n\t\t\t\tname: \"readDocument\",\n\t\t\t\tstatic: false,\n\t\t\t\tprivate: false,\n\t\t\t\taccess: {\n\t\t\t\t\thas: (obj) => \"readDocument\" in obj,\n\t\t\t\t\tget: (obj) => obj.readDocument\n\t\t\t\t},\n\t\t\t\tmetadata: _metadata\n\t\t\t}, null, _instanceExtraInitializers);",
+      "after": "\t\t\t__esDecorate(this, null, _readDocument_decorators, {\n\t\t\t\tkind: \"method\",\n\t\t\t\tname: \"readDocument\",\n\t\t\t\tstatic: false,\n\t\t\t\tprivate: false,\n\t\t\t\taccess: {\n\t\t\t\t\thas: (obj) => \"readDocument\" in obj,\n\t\t\t\t\tget: (obj) => obj.readDocument\n\t\t\t\t},\n\t\t\t\tmetadata: _metadata\n\t\t\t}, null, _instanceExtraInitializers);\n\t\t\t__esDecorate(this, null, _saveDocument_decorators, {\n\t\t\t\tkind: \"method\",\n\t\t\t\tname: \"saveDocument\",\n\t\t\t\tstatic: false,\n\t\t\t\tprivate: false,\n\t\t\t\taccess: {\n\t\t\t\t\thas: (obj) => \"saveDocument\" in obj,\n\t\t\t\t\tget: (obj) => obj.saveDocument\n\t\t\t\t},\n\t\t\t\tmetadata: _metadata\n\t\t\t}, null, _instanceExtraInitializers);"
+    },
+    {
+      "before": "\t\tasync retain(id) {",
+      "after": "\t\tasync saveDocument(id, content, expected) {\n            this.__dshaPresetWrites ??= new Set();\n            if(this.__dshaPresetWrites.has(id)) throw new Error('Preset save is already running');\n            this.__dshaPresetWrites.add(id);\n            try {return await dshaSavePreset(this,id,content,expected);}\n            finally {this.__dshaPresetWrites.delete(id);}\n        }\n\t\tasync retain(id) {"
+    }
+  ]
+}

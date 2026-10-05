@@ -1,0 +1,14 @@
+{
+  "dshVersion": "0.1.7-rc.2",
+  "module": "@deepseek-ai/dsh-client-ui-chat/lib/client.js",
+  "patches": [
+    {
+      "before": "if (mode === \"compact\") {",
+      "after": "if (mode === \"compact\" && !window.matchMedia(\"(max-width: 767px)\").matches) {"
+    },
+    {
+      "before": "const cacheHitText = cacheHit !== null ? t(\"stats.cacheHit\", { percent: cacheHit }) : null;",
+      "after": "const cacheHitText = cacheHit !== null && !window.matchMedia(\"(max-width: 767px)\").matches ? t(\"stats.cacheHit\", { percent: cacheHit }) : null;"
+    }
+  ]
+}

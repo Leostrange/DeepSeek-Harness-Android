@@ -49,7 +49,7 @@ public final class RecoveryLocalePolicy {
     }
 
     public static boolean supportedLanguage(String language) {
-        return "zh".equals(language) || "en".equals(language);
+        return "zh".equals(language) || "en".equals(language) || "ru".equals(language);
     }
 
     /** Values are fixed to zh/en before they reach this script. */

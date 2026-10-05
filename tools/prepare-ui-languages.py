@@ -5,6 +5,7 @@ from pathlib import Path
 
 def generate(root,output):
     messages=json.loads((root/'tools/i18n/messages.json').read_text(encoding='utf-8'))
+    russian=json.loads((root/'tools/i18n/ru.json').read_text(encoding='utf-8'))
     translated=[item for item in messages if item['en']]
     unique={item['zh']:item['en'] for item in translated}
     lines=['package com.deepseekharness.app.util;','import java.util.*;',
@@ -24,8 +25,20 @@ def generate(root,output):
     formats=sorted((item for item in translated if item.get('uiFormat')),
                    key=lambda item:max(len(item['zh'].replace('%s','')),len(item['en'].replace('%s',''))),reverse=True)
     for item in formats:
-        lines.append('{'+json.dumps(item['zh'],ensure_ascii=False)+','+json.dumps(item['en'],ensure_ascii=False)+'},')
+        values=(item['zh'],item['en'],russian.get(item['zh'],item['en']))
+        if values[0].count('%s')!=values[2].count('%s'):raise ValueError('Russian template placeholders: '+item['id'])
+        lines.append('{'+','.join(json.dumps(value,ensure_ascii=False) for value in values)+'},')
     lines.append('};')
+    lines.append('static final Map<String,String> RU = buildRu();')
+    pairs=list(russian.items())
+    lines.append('private static Map<String,String> buildRu() { Map<String,String> values=new HashMap<>();')
+    for i in range(0,len(pairs),80):lines.append(f'ruPart{i//80}(values);')
+    lines+=['return Collections.unmodifiableMap(values);','}']
+    for i in range(0,len(pairs),80):
+        lines.append(f'private static void ruPart{i//80}(Map<String,String> values) {{')
+        for source,ru in pairs[i:i+80]:
+            lines.append('values.put('+json.dumps(source,ensure_ascii=False)+','+json.dumps(ru,ensure_ascii=False)+');')
+        lines.append('}')
     lines.append('}')
     target=output/'com/deepseekharness/app/util/UiMessages.java';target.parent.mkdir(parents=True,exist_ok=True)
     value='\n'.join(lines)+'\n'

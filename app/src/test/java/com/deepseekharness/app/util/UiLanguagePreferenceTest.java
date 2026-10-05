@@ -15,14 +15,17 @@ public class UiLanguagePreferenceTest {
         }
         assertEquals("en", UiLanguagePreference.normalize("en"));
         assertEquals("zh", UiLanguagePreference.normalize("zh"));
+        assertEquals("ru", UiLanguagePreference.normalize("ru"));
+        assertFalse(UiLanguagePreference.followsSystem("ru"));
         assertFalse(UiLanguagePreference.followsSystem("en"));
         assertFalse(UiLanguagePreference.followsSystem("zh"));
     }
 
-    @Test public void supportedCoversExactlyThreeValues() {
+    @Test public void supportedCoversExactlyFourValues() {
         assertTrue(UiLanguagePreference.supported("system"));
         assertTrue(UiLanguagePreference.supported("zh"));
         assertTrue(UiLanguagePreference.supported("en"));
+        assertTrue(UiLanguagePreference.supported("ru"));
         assertFalse(UiLanguagePreference.supported("fr"));
         assertFalse(UiLanguagePreference.supported(null));
         assertFalse(UiLanguagePreference.supported(""));
@@ -33,10 +36,18 @@ public class UiLanguagePreferenceTest {
         for (String tag : new String[]{"zh", "zh-CN", "zh-Hans", "zh-Hant", "zh_TW", "ZH", "zh-HK"}) {
             assertEquals("中文应识别：" + tag, "zh", UiLanguagePreference.resolveLanguage(tag));
         }
-        for (String tag : new String[]{"en", "en-US", "fr", "de-DE", "ja", "ko", "ar", "ru",
+        for (String tag : new String[]{"en", "en-US", "fr", "de-DE", "ja", "ko", "ar",
                 "zho", "en-zh"}) {
             assertEquals("非中文应落英文：" + tag, "en", UiLanguagePreference.resolveLanguage(tag));
         }
+    }
+
+    @Test public void russianSystemAndExplicitSelectionArePreserved() {
+        for(String tag:new String[]{"ru","ru-RU","RU","ru_RU"})
+            assertEquals("ru",UiLanguagePreference.resolve("system",tag));
+        assertEquals("ru",UiLanguagePreference.resolve("ru","en-US"));
+        assertEquals("en",UiLanguagePreference.resolve("en","ru-RU"));
+        assertEquals("zh",UiLanguagePreference.resolve("zh","ru-RU"));
     }
 
     /** 显式选择必须压过系统语言；跟随系统时才看系统。 */

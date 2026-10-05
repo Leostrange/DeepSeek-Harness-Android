@@ -362,7 +362,7 @@ public final class AdbBridge {
      *  之后开机广播可自动开启无线调试（保活依赖）。 */
     private static String grantSecureSettings(ProotBootstrap proot) {
         try {
-            String pkg = "com.dsh.client";
+            String pkg = com.deepseekharness.app.util.AppIdentity.APPLICATION_ID;
             String r = execOwned(proot, "python3 /root/.dsh/adb-pair.py --grant-keepalive 2>&1", 45_000);
             android.util.Log.i("DSHA-ADB", com.deepseekharness.app.util.UiText.text("WRITE_SECURE_SETTINGS 授权结果: ") + SensitiveData.redact(r));
             return r != null && r.trim().endsWith("[EXIT=0]") ? com.deepseekharness.app.util.UiText.text("KEEPALIVE_OK: 已允许自动恢复无线调试")

@@ -1,0 +1,14 @@
+{
+  "dshVersion": "0.1.7-rc.2",
+  "module": "@deepseek-ai/dsh-client-ui-permission-presets/lib/client.js",
+  "patches": [
+    {
+      "before": "ctx.locale.register(PERMISSION_ACCESS_NS, {\n\t\t\t\tzh: accessZh,\n\t\t\t\ten: accessEn\n\t\t\t})",
+      "after": "ctx.locale.register(PERMISSION_ACCESS_NS, {\n\t\t\t\tzh: accessZh,\n\t\t\t\ten: accessEn,\n\t\t\t\tru: {\"mode\": \"Режим доступа, текущий: {name}\", \"close\": \"Закрыть\", \"preset.readOnly\": \"Только просмотр\", \"preset.workspaceWrite\": \"Запись в рабочей папке\", \"preset.fullAccess\": \"Полный доступ\", \"confirm.title\": \"Включить полный доступ?\", \"confirm.description\": \"Полный доступ уменьшает число подтверждений и позволяет агенту выполнять больше действий напрямую, включая чувствительные операции, изменение файлов и внешние команды. Используйте его только если доверяете текущей задаче.\", \"confirm.acknowledge\": \"Я понимаю риски и хочу продолжить\", \"confirm.cancel\": \"Отмена\", \"confirm.enable\": \"Включить полный доступ\", \"auto.label\": \"Авторевью\", \"auto.badge\": \"ЭКСП\", \"auto.description\": \"Работа без песочницы после экспериментальной проверки каждой команды той же моделью.\", \"auto.confirm.title\": \"Включить Авторевью (эксперимент)?\", \"auto.confirm.description\": \"Авторевью работает без песочницы. Перед каждым вызовом встроенного инструмента и внутренним вызовом PTC та же модель, что используется текущим агентом, проверяет действие. Вызовы, которые проверка отклонит, потребуют вашего решения. Функция экспериментальная: она может ошибочно разрешать или отклонять действия и расходует дополнительные токены.\", \"auto.confirm.acknowledge\": \"Я понимаю эти риски и хочу продолжить\", \"auto.confirm.enable\": \"Включить Авторевью\"}\n\t\t\t})"
+    },
+    {
+      "before": "ctx.locale.register(\"settings.permission\", {\n\t\t\t\tzh,\n\t\t\t\ten\n\t\t\t})",
+      "after": "ctx.locale.register(\"settings.permission\", {\n\t\t\t\tzh,\n\t\t\t\ten,\n\t\t\t\tru: {\"title\": \"Разрешения\", \"description\": \"Выберите режим разрешений по умолчанию для новых сессий\", \"loading\": \"Загрузка\", \"unavailable\": \"Недоступно\", \"preset.readOnly\": \"Только просмотр\", \"preset.workspaceWrite\": \"Запись в рабочей папке\", \"preset.fullAccess\": \"Полный доступ\", \"confirm.title\": \"Включить полный доступ?\", \"confirm.description\": \"Полный доступ уменьшает число подтверждений и позволяет новым сессиям выполнять больше действий напрямую, включая чувствительные операции, изменение файлов и внешние команды. Используйте его только для задач, которым доверяете.\", \"confirm.acknowledge\": \"Я понимаю риски и хочу продолжить\", \"confirm.cancel\": \"Отмена\", \"confirm.enable\": \"Включить полный доступ\"}\n\t\t\t})"
+    }
+  ]
+}

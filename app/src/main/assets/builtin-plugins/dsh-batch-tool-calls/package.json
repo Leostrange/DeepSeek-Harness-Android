@@ -1,0 +1,53 @@
+{
+  "name": "dsh-batch-tool-calls",
+  "version": "1.0.0",
+  "description": "Объединяет независимые вызовы инструментов в одном шаге, сокращая число шагов и повторную передачу контекста.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "scripts",
+    "test",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node test/verify.mjs && node test/integration.mjs",
+    "report": "node scripts/step-report.mjs",
+    "release": "node scripts/release.mjs"
+  },
+  "dependencies": {
+    "@deepseek-ai/schemastery": "^3.18.2"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "agent",
+    "tool-calling",
+    "prompt-cache",
+    "token-cost"
+  ],
+  "license": "MIT",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "displayName": "Пакетные вызовы инструментов"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liancha22/dsh-batch-tool-calls.git"
+  },
+  "author": "liancha22 <1784351702@qq.com>",
+  "homepage": "https://github.com/liancha22/dsh-batch-tool-calls#readme",
+  "bugs": {
+    "url": "https://github.com/liancha22/dsh-batch-tool-calls/issues"
+  }
+}

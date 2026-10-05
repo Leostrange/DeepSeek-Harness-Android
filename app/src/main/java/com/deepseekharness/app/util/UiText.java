@@ -13,9 +13,19 @@ public final class UiText {
         language=UiLanguagePreference.resolve(value,SystemLanguage.tag());
     }
     public static String language() { return language; }
-    public static String choose(String chinese,String english) { return "en".equals(language)?english:chinese; }
+    public static String choose(String chinese,String english) {
+        if ("ru".equals(language)) {
+            String russian=UiMessages.RU.get(chinese);
+            return russian==null?english:russian;
+        }
+        return "en".equals(language)?english:chinese;
+    }
     public static String text(String value) {
-        if(value==null||!"en".equals(language))return value;
+        if(value==null||"zh".equals(language))return value;
+        if("ru".equals(language)) {
+            String russian=UiMessages.RU.get(value);
+            if(russian!=null)return russian;
+        }
         String translated=UiMessages.EN.get(value);return translated==null?value:translated;
     }
     public static CharSequence text(CharSequence value) {
@@ -28,14 +38,14 @@ public final class UiText {
     }
     /** 这些前缀仍用于内部状态识别；只在应用状态控件的边界翻译。 */
     public static String status(String value) {
-        String translated=text(value);if(value==null||!value.equals(translated)||!"en".equals(language))return translated;
+        String translated=text(value);if(value==null||!value.equals(translated)||"zh".equals(language))return translated;
         for(String prefix:new String[]{"环境任务进行中：","环境任务进行中","重置失败："})
             if(value.startsWith(prefix))return text(prefix)+text(value.substring(prefix.length()));
         return value;
     }
     /** 仅翻译内置工具状态首行，下面的命令、路径和模型内容保持原样。 */
     public static String toolStatus(String value) {
-        if(value==null||!"en".equals(language))return value;
+        if(value==null||"zh".equals(language))return value;
         int line=value.indexOf('\n');String head=line<0?value:value.substring(0,line),tail=line<0?"":value.substring(line);
         if(!head.startsWith("⚙ "))return value;
         String translated=text(head);

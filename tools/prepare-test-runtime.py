@@ -68,7 +68,7 @@ def prepare(args):
         for patch in spec['patches']:
             before,after=patch['before'],patch['after']
             if 'prependAsset' in patch:after=(ASSETS/patch['prependAsset']).read_text(encoding='utf8')+'\n'+after
-            if source.count(after)==1 and source.count(before)==0:continue
+            if source.count(after)==1 and source.count(before)==after.count(before):continue
             if source.count(before)!=1:raise ValueError('OVERLAY_ANCHOR_MISMATCH:'+file.name)
             source=source.replace(before,after)
         targetfile.write_text(source,encoding='utf8');overlays[str(file.relative_to(ROOT)).replace(os.sep,'/')]=sha(file)

@@ -58,7 +58,7 @@ public final class FactoryReset {
         BackupFileSystem.Node documentsNode = fs.stat(documents);
         if (documentsNode.type.equals("MISSING")) return;
         if (!documentsNode.type.equals("DIRECTORY")) throw new IOException("FORMAT_DOCUMENTS_PATH");
-        File legacy = new File(documents, "dshdata");
+        File legacy = new File(documents, com.deepseekharness.app.util.AppIdentity.PUBLIC_DATA_FOLDER);
         if (fs.stat(legacy).type.equals("MISSING")) { control.report(STAGE_PUBLIC, 0, 0); return; }
         long[] removed = {0, 0};
         erase(fs, documents, legacy, control, STAGE_PUBLIC, removed, 0, false);

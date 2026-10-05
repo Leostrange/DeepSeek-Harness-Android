@@ -34,6 +34,21 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        findViewById(R.id.welcome_language).setOnClickListener(v -> {
+            String[] values = {"ru", "en", "zh", "system"};
+            String[] labels = {"Русский", "English", "简体中文", "System"};
+            String preference = new ConfigStore(this).getUiLanguagePreference();
+            int selected = java.util.Arrays.asList(values).indexOf(preference);
+            new DshaDialogBuilder(this).setTitle("Язык / Language")
+                    .setSingleChoiceItems(labels, selected, (dialog, index) -> {
+                        String chosen = values[index];
+                        if (dialog instanceof android.app.Dialog)
+                            ((android.app.Dialog)dialog).setOnDismissListener(ignored ->
+                                    new android.os.Handler(android.os.Looper.getMainLooper())
+                                            .post(() -> LanguageController.select(this, chosen)));
+                        dialog.dismiss();
+                    }).setNegativeButton(com.deepseekharness.app.util.UiText.choose("取消", "Cancel"), null).show();
+        });
 
         ViewPager2 pager = findViewById(R.id.welcome_pager);
         Button btn = findViewById(R.id.welcome_btn);

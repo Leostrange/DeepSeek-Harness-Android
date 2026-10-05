@@ -71,7 +71,9 @@ final class RuntimeTools {
             patchClientModule(context, rootfs, "office-fonts-patch.json", "Office 字体");
             patchClientModule(context, rootfs, "deepseek-messages-compat-patch.json", "DeepSeek Messages 会话兼容");
             patchClientModule(context, rootfs, "rc1-settings-migration-patch.json", "rc1 设置迁移");
+            patchClientModule(context, rootfs, "response-language-policy-patch.json", "回复语言");
             patchClientLanguage(context, rootfs);
+            patchRussianUi(context, rootfs);
             patchTooltips(context, rootfs);
             patchBrowserBootstrap(context, rootfs);
             patchClientCombos(context, rootfs);
@@ -86,6 +88,13 @@ final class RuntimeTools {
     }
 
     static void invalidate() { synchronized (LOCK) { preparedStamp = null; } }
+
+    private static void patchRussianUi(Context context, File rootfs) throws IOException {
+        for (String asset : new String[]{"ru-stats-strip-patch.json", "ru-agent-team-patch.json", "ru-jobs-patch.json", "ru-plugin-inventory-patch.json", "ru-plugin-manager-copy-patch.json", "ru-permission-patch.json",
+                "ru-auto-review-patch.json", "ru-preset-picker-patch.json",
+                "ru-preset-editor-backend-patch.json", "ru-preset-editor-host-patch.json", "ru-preset-editor-remote-client-patch.json", "ru-devtools-package-patch.json"})
+            patchClientModule(context, rootfs, asset, "俄语界面与预设");
+    }
 
     private static void prepareManagedOverlay(Context context, File rootfs, String identity) throws IOException {
         File marker = new File(rootfs, MANAGED_MARKER);
@@ -102,8 +111,11 @@ final class RuntimeTools {
         // 两个补丁本身带有稳定 marker，重复启动时会安全跳过。
         patchSessionNavigation(context, rootfs);
         patchAgentPresets(context, rootfs);
+        patchClientLanguage(context, rootfs);
+        patchRussianUi(context, rootfs);
         patchClientModule(context, rootfs, "deepseek-messages-compat-patch.json", "DeepSeek Messages 会话兼容");
             patchClientModule(context, rootfs, "rc1-settings-migration-patch.json", "rc1 设置迁移");
+        patchClientModule(context, rootfs, "response-language-policy-patch.json", "回复语言");
         prepareBuiltinDependencies(rootfs);
         if (!markerCurrent || !marker.isFile() || Compat.isSymbolicLink(marker))
             writeIfChanged(marker, com.deepseekharness.app.util.ManagedAssetVersion.bytes(identity), false);

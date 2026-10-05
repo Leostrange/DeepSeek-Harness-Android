@@ -48,7 +48,7 @@ const localeSource = contents['client-locale.js'];
 const languageRecipe = JSON.parse(await readFile(path.join(root, 'app/src/main/assets/language-patch.json'), 'utf8'));
 for (const patch of languageRecipe.patches) {
   const after = (patch.prependAsset
-    ? await readFile(path.join(root, 'app/src/main/assets', patch.prependAsset), 'utf8') + '\n' : '') + patch.after;
+    ? (await readFile(path.join(root, 'app/src/main/assets', patch.prependAsset), 'utf8')).replaceAll('\r\n', '\n') + '\n' : '') + patch.after;
   assert.equal(localeSource.split(after).length - 1, 1, 'locked locale source anchor must be patched exactly once');
 }
 let localeModule;
@@ -86,6 +86,11 @@ assert.equal(service.getSnapshot().active,'zh');
 assert.equal(pageDocument.documentElement.lang,'zh');
 service.setLocale('en');
 assert.deepEqual(selections,['en']);
+service.setLocale('ru');
+assert.equal(service.getSnapshot().active,'ru');
+assert.equal(pageDocument.documentElement.lang,'ru');
+assert.equal(service.bind('settings.locale')('language.title'),'Язык');
+service.setLocale('en');
 pageWindow.__DSHA_LANGUAGE__='invalid';
 pageWindow.dispatchEvent({type:'dsha-language'});
 assert.equal(service.getSnapshot().active,'en');
@@ -104,4 +109,4 @@ vm.runInNewContext(relay,{window:foreignWindow,
   location:{protocol:'http:',hostname:'127.0.0.1',port:'3081',username:'',password:''},
   browser:{runtime:{connectNative(){foreignConnects++;throw new Error('foreign origin reached locale bridge');}}}});
 assert.equal(foreignConnects,0);
-console.log('PASS locked recovery HTML/PDF Worker/resource overlay and real rc2 locale EN/ZH, cancellation, invalid origin');
+console.log('PASS locked recovery HTML/PDF Worker/resource overlay and real rc2 locale EN/ZH/RU, cancellation, invalid origin');

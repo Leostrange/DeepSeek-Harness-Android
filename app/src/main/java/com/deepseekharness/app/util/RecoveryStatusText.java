@@ -28,10 +28,11 @@ public final class RecoveryStatusText {
             default -> null;
         };
         if (prefix == null) return detail;
-        for (String[] notice : NOTICES) for (int source = 0; source < 2; source++) {
-            if (!detail.equals(prefix[source] + notice[source])) continue;
-            int target = "en".equals(UiText.language()) ? 1 : 0;
-            return prefix[target] + notice[target];
+        for (String[] notice : NOTICES) for (int source = 0; source < 3; source++) {
+            String start=source<2?prefix[source]:UiMessages.RU.getOrDefault(prefix[0],prefix[1]);
+            String end=source<2?notice[source]:UiMessages.RU.getOrDefault(notice[0],notice[1]);
+            if (!detail.equals(start + end)) continue;
+            return UiText.choose(prefix[0],prefix[1]) + UiText.choose(notice[0],notice[1]);
         }
         return detail;
     }

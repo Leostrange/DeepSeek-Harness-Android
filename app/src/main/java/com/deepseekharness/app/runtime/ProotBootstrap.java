@@ -450,7 +450,7 @@ public class ProotBootstrap {
         return "python3 -B /root/.dsh/" + RC1_MIGRATION_SCRIPT
                 + " " + command + " --root /root --state-root /run/dsha-rc1-state --startup-id "
                 + com.deepseekharness.app.util.ShellQuote.arg(startupId)
-                + " --approved-root /sdcard/Documents/dshdata --approved-root /storage/emulated/0/Documents/dshdata 2>&1";
+                + " --approved-root /sdcard/Documents/dshdata-rc2ru --approved-root /storage/emulated/0/Documents/dshdata-rc2ru 2>&1";
     }
 
     /**
@@ -1349,23 +1349,7 @@ public class ProotBootstrap {
             }
         }
 
-        InputStream counted = raw;
-        final java.util.function.BiConsumer<Long, Long> cb = onProgress;
-        final long totalBytes = archiveBytes;
-        if (cb != null) {
-            counted = new java.io.FilterInputStream(raw) {
-                long done = 0;
-                @Override
-                public int read(byte[] b, int off, int len) throws IOException {
-                    int n = super.read(b, off, len);
-                    if (n > 0) {
-                        done += n;
-                        cb.accept(done, totalBytes);
-                    }
-                    return n;
-                }
-            };
-        }
+        InputStream counted = new com.deepseekharness.app.util.ProgressInputStream(raw, archiveBytes, onProgress);
 
         // 覆盖安装换了内置包（版本不符）时，先清掉旧 rootfs 再解压，
         // 避免旧版残留文件（alpha.5 独有的 dsh 文件）与新包混在一起
@@ -1377,7 +1361,8 @@ public class ProotBootstrap {
             ZipEntry runtime = apk == null ? null : apk.getEntry("assets/dsh-runtime.bin");
             if (apk != null && runtime == null) throw new IOException(com.deepseekharness.app.util.UiText.text("APK 缺少独立 dsh 运行时，安装未完成"));
             try (InputStream input = apk == null ? ctx.getAssets().open("dsh-runtime.bin") : apk.getInputStream(runtime)) {
-                TarGzipExtractor.extractAuto(input, rootfsDir, 0);
+                TarGzipExtractor.extractAuto(new com.deepseekharness.app.util.ProgressInputStream(
+                        input, runtime == null ? -1 : runtime.getSize(), onProgress), rootfsDir, 0);
             }
         }
         extractionStage(onProgress, com.deepseekharness.app.util.UiText.text("安装 Python 与 pnpm"));

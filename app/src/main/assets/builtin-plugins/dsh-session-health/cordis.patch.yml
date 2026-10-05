@@ -1,0 +1,6 @@
+# dsh-session-health bundle layer: mounts the host service + /health command
+# and the browser badge. Apply as a profile overlay or via `dsh plugin add`.
+
+- insert:
+    - id: session-health
+      name: 'dsh-session-health'

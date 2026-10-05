@@ -53,15 +53,82 @@ export function applyMobileClientPatches(bytes) {
   const guard = readFileSync(path.join(project, 'tools/mobile-shortcut-guard.js'), 'utf8').trim();
   source = source.slice(0, guardStart) + '__modules["effects/shortcut-modal-keyboard-guard.js"] = function (require, module, exports) {\n' + guard + '\n};\n' + source.slice(guardEnd);
 
-  // 保留键盘外高度基线，同时以当前真正可见区域限制纸片，支持同宽分屏缩短。
-  replace('            const width = window.innerWidth;\n            if (stableVh === 0',
-    "            const width = window.innerWidth;\n            const visible = window.visualViewport;\n            const available = Math.max(1, Math.min(height, visible?.height ?? height));\n            root.style.setProperty('--dsha-mobile-visible-vh', `${available}px`);\n            root.style.setProperty('--dsha-mobile-viewport-top', `${visible?.offsetTop ?? 0}px`);\n            if (stableVh === 0");
-  replace("        window.addEventListener('resize', syncStableViewport);",
-    "        window.addEventListener('resize', syncStableViewport);\n        window.visualViewport?.addEventListener('resize', syncStableViewport);\n        window.visualViewport?.addEventListener('scroll', syncStableViewport);");
+  // 可见窗口逐帧合并，稳定高度在 resize 风暴结束后再提交，避免键盘/PiP 抖动。
+  replace(`        let stableVh = 0;
+        let stableWidth = 0;
+        const syncStableViewport = () => {
+            const height = window.innerHeight;
+            const width = window.innerWidth;
+            if (stableVh === 0 || height > stableVh || width !== stableWidth) {
+                stableVh = height;
+                stableWidth = width;
+                root.style.setProperty(exports.STABLE_VIEWPORT_VAR, \`${'${height}'}px\`);
+            }
+        };
+        syncStableViewport();
+        window.addEventListener('resize', syncStableViewport);`, `        let stableVh = 0;
+        let stableWidth = 0;
+        let visibleFrame = 0;
+        let stableFrame = 0;
+        let stableTimer = 0;
+        let viewportDisposed = false;
+        const applyVisibleViewport = () => {
+            visibleFrame = 0;
+            if (viewportDisposed) return;
+            const height = window.innerHeight;
+            const visible = window.visualViewport;
+            const available = Math.max(1, Math.min(height, visible?.height ?? height));
+            root.style.setProperty('--dsha-mobile-visible-vh', \`${'${available}'}px\`);
+            root.style.setProperty('--dsha-mobile-viewport-top', \`${'${visible?.offsetTop ?? 0}'}px\`);
+        };
+        const applyStableViewport = () => {
+            stableFrame = 0;
+            if (viewportDisposed) return;
+            const height = window.innerHeight;
+            const width = window.innerWidth;
+            if (stableVh === 0 || height > stableVh || width !== stableWidth) {
+                stableVh = height;
+                stableWidth = width;
+                root.style.setProperty(exports.STABLE_VIEWPORT_VAR, \`${'${height}'}px\`);
+            }
+        };
+        const syncViewport = () => {
+            if (visibleFrame === 0) visibleFrame = requestAnimationFrame(applyVisibleViewport);
+            if (stableTimer !== 0) clearTimeout(stableTimer);
+            stableTimer = window.setTimeout(() => {
+                stableTimer = 0;
+                if (stableFrame === 0) stableFrame = requestAnimationFrame(applyStableViewport);
+            }, 100);
+        };
+        applyVisibleViewport();
+        applyStableViewport();
+        window.addEventListener('resize', syncViewport);
+        window.visualViewport?.addEventListener('resize', syncViewport);
+        window.visualViewport?.addEventListener('scroll', syncViewport);`);
   replace("            window.removeEventListener('resize', syncStableViewport);\n            root.style.removeProperty(exports.STABLE_VIEWPORT_VAR);",
-    "            window.removeEventListener('resize', syncStableViewport);\n            window.visualViewport?.removeEventListener('resize', syncStableViewport);\n            window.visualViewport?.removeEventListener('scroll', syncStableViewport);\n            root.style.removeProperty('--dsha-mobile-visible-vh');\n            root.style.removeProperty('--dsha-mobile-viewport-top');\n            root.style.removeProperty(exports.STABLE_VIEWPORT_VAR);");
+    "            viewportDisposed = true;\n            window.removeEventListener('resize', syncViewport);\n            window.visualViewport?.removeEventListener('resize', syncViewport);\n            window.visualViewport?.removeEventListener('scroll', syncViewport);\n            if (visibleFrame !== 0) cancelAnimationFrame(visibleFrame);\n            if (stableFrame !== 0) cancelAnimationFrame(stableFrame);\n            if (stableTimer !== 0) clearTimeout(stableTimer);\n            root.style.removeProperty('--dsha-mobile-visible-vh');\n            root.style.removeProperty('--dsha-mobile-viewport-top');\n            root.style.removeProperty(exports.STABLE_VIEWPORT_VAR);");
   replace('        // appears, and the keyboard simply covers their lower half. Content that\n        // would fall behind the keyboard gets a keyboard-sized bottom padding on\n        // the scroller (layout.css.ts), which shifts nothing visible.',
     '        // appears. DSHA also caps cards with the current visible viewport: deliberate\n        // keyboard input and same-width split-screen resizing must keep all actions\n        // reachable. No keyboard-padding implementation is assumed here.');
+
+  replace('function createStatsLineTask() {', `// Cache detail stays in the token dialog; remove only its visible suffix.
+function simplifyStatsSegments() {
+    for (const pill of document.querySelectorAll('[data-mobile-nav="stats"] [class*="_pill"]')) {
+        const text = pill.textContent || '';
+        if (!/cache|кэш|缓存/i.test(text)) continue;
+        const label = pill.querySelector('[class*="_label"]');
+        if (label === null) continue;
+        for (const node of Array.from(label.childNodes)) {
+            if (node.nodeType === Node.TEXT_NODE && /\\d/.test(node.textContent || '')) {
+                const text = (node.textContent || '').trim();
+                if (label.textContent !== text) label.textContent = text;
+                break;
+            }
+        }
+    }
+}
+function createStatsLineTask() {`);
+  replace('if (!/(turns|steps|\\bLLM\\b|轮|步)/.test(text))', 'if (!/(turns|steps|витк|шаг|\\bLLM\\b|轮|步)/i.test(text))');
+  source=source.replaceAll('        moveRing(anchor);\n','').replaceAll('            moveRing(root);\n','');
 
   const hideStart = source.indexOf('  /* 手机档收掉搜索行');
   const hideEnd = source.indexOf('  /* 这一层的遮罩', hideStart);
@@ -87,6 +154,9 @@ export function applyMobileClientPatches(bytes) {
 `;
   replace('  /* ---------- sidebar panel enter / exit (see effects/panel-exit.ts) ----------',
     css + '  /* ---------- sidebar panel enter / exit (see effects/panel-exit.ts) ----------');
+  const sheetGuard = ':not([data-shortcut-modal="shortcuts"])';
+  if(source.split(sheetGuard).length-1!==21)throw Error('Settings sheet predicate anchors changed');
+  source=source.replaceAll(sheetGuard,sheetGuard+':not(.dsha-preset-editor)');
   return source;
 }
 

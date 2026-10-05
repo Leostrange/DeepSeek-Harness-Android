@@ -84,14 +84,15 @@ public class SettingsFragment extends Fragment {
         String[] optionValues = {
                 com.deepseekharness.app.util.UiLanguagePreference.SYSTEM,
                 com.deepseekharness.app.util.UiLanguagePreference.ZH,
-                com.deepseekharness.app.util.UiLanguagePreference.EN};
+                com.deepseekharness.app.util.UiLanguagePreference.EN,
+                com.deepseekharness.app.util.UiLanguagePreference.RU};
         String[] optionLabels = {
                 com.deepseekharness.app.util.UiText.choose("跟随系统", "Follow system"),
                 com.deepseekharness.app.util.UiText.choose("简体中文", "Simplified Chinese"),
-                "English"};
-        int checked = followSystem ? 0 : ("en".equals(preference) ? 2 : 1);
+                "English", "Русский"};
+        int checked = followSystem ? 0 : ("ru".equals(preference) ? 3 : "en".equals(preference) ? 2 : 1);
         // 摘要始终显示当前**生效**语言的名字：跟随系统时补上来由，用户一眼能看出实际结果。
-        String currentLabel = "en".equals(effective)
+        String currentLabel = "ru".equals(effective) ? "Русский" : "en".equals(effective)
                 ? com.deepseekharness.app.util.UiText.choose("English", "English")
                 : com.deepseekharness.app.util.UiText.choose("简体中文", "Simplified Chinese");
         String summary = followSystem

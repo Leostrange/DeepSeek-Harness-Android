@@ -215,7 +215,7 @@ def request_native_vscreen_commit(ticket):
         if not token:
             raise ValueError('missing token')
         query = urllib.parse.urlencode({'ticket': ticket})
-        request = urllib.request.Request('http://127.0.0.1:3090/device/vscreen/commit?' + query,
+        request = urllib.request.Request('http://127.0.0.1:3390/device/vscreen/commit?' + query,
             headers={'X-Token': token})
         opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
         with opener.open(request, timeout=10) as response:
@@ -342,7 +342,7 @@ def request_confirm(cmd, reason=''):
     opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
     for host in ('127.0.0.1', '[::1]'):
         try:
-            req = urllib.request.Request('http://' + host + ':3090' + query, headers={'X-Token': token})
+            req = urllib.request.Request('http://' + host + ':3390' + query, headers={'X-Token': token})
             with opener.open(req, timeout=65) as response:
                 body = response.read(65536).decode('utf-8')
             try:
@@ -364,7 +364,7 @@ def request_confirm(cmd, reason=''):
             raise ConfirmationError('BRIDGE_RESPONSE_LOST: 未收到确认结果，命令未发送；请回到 DSHA 检查确认提示') from e
         except (TimeoutError, OSError, ValueError) as e:
             raise ConfirmationError('CONFIRM_TIMEOUT: 确认等待超时或响应中断，命令未发送') from e
-    raise ConfirmationError('BRIDGE_UNREACHABLE: 3090 确认桥未监听，请打开 DSHA 后重试')
+    raise ConfirmationError('BRIDGE_UNREACHABLE: 3390 确认桥未监听，请打开 DSHA 后重试')
 
 
 def request_device_plan(cmd, use_su=False):
@@ -377,7 +377,7 @@ def request_device_plan(cmd, use_su=False):
         if not token:
             raise ValueError('missing token')
         query = urllib.parse.urlencode({'cmd': cmd, 'su': '1' if use_su else '0'})
-        request = urllib.request.Request('http://127.0.0.1:3090/device/plan?' + query, headers={'X-Token': token})
+        request = urllib.request.Request('http://127.0.0.1:3390/device/plan?' + query, headers={'X-Token': token})
         opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
         with opener.open(request, timeout=75) as response:
             value = json.loads(response.read(1024 * 1024)).get('result')
@@ -404,7 +404,7 @@ def request_native_vscreen_start(cmd, ticket):
         if not token:
             raise ValueError('missing token')
         query = urllib.parse.urlencode({'cmd': cmd, 'ticket': ticket})
-        request = urllib.request.Request('http://127.0.0.1:3090/device/vscreen/start?' + query,
+        request = urllib.request.Request('http://127.0.0.1:3390/device/vscreen/start?' + query,
             headers={'X-Token': token})
         opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
         with opener.open(request, timeout=15) as response:
@@ -484,7 +484,7 @@ def request_native_execution(cmd, use_su=False, force_adb=False):
     except (OSError, ValueError) as error:
         raise policy.Blocked('设备桥未准备好，请打开 DSHA 后重试') from error
     query = urllib.parse.urlencode({'cmd': cmd, 'su': '1' if use_su else '0', 'adb': '1' if force_adb else '0'})
-    request = urllib.request.Request('http://127.0.0.1:3090/device/execute?' + query, headers={'X-Token': token})
+    request = urllib.request.Request('http://127.0.0.1:3390/device/execute?' + query, headers={'X-Token': token})
     try:
         opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
         with opener.open(request, timeout=155) as response:

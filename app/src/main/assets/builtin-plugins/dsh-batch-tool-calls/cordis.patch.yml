@@ -1,0 +1,27 @@
+# dsh-batch-tool-calls bundle 层：把「一步多发工具调用」提示段插入宿主组合。
+#
+# 为什么是宿主平面（host composition）而不是某个 Agent 预设：
+#   systemPrompt 是进程级注册表，本插件只往里注册一段静态提示段，不发布任何服务；
+#   注册在宿主层意味着**所有预设（standard / ptc / minimal / cordis）的所有 Agent**
+#   （含子代理）都带上这段约定，装一次就够。预设若想替换它，用同名 section
+#   `batch-tool-calls:policy` 注册即可覆盖。
+#
+# 由 `dsh plugin --profile <name> add dsh-batch-tool-calls` 自动装配（包声明
+# dsh.bundle.patch），`dsh plugin remove` 时自动移除；也可手工把本行 insert 合并进
+# profile 的 cordis.patch.yml。
+- insert:
+    - id: batch-tool-calls
+      name: 'dsh-batch-tool-calls'
+      config:
+        enabled: true
+        # auto = 跟随部署语言（读 DSH_UI_LANGUAGE / DSHA_UI_LANGUAGE / LANG），也可写死 zh / en
+        language: auto
+        # 段落排序：人格前缀(0) 之后、plan:policy(500) 之前
+        order: 100
+        # 提示里建议的每步调用数区间
+        minCalls: 3
+        maxCalls: 6
+        # 是否包含「独立 shell 命令合并成一次 bash」这条
+        mentionShell: true
+        # 追加自定义文本（会在内置文本之后另起一段）
+        extra: ''

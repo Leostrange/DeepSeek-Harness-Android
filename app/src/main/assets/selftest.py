@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """DSHA 一键自检 & 修补。
 
-把过去要人工一条条粘的终端命令固化成一次运行：环境、3090 桥、ADB 通道、
+把过去要人工一条条粘的终端命令固化成一次运行：环境、3390 桥、ADB 通道、
 设备引导插件、write 补丁、会话健康、内置插件、备份、守卫、版本标记。
 每项给 PASS / FAIL / SKIP，FAIL 带下一步怎么办。
 
@@ -46,7 +46,7 @@ ZSTD_MAGIC = b"\x28\xb5\x2f\xfd"
 # 后者用户既不知道要等多久，也无法确认到底做了没有。
 NEXT_STEP = {
     "运行环境": "到「安装」页重跑步骤③（Node）和步骤⑤（dsh）",
-    "3090 桥 token": "到「配置」页把「设备桥」关掉再打开",
+    "3390 桥 token": "到「配置」页把「设备桥」关掉再打开",
     "ADB 只读白名单": "到「安装」页重跑步骤⑥（更新 ADB 脚本）",
     "设备引导插件版本": "点启动页的「重启」——启动时会重新注入新版实体",
     "l2s 悬空链": "到「配置」页点一次备份即会自动清理（清理是备份流程的一部分）",
@@ -60,9 +60,9 @@ NEXT_STEP = {
     "profile 文件损坏": "到「配置」页恢复最近一次备份（这个自动修不了）",
     "Web 启动失败": "点启动页的「重启」——启动前会自动校准 profile",
     "上次备份失败": "到「配置」页重新点一次备份",
-    "3090 桥启动": "到「配置」页把「设备桥」关掉再打开",
-    "3090 桥响应": "到「配置」页重开「设备桥」；仍异常请贴到 GitHub issue",
-    "3090 桥鉴权": "点启动页的「重启」",
+    "3390 桥启动": "到「配置」页把「设备桥」关掉再打开",
+    "3390 桥响应": "到「配置」页重开「设备桥」；仍异常请贴到 GitHub issue",
+    "3390 桥鉴权": "点启动页的「重启」",
     "容器环境": "到「安装」页重跑步骤①（解压环境）",
     "基础命令": "到「安装」页重跑步骤②（基础工具）",
     "App 层接口": "到「配置」页把「设备桥」关掉再打开",
@@ -219,14 +219,14 @@ def check_tools():
         add("PASS", "基础命令", "%d 项必需命令齐备%s" % (len(need), note))
 
 
-# ===================== 2. 3090 桥 =====================
+# ===================== 2. 3390 桥 =====================
 def check_bridge():
     token = read(DSH_HOME + "/.bridge_token").strip()
     if not token:
         if stage() != "ran":
-            add("SKIP", "3090 桥 token", "还没启动过 Web —— token 由 App 在桥启动时生成")
+            add("SKIP", "3390 桥 token", "还没启动过 Web —— token 由 App 在桥启动时生成")
         else:
-            add("FAIL", "3090 桥 token",
+            add("FAIL", "3390 桥 token",
                 "缺 %s/.bridge_token —— 确认弹窗与 App 层接口都会失效；"
                 "重开一次 App 让桥重新生成" % DSH_HOME)
         return
@@ -235,7 +235,7 @@ def check_bridge():
     import urllib.parse
     ok_hosts, bodies = [], []
     for host in ("127.0.0.1", "[::1]"):
-        url = ("http://%s:3090/exec?cmd=%s&token=%s"
+        url = ("http://%s:3390/exec?cmd=%s&token=%s"
                % (host, urllib.parse.quote("echo dsha-selftest"), urllib.parse.quote(token)))
         try:
             with urllib.request.urlopen(url, timeout=8) as r:
@@ -249,22 +249,22 @@ def check_bridge():
         status = read(DSH_HOME + "/.bridge_status").strip()
         if status.startswith("fail"):
             # App 侧记下了绑定失败的真实原因（端口被占等），直接摊开说
-            add("FAIL", "3090 桥启动", (status[5:].strip() or "绑定失败（原因未记录）")
+            add("FAIL", "3390 桥启动", (status[5:].strip() or "绑定失败（原因未记录）")
             + "\n    到「配置」页把「设备桥」关掉再打开（该服务随 App 启动）")
         elif status == "stopped":
-            add("SKIP" if not adb_on else "FAIL", "3090 桥",
+            add("SKIP" if not adb_on else "FAIL", "3390 桥",
                 "桥已停止（设备桥服务没在跑）—— 重开 App，或在「配置」页勾选 ADB 设备通道并保存")
         else:
-            add("FAIL" if adb_on else "SKIP", "3090 桥连通",
+            add("FAIL" if adb_on else "SKIP", "3390 桥连通",
                 "两个回环地址都连不上 —— App 需在运行中，且「配置」页勾过「启用 ADB 设备通道」并保存"
                 if adb_on else "未启用 ADB 设备通道，桥不启动（正常）")
         return
     body = bodies[0]
     if '"result"' not in body:
-        add("FAIL", "3090 桥响应", "响应不含 result 字段：%s\n    到「配置」页重开「设备桥」；若仍异常请把这段贴到 GitHub issue" % body[:80])
+        add("FAIL", "3390 桥响应", "响应不含 result 字段：%s\n    到「配置」页重开「设备桥」；若仍异常请把这段贴到 GitHub issue" % body[:80])
         return
     if "[UNAUTHORIZED]" in body:
-        add("FAIL", "3090 桥鉴权", "token 不匹配 —— 删掉 .bridge_token 后重开 App 让它重签")
+        add("FAIL", "3390 桥鉴权", "token 不匹配 —— 删掉 .bridge_token 后重开 App 让它重签")
         return
     # 合法 JSON 检查：旧版本输出 {"result":YES} 不带引号，客户端判定会全线失效
     try:
@@ -272,11 +272,11 @@ def check_bridge():
         json_ok = True
     except Exception:
         json_ok = False
-    add("PASS" if json_ok else "FAIL", "3090 桥",
+    add("PASS" if json_ok else "FAIL", "3390 桥",
         "可达地址 %s；响应%s合法 JSON" % ("+".join(ok_hosts), "是" if json_ok else "不是"))
     # 顺带抽查 App 层接口（agent 能直接调的那批能力）
     try:
-        url = "http://127.0.0.1:3090/app/device?token=" + urllib.parse.quote(token)
+        url = "http://127.0.0.1:3390/app/device?token=" + urllib.parse.quote(token)
         with urllib.request.urlopen(url, timeout=8) as r:
             d = json.loads(r.read().decode("utf-8", "replace")).get("result", "")
         first = d.split("\n")[0] if d else ""

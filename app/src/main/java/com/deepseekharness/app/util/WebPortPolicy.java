@@ -20,7 +20,7 @@ public final class WebPortPolicy {
         if(previous>0&&previous<=65535&&previous!=preferred&&!reserved(previous)&&probe.available(previous))return new Choice(preferred,previous);
         return new Choice(preferred,0);
     }
-    public static boolean reserved(int port) { return port==3081||port==3090; }
+    public static boolean reserved(int port) { return port==Constants.LAN_BRIDGE_PORT||port==Constants.SHELL_BRIDGE_PORT||port==3081||port==3090; }
     public static boolean available(int port) throws IOException {
         try(ServerSocket socket=new ServerSocket()) {
             socket.setReuseAddress(true);

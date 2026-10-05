@@ -12,11 +12,11 @@ android {
     ndkVersion '26.3.11579264'
 
     defaultConfig {
-        applicationId "com.dsh.client"
+        applicationId "com.dsh.client.rc2ru"
         minSdk 30
         targetSdk 37
-        versionCode 147
-        versionName "0.1.7-rc2"
+        versionCode 161
+        versionName "0.1.7-rc2-ru"
         testInstrumentationRunner project.findProperty('dsha.testRunner') ?: "com.deepseekharness.app.Rc13Instrumentation"
         ndk {
             abiFilters 'arm64-v8a'
@@ -73,6 +73,13 @@ android {
             minifyEnabled false
             signingConfig signingConfigs.publish
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        ruTrial {
+            initWith release
+            debuggable false
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['release']
+            versionNameSuffix '-test17'
         }
     }
 
@@ -240,6 +247,7 @@ tasks.named("preBuild").configure { dependsOn(prepareStandardAssets, prepareReco
 def prepareUiLanguages = tasks.register("prepareUiLanguages", Exec) {
     inputs.file(rootProject.file("tools/prepare-ui-languages.py"))
     inputs.file(rootProject.file("tools/i18n/messages.json"))
+    inputs.file(rootProject.file("tools/i18n/ru.json"))
     outputs.dir(layout.buildDirectory.dir("generated/uiLanguage"))
     commandLine(System.getenv("DSHA_PYTHON") ?: "python3", "-B",
             rootProject.file("tools/prepare-ui-languages.py").absolutePath,
@@ -267,4 +275,14 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.13.1'
     implementation 'org.bouncycastle:bcprov-jdk15to18:1.85.2'
     testImplementation 'junit:junit:4.13.2'
+}
+
+// 独立候选只允许独立包名；历史正式签名门禁保持原样。
+tasks.configureEach {
+    if (name.matches("(package|assemble|validateSigning)(Standard|Low)RuTrial")) {
+        doFirst {
+            if (android.defaultConfig.applicationId != 'com.dsh.client.rc2ru')
+                throw new GradleException('独立试用包不能覆盖 Alpha')
+        }
+    }
 }

@@ -28,12 +28,19 @@ CONVERSATION_MATERIALIZED_PATCH = HOOKS.parent / 'conversation-materialized-patc
 CONVERSATION_MATERIALIZED_MODULE = '@deepseek-ai/dsh-client-ui-conversation/lib/client.js'
 RC1_SETTINGS_PATCH = HOOKS.parent / 'rc1-settings-migration-patch.json'
 RC1_SETTINGS_MODULE = '@deepseek-ai/dsh-settings/lib/index.js'
+RESPONSE_LANGUAGE_PATCH = HOOKS.parent / 'response-language-policy-patch.json'
+RESPONSE_LANGUAGE_MODULE = '@deepseek-ai/dsh-system-prompt/lib/index.js'
 STORAGE_JSON_MODULE = '@deepseek-ai/dsh-storage-json/lib/index.js'
 SESSION_PERSISTENCE_JSONL_MODULE = '@deepseek-ai/dsh-session-persistence-jsonl/lib/index.js'
 LOCK_ROOT = HOOKS.parents[4] / 'tools/dsh-runtime'
 PATCHES = {'@deepseek-ai/dsh-fs-local/lib/index.js': 'publishExclusive',
            '@deepseek-ai/dsh-session-persistence-jsonl/lib/index.js': 'publishSessionExclusive',
            '@deepseek-ai/dsh-attachment-local/lib/index.js': 'publishAttachmentExclusive'}
+RU_PATCHES = tuple(HOOKS.parent / name for name in (
+    'ru-stats-strip-patch.json', 'ru-agent-team-patch.json', 'ru-jobs-patch.json', 'ru-plugin-inventory-patch.json', 'ru-plugin-manager-copy-patch.json', 'ru-permission-patch.json',
+    'ru-auto-review-patch.json', 'ru-preset-picker-patch.json',
+    'ru-preset-editor-backend-patch.json', 'ru-preset-editor-host-patch.json', 'ru-preset-editor-remote-client-patch.json', 'ru-devtools-package-patch.json'))
+RU_MODULES = frozenset(json.loads(path.read_text(encoding='utf8'))['module'] for path in RU_PATCHES)
 
 
 def recipe_inputs():
@@ -44,6 +51,9 @@ def recipe_inputs():
     paths.append(LEXICAL_CLAIM_PATCH)
     paths.append(CONVERSATION_MATERIALIZED_PATCH)
     paths.append(RC1_SETTINGS_PATCH)
+    paths.append(RESPONSE_LANGUAGE_PATCH)
+    paths.extend(RU_PATCHES)
+    paths.extend(HOOKS.parent / name for name in ('builtin-presets/devtools.patch.yml', 'preset-editor-yaml.js'))
     recipe = json.loads(DEEPSEEK_MESSAGES_PATCH.read_text(encoding='utf-8'))
     paths += [HOOKS.parent / patch['prependAsset'] for patch in recipe['patches'] if 'prependAsset' in patch]
     root = Path(__file__).resolve().parents[1]
@@ -53,6 +63,30 @@ def recipe_inputs():
 def patched_content(relative, data):
     """只修改固定版本的两个发布调用依赖，保留上游的校验、迁移及排他语义。"""
     name = relative.as_posix()
+    if name == RESPONSE_LANGUAGE_MODULE:
+        recipe = json.loads(RESPONSE_LANGUAGE_PATCH.read_text(encoding='utf-8'))
+        expected = json.loads((LOCK_ROOT / 'package.json').read_text(encoding='utf-8'))['dependencies'][PACKAGE]
+        if recipe.get('module') != name or recipe.get('dshVersion') != expected:
+            raise ValueError('补丁目标或 DSH 版本不一致: ' + RESPONSE_LANGUAGE_PATCH.name)
+        text = data.decode('utf-8')
+        for patch in recipe['patches']:
+            if text.count(patch['before']) != 1:
+                raise ValueError('响应语言补丁上游锚点变化，必须重新检查')
+            text = text.replace(patch['before'], patch['after'])
+        return text.encode('utf-8')
+    for recipe_path in RU_PATCHES:
+        recipe = json.loads(recipe_path.read_text(encoding='utf-8'))
+        if recipe['module'] != name:
+            continue
+        expected = json.loads((LOCK_ROOT / 'package.json').read_text(encoding='utf-8'))['dependencies'][PACKAGE]
+        if recipe.get('dshVersion') != expected:
+            raise ValueError('俄语补丁版本与锁定 DSH 不一致: ' + recipe_path.name)
+        text = data.decode('utf-8')
+        for patch in recipe['patches']:
+            if text.count(patch['before']) != 1:
+                raise ValueError('俄语补丁上游锚点变化: ' + recipe_path.name)
+            text = text.replace(patch['before'], patch['after'])
+        return text.encode('utf-8')
     if name == COMBO_MODULE:
         text = data.decode('utf-8')
         for patch in json.loads(COMBO_PATCH.read_text(encoding='utf-8'))['patches']:
@@ -589,7 +623,9 @@ def build(source, output, version):
                                 raise ValueError('离线包混入非 arm64 ELF：' + str(relative))
                             binaries.append(relative.as_posix())
                         content = patched_content(relative, stream.read()) if relative.as_posix() in PATCHES \
+                            or relative.as_posix() in RU_MODULES \
                             or relative.as_posix() in (COMBO_MODULE, DEEPSEEK_MESSAGES_MODULE,
+                                                       RESPONSE_LANGUAGE_MODULE,
                                                        LEXICAL_CLAIM_MODULE, CONVERSATION_MATERIALIZED_MODULE,
                                                        STORAGE_JSON_MODULE,
                                                        SESSION_PERSISTENCE_JSONL_MODULE,
@@ -635,6 +671,11 @@ def build(source, output, version):
                         item.size, item.mode = len(content), 0o644
                         archive.addfile(item, io.BytesIO(content))
                         count += 1; size += len(content)
+                content = (HOOKS.parent / 'builtin-presets/devtools.patch.yml').read_bytes()
+                item = tarfile.TarInfo(PREFIX + '/node_modules/@deepseek-ai/dsh-web-app/presets/devtools.patch.yml')
+                item.size, item.mode = len(content), 0o644
+                archive.addfile(item, io.BytesIO(content))
+                count += 1; size += len(content)
                 # 一些社区预设仍使用 0.1.5 的工作流包名。只在 alpha.2 新包真实存在且
                 # 旧包不存在时提供受管别名，不改写用户插件源码，也不会遮蔽用户安装的旧包。
                 if (source / WORKFLOW_PTC).is_dir() and not (source / LEGACY_WORKFLOW_PTC).exists():

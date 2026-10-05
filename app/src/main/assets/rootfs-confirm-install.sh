@@ -9,18 +9,18 @@ cat > /root/dsh-confirm.sh <<'EOF'
 #!/bin/bash
 # 用法：dsh-confirm.sh [--force] <命令...>
 #   --force：所有命令都弹确认（设备 shell 报备用；守卫开时）
-#   不带：仅危险命令确认（守卫内部行为由 3090 桥 confirmEnabled 决定）
+#   不带：仅危险命令确认（守卫内部行为由 3390 桥 confirmEnabled 决定）
 FORCE=0
 if [ "$1" = "--force" ]; then FORCE=1; shift; fi
 CMD="$*"
-# 3090 桥有 token 鉴权（防其他 App 冒充 agent 弹确认框）：
+# 3390 桥有 token 鉴权（防其他 App 冒充 agent 弹确认框）：
 # 必须带 X-Token 头（= /root/.dsh/.bridge_token 内容），否则一律 [UNAUTHORIZED] 被拒
 TOKEN=$(cat /root/.dsh/.bridge_token 2>/dev/null)
 # 桥的监听地址随 App 版本不同（新版绑 127.0.0.1 并附加 [::1]，旧版只绑 [::1]）：
 # 两个地址族都试，避免「桥活着但连不上 → 确认弹窗永不出现」。
 RES=""
 for H in 127.0.0.1 '[::1]'; do
-  RES=$(curl -s -m 65 -G "http://$H:3090/confirm" --data-urlencode "cmd=$CMD" --data-urlencode "force=$FORCE" -H "X-Token: $TOKEN" 2>/dev/null)
+  RES=$(curl -s -m 65 -G "http://$H:3390/confirm" --data-urlencode "cmd=$CMD" --data-urlencode "force=$FORCE" -H "X-Token: $TOKEN" 2>/dev/null)
   # 严格匹配 {"result":"YES"}：宽松的 grep YES 会被响应里的其它字段或命令回显
   # 带偏（吸收上游 PR#24）
   case "$RES" in
@@ -36,7 +36,7 @@ if [ -n "$RES" ]; then
   echo "  桥返回：$RES" >&2
   exit 1
 fi
-# 3090 不可达（终端场景未启动服务）：终端内交互确认，10 秒超时默认拒绝
+# 3390 不可达（终端场景未启动服务）：终端内交互确认，10 秒超时默认拒绝
 if [ -n "$DSH_INTERACTIVE" ]; then
   echo -n "确认执行 [$CMD] ? [y/N] " >&2
   read -t 10 ans
@@ -49,7 +49,7 @@ echo "已拒绝: $CMD" >&2
 if [ -z "$TOKEN" ]; then
   echo "  原因：读不到 /root/.dsh/.bridge_token（App 未生成鉴权令牌）" >&2
 else
-  echo "  原因：3090 确认桥不可达（127.0.0.1 与 [::1] 都连不上）" >&2
+  echo "  原因：3390 确认桥不可达（127.0.0.1 与 [::1] 都连不上）" >&2
 fi
 echo "  处理：在 App「配置」页启用 ADB 设备通道，确认桥运行后重试" >&2
 exit 1

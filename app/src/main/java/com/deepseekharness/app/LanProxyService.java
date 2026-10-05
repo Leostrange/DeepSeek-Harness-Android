@@ -35,7 +35,7 @@ public final class LanProxyService {
     private static final String LAN_COOKIE_MAX_AGE = "2592000";
     private static final SecureRandom RANDOM = new SecureRandom();
 
-    public static final int LAN_PORT = 3081;
+    public static final int LAN_PORT = com.deepseekharness.app.util.AppIdentity.LAN_PORT;
     public static final int DEFAULT_BACKEND_PORT = 3080;
 
     private static volatile String lanToken = "";

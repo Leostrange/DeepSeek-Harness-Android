@@ -1,0 +1,54 @@
+{
+  "dshVersion": "0.1.7-rc.2",
+  "module": "@deepseek-ai/dsh-client-ui-jobs/lib/client.js",
+  "patches": [
+    {
+      "before": "if (visibleCount === 0) return null;",
+      "after": "// Keep the Jobs entry available even before the first background job."
+    },
+    {
+      "before": "children: countLabel",
+      "after": "children: t(\"dshaJobs\")"
+    },
+    {
+      "before": "const en = {",
+      "after": "const en = { dshaJobs:\"Jobs\", dshaEmpty:\"No tasks\","
+    },
+    {
+      "before": "const zh = {",
+      "after": "const zh = { dshaJobs:\"任务\", dshaEmpty:\"暂无任务\","
+    },
+    {
+      "before": "\"aria-label\": countLabel,",
+      "after": "\"aria-label\": t(\"dshaJobs\") + \": \" + countLabel,"
+    },
+    {
+      "before": "const [menuShift, setMenuShift] = (0, react.useState)(0);",
+      "after": "const [menuShift, setMenuShift] = (0, react.useState)(16);\n            const [menuTop,setMenuTop] = react.useState(100);"
+    },
+    {
+      "before": "setMenuShift(Math.max(VIEWPORT_MARGIN - anchorLeft, Math.min(0, window.innerWidth - VIEWPORT_MARGIN - width - anchorLeft)));",
+      "after": "const header=root.closest(\"header\"); const edge=header?.getBoundingClientRect();\n                    setMenuShift(Math.max(16,Math.min((edge?.right ?? window.innerWidth)-width-16,window.innerWidth-width-16)));\n                    setMenuTop(Math.max(0,edge?.bottom ?? root.getBoundingClientRect().bottom)+8);"
+    },
+    {
+      "before": "style: { left: menuShift },",
+      "after": "style: { left: menuShift, top:menuTop, \"--dsha-jobs-left\":`${menuShift}px`, \"--dsha-jobs-top\":`${menuTop}px` },"
+    },
+    {
+      "before": "liveRows.length > 0 ? (0, react_jsx_runtime.jsx)(\"li\", {",
+      "after": "visibleCount===0 ? react_jsx_runtime.jsx(\"li\",{className:\"QsffPG_empty\",children:t(\"dshaEmpty\")}) : null,\n                        liveRows.length > 0 ? (0, react_jsx_runtime.jsx)(\"li\", {"
+    },
+    {
+      "before": "if (visibleCount === 0 && open) setOpen(false);",
+      "after": "// An empty list remains open and shows the localized empty state."
+    },
+    {
+      "before": "window.addEventListener(\"resize\", fit);",
+      "after": "window.addEventListener(\"resize\", fit); window.addEventListener(\"scroll\",fit,true);"
+    },
+    {
+      "before": "window.removeEventListener(\"resize\", fit);",
+      "after": "window.removeEventListener(\"resize\", fit); window.removeEventListener(\"scroll\",fit,true);"
+    }
+  ]
+}

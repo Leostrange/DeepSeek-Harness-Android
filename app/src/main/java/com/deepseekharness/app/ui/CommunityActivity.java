@@ -33,7 +33,16 @@ public final class CommunityActivity extends AppCompatActivity {
             @Override public boolean shouldOverrideUrlLoading(WebView view,WebResourceRequest request){return request.isForMainFrame()&&navigate(request.getUrl());}
             @Override public boolean shouldOverrideUrlLoading(WebView view,String url){return navigate(Uri.parse(url));}
             @Override public void onPageStarted(WebView view,String url,android.graphics.Bitmap icon){pageFailed=false;status.setVisibility(android.view.View.VISIBLE);status.setText(UiText.choose("正在连接社区…","Connecting to the community…"));}
-            @Override public void onPageFinished(WebView view,String url){if(!pageFailed)status.setVisibility(android.view.View.GONE);}
+            @Override public void onPageFinished(WebView view,String url){
+                if(!pageFailed){
+                    status.setVisibility(android.view.View.GONE);
+                    if("ru".equals(UiText.language())) {
+                        Uri uri=Uri.parse(url);
+                        if("https".equals(uri.getScheme())&&("dsha.cc".equals(uri.getHost())||"www.dsha.cc".equals(uri.getHost())))
+                            view.evaluateJavascript(WebPageScripts.communityRussian(CommunityActivity.this),null);
+                    }
+                }
+            }
             @Override public void onReceivedError(WebView view,WebResourceRequest request,android.webkit.WebResourceError error){if(request.isForMainFrame()){pageFailed=true;status.setVisibility(android.view.View.VISIBLE);status.setText(UiText.choose("社区暂时无法连接，请检查网络后重试。","Unable to connect. Check your network and retry."));}}
         });
         root.addView(browser,new LinearLayout.LayoutParams(-1,0,1));setContentView(root);

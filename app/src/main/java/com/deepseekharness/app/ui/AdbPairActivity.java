@@ -39,7 +39,7 @@ public class AdbPairActivity extends androidx.appcompat.app.AppCompatActivity {
         model.restore(saved);
         setContentView(buildUi());
         model.status.observe(this, text -> {
-            statusText.setText(text == null ? "" : text.split("\n\n",2)[0]);
+            statusText.setText(text == null ? "" : com.deepseekharness.app.util.UiText.text(text.split("\n\n",2)[0]));
             hostEt.setEnabled(!model.busy);portEt.setEnabled(!model.busy);
             if(!model.busy&&!portEt.hasFocus())portEt.setText(model.pairPort);
             startBtn.setEnabled(!model.busy);
@@ -162,7 +162,7 @@ public class AdbPairActivity extends androidx.appcompat.app.AppCompatActivity {
 
     /** 只持有 Application；自动读码及后台任务不会捕获旧 Activity。 */
     public static final class PairModel extends AndroidViewModel {
-        final MutableLiveData<String> status = new MutableLiveData<>("输入配对码后开始；端口会重新发现。");
+        final MutableLiveData<String> status = new MutableLiveData<>(com.deepseekharness.app.util.UiText.text("输入配对码后开始；端口会重新发现。"));
         final Handler main = new Handler(Looper.getMainLooper());
         volatile boolean busy, cleared;
         String code = "", host = "", pairPort = "", connectPort = "";
@@ -170,7 +170,7 @@ public class AdbPairActivity extends androidx.appcompat.app.AppCompatActivity {
         private boolean restored;
         private long watchEpoch;
         public PairModel(Application app) { super(app); }
-        void message(String text) { if (!cleared) status.postValue(SensitiveData.redact(text)); }
+        void message(String text) { if (!cleared) status.postValue(SensitiveData.redact(com.deepseekharness.app.util.UiText.text(text))); }
 
         void save(Bundle out) {
             out.putBoolean("adb-pair-busy", busy);
@@ -188,7 +188,7 @@ public class AdbPairActivity extends androidx.appcompat.app.AppCompatActivity {
             connectPort = saved.getString("adb-connect-port", "");
             status.setValue(saved.getBoolean("adb-pair-busy")
                     ? com.deepseekharness.app.util.UiText.text("配对任务被系统中断，结果尚不确定。请先验证已有连接；若仍未配对，再获取新配对码。")
-                    : saved.getString("adb-pair-status", com.deepseekharness.app.util.UiText.text("请输入本次配对码")));
+                    : com.deepseekharness.app.util.UiText.text(saved.getString("adb-pair-status", com.deepseekharness.app.util.UiText.text("请输入本次配对码"))));
         }
         void watch() {
             final long epoch = ++watchEpoch;

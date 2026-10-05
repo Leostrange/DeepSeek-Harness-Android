@@ -95,10 +95,11 @@ public final class EnvironmentMaintenance {
             transaction.prepare(archiveHash,mappingHash);control.check();transaction.begin();began=true;
             final long[] last={0};
             extract.extract(new com.deepseekharness.app.runtime.ProotBootstrap.ExtractionProgress(){
-                @Override public void onStage(String stage){progress.accept(stage+"…");}
+                private String stage = "";
+                @Override public void onStage(String value){stage=value;last[0]=0;progress.accept(stage+"…");}
                 @Override public void accept(Long done,Long total){
                     long now=android.os.SystemClock.elapsedRealtime();
-                    if(now-last[0]>=500){last[0]=now;progress.accept(com.deepseekharness.app.util.UiText.text("正在解压内置环境… ")+Fmt.bytes(done));}
+                    if(now-last[0]>=500){last[0]=now;progress.accept(stage+"… "+Fmt.bytes(done)+(total>0?" / "+Fmt.bytes(total):""));}
                 }
             });
             if(!controller.proot().isEnvironmentInstalled())throw new IOException("ENVIRONMENT_INSTALL_INCOMPLETE");

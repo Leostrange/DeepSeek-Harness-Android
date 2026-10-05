@@ -22,7 +22,7 @@ public final class NativeRestoreTargets implements NativeRestorePlan.Mapping,Hos
     }
     public NativeRestoreTargets(Context context,File task,String requestedProjects)throws IOException{
         this.context=context.getApplicationContext();this.task=task;fs=new AndroidBackupFileSystem();files=context.getFilesDir().getCanonicalFile();rootfs=new File(files,"linux/ubuntu");
-        File publicRoot=Environment.getExternalStorageDirectory().getCanonicalFile(),publicData=new File(publicRoot,"Documents/dshdata"),stable=new File(files,"user-data-v5/dsh"),legacy=new File(rootfs,"root/.dsh");
+        File publicRoot=Environment.getExternalStorageDirectory().getCanonicalFile(),publicData=new File(publicRoot,com.deepseekharness.app.util.AppIdentity.PUBLIC_DATA_PATH),stable=new File(files,"user-data-v5/dsh"),legacy=new File(rootfs,"root/.dsh");
         resolver=new GuestDataResolver(fs,rootfs,publicRoot,Arrays.asList(publicData,new File(files,"user-data-v5")));
         UserDataLayout layout=new UserDataLayout(fs,files);layoutBefore=BackupTree.digest(fs,new File(files,UserDataLayout.RECORD),new BackupControl(null));
         File mapping=new File(task,"mapping.json");
