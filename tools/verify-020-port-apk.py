@@ -20,8 +20,8 @@ signing = run(SDK / 'apksigner.bat', 'verify', '--verbose', '--print-certs', APK
 certificate = '9026a2270ff16f0842b40c65da6b812106b3ebfc8b77e2307e91010db4f4bb5d'
 assert certificate in signing.lower() and 'Verifies' in signing
 badging = run(SDK / 'aapt2.exe', 'dump', 'badging', APK)
-for expected in ["name='com.dsh.client.ru020'", "versionCode='162'",
-                 "versionName='0.2.0-rc2-ru-port1-experimental'",
+for expected in ["name='com.dsh.client.ru020'", "versionCode='163'",
+                 "versionName='0.2.0-rc2-ru-port2-experimental'",
                  "minSdkVersion:'30'", "native-code: 'arm64-v8a'"]:
     assert expected in badging, expected
 assert 'application-debuggable' not in badging

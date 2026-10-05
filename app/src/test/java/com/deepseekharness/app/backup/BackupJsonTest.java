@@ -7,6 +7,16 @@ import static org.junit.Assert.*;
 
 public class BackupJsonTest {
   @Test
+  public void signedRecipeBudgetAcceptsLargePatchButArchiveBudgetStillRejectsIt() throws Exception {
+    String patch = "x".repeat(58831);
+    byte[] json = ("{\"patches\":[{\"after\":\"" + patch + "\"}]}").getBytes(java.nio.charset.StandardCharsets.UTF_8);
+    assertThrows(IOException.class, () -> BackupJson.read(json, BackupLimits.MANIFEST));
+    assertNotNull(BackupJson.read(json, BackupLimits.MANIFEST, BackupLimits.MANIFEST).get("patches"));
+    assertThrows(IOException.class, () -> BackupJson.read(json, json.length - 1, json.length - 1));
+    assertThrows(IOException.class, () -> BackupJson.read("{\"a\":1,\"a\":2}".getBytes(), 100, 100));
+  }
+
+  @Test
   public void serializerBoundsActualUtf8BytesAndRoundTrips() throws Exception {
     var value = Map.of("text", "备份😀");
     byte[] encoded = BackupJson.write(value, 256);

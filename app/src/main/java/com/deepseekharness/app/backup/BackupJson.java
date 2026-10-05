@@ -11,12 +11,18 @@ public final class BackupJson {
   private BackupJson() {}
 
   public static Map<String, Object> read(byte[] bytes, int limit) throws IOException {
+    return read(bytes, limit, BackupLimits.RECORD);
+  }
+
+  /** Signed application recipes may explicitly request a larger string budget. */
+  public static Map<String, Object> read(byte[] bytes, int limit, int stringLimit) throws IOException {
+    if (stringLimit < 0) throw new IOException("METADATA_LIMIT");
     if (bytes.length > limit) throw new IOException("METADATA_LIMIT");
     try (JsonReader reader =
         new JsonReader(
             new InputStreamReader(new ByteArrayInputStream(bytes), StandardCharsets.UTF_8))) {
       reader.setStrictness(Strictness.STRICT);
-      Object value = readValue(reader, 0, new int[] {0});
+      Object value = readValue(reader, 0, new int[] {0}, stringLimit);
       if (!(value instanceof Map) || reader.peek() != JsonToken.END_DOCUMENT)
         throw new IOException("MANIFEST_FORMAT");
       @SuppressWarnings("unchecked")
@@ -27,7 +33,7 @@ public final class BackupJson {
     }
   }
 
-  private static Object readValue(JsonReader reader, int depth, int[] fields) throws IOException {
+  private static Object readValue(JsonReader reader, int depth, int[] fields, int stringLimit) throws IOException {
     if (depth > BackupLimits.DEPTH || ++fields[0] > 100_000)
       throw new IOException("METADATA_LIMIT");
     switch (reader.peek()) {
@@ -39,7 +45,7 @@ public final class BackupJson {
             String key = reader.nextName();
             if (key.length() > 2048 || values.containsKey(key))
               throw new IOException("DUPLICATE_METADATA");
-            values.put(key, readValue(reader, depth + 1, fields));
+            values.put(key, readValue(reader, depth + 1, fields, stringLimit));
           }
           reader.endObject();
           return values;
@@ -48,14 +54,14 @@ public final class BackupJson {
         {
           List<Object> values = new ArrayList<>();
           reader.beginArray();
-          while (reader.hasNext()) values.add(readValue(reader, depth + 1, fields));
+          while (reader.hasNext()) values.add(readValue(reader, depth + 1, fields, stringLimit));
           reader.endArray();
           return values;
         }
       case STRING:
         {
           String value = reader.nextString();
-          if (value.length() > BackupLimits.RECORD) throw new IOException("METADATA_LIMIT");
+          if (value.length() > stringLimit) throw new IOException("METADATA_LIMIT");
           return value;
         }
       case NUMBER:
@@ -81,7 +87,7 @@ public final class BackupJson {
   }
 
   public static Object readValue(JsonReader reader) throws IOException {
-    return readValue(reader, 0, new int[] {0});
+    return readValue(reader, 0, new int[] {0}, BackupLimits.RECORD);
   }
 
   public static byte[] write(Map<String, ?> value, int limit) throws IOException {

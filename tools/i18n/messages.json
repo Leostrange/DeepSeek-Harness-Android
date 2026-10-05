@@ -25408,7 +25408,8 @@
     "files": [
       "app/src/main/java/com/deepseekharness/app/core/ErrorLogRepository.java"
     ],
-    "uiFormat": true
+    "uiFormat": true,
+    "ru": "Не удалось сохранить: %s\nНажмите «Сохранить как», выберите папку и повторите попытку."
   },
   {
     "id": "build156_ui_3c032dc388fa",
@@ -27046,7 +27047,8 @@
     "files": [
       "app/src/main/java/com/deepseekharness/app/core/EnvironmentMaintenance.java"
     ],
-    "id": "build156_91ad8df2aca7"
+    "id": "build156_91ad8df2aca7",
+    "ru": "Пересоздание среды не завершено. Оригиналы и копии данных приложения сохранены:\n%s\n%s"
   },
   {
     "zh": "可用空间不足：本阶段预计需要 %s，当前可用 %s。原环境保持原位，请释放空间后重试。",
@@ -28665,7 +28667,8 @@
     "files": [
       "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
     ],
-    "id": "build156_choose_ea901bcfbcae"
+    "id": "build156_choose_ea901bcfbcae",
+    "ru": "Незавершённая операция: %s\nПоследний записанный этап: %s\n\n%s\n\nСостояние оригиналов: восстановление ещё не подтверждено. Просмотрите запись и выберите восстановление прерванного обслуживания. В ограниченном главном экране можно экспортировать доступные копии."
   },
   {
     "zh": "最近手动备份：%s\n%s",
@@ -30246,7 +30249,8 @@
     "id": "source_652fa9343c1230c5",
     "zh": "旧记录未提供；请查看维护日志",
     "en": "Not available in the old record; inspect maintenance logs",
-    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java"
+    "source": "app/src/main/java/com/deepseekharness/app/ui/ExtractActivity.java",
+    "ru": "В старой записи отсутствует; просмотрите журнал обслуживания"
   },
   {
     "id": "source_e0f15bd498636d6e",

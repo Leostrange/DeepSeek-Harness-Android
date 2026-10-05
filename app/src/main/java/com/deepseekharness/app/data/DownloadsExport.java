@@ -50,6 +50,9 @@ public final class DownloadsExport {
         || name.equals(".."))
       throw new IOException(com.deepseekharness.app.util.UiText.text("文件名无效"));
     BackupFileSystem fs = new AndroidBackupFileSystem();
+    source = com.deepseekharness.app.util.PrivateExportSource.resolve(
+        fs, new File(context.getApplicationInfo().dataDir),
+        context.getFilesDir(), context.getCacheDir(), source);
     var before = fs.stat(source);
     if (!before.type.equals("FILE")) throw new IOException("EXPORT_SOURCE_TYPE");
     FileIntegrity.Result expected;

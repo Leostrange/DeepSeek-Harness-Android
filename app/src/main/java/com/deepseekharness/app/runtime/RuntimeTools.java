@@ -674,7 +674,7 @@ final class RuntimeTools {
     return new org.json.JSONObject(
         com.deepseekharness.app.backup.BackupJson.read(
             assetText(context, name).getBytes(java.nio.charset.StandardCharsets.UTF_8),
-            2 * 1024 * 1024));
+            2 * 1024 * 1024, 2 * 1024 * 1024));
   }
 
   private static org.json.JSONObject fileObject(File file) throws IOException {
