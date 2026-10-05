@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="welcome_eyebrow0">DeepSeek Harness · Android</string>
+  <string name="welcome_eyebrow1">01 / Ваш стиль работы</string>
+  <string name="welcome_eyebrow2">02 / Данные и настройки под вашим контролем</string>
+  <string name="computer_use_title">Управление экраном</string>
+  <string name="ui_lan_unencrypted">Локальная сеть использует HTTP без шифрования. Используйте доверенную сеть и передавайте ссылку только доверенным устройствам.</string>
+  <string name="ui_welcome_counter">%1$d / 7</string>
+  <string name="ui_welcome_initial_counter">1 / 7</string>
+  <string name="ui_language_title">Язык</string>
+  <string name="ui_adb_host_label">Адрес устройства (автопоиск, если пусто)</string>
+  <string name="ui_adb_port_label">Порт сопряжения (автопоиск, если пусто)</string>
+  <string name="ui_adb_code_label">Код сопряжения (6 цифр)</string>
+  <string name="ui_api_key_replacement_label">Новый API-ключ (оставьте пустым, чтобы сохранить текущий)</string>
+  <string name="permission_mode_title">Разрешения DSH</string>
+  <string name="permission_mode_full">Полный доступ (по умолчанию)</string>
+  <string name="permission_mode_workspace">Запись в рабочую папку</string>
+  <string name="permission_mode_readonly">Только чтение</string>
+  <string name="permission_mode_scope">Применяется при следующем запуске. Это политика DSH; она не изолирует плагины и само приложение.</string>
+  <plurals name="plugin_count">
+    <item quantity="one">%d плагин</item>
+    <item quantity="few">%d плагина</item>
+    <item quantity="many">%d плагинов</item>
+    <item quantity="other">%d плагинов</item>
+  </plurals>
+</resources>

@@ -3,7 +3,7 @@
  * 像音乐软件的歌词那样流式滚动；工具调用则显示成「正在执行命令」这类人话。
  *
  * 数据流：
- *   session/event → 这里节流合并 → GET 127.0.0.1:3390/app/overlay → App 侧 OverlayController
+ *   session/event → 这里节流合并 → GET 127.0.0.1:3490/app/overlay → App 侧 OverlayController
  *
  * 几个刻意的设计：
  *
@@ -29,7 +29,7 @@ import { readFileSync } from 'node:fs'
 export const name = 'dsh-status-overlay'
 
 /** 桥地址（App 侧只监听回环，容器与宿主共享网络命名空间，所以直接连得上）。 */
-const BRIDGE = 'http://127.0.0.1:3390/app/overlay'
+const BRIDGE = 'http://127.0.0.1:3490/app/overlay'
 const TOKEN_PATH = '/root/.dsh/.bridge_token'
 /** 合并窗口：120ms 一次，肉眼看起来仍是连续流动的。 */
 const FLUSH_MS = 120
@@ -322,7 +322,7 @@ export function apply(ctx) {
 
 
 /**
- * 把「插件真实加载状态」报给 App 的 3390 桥。
+ * 把「插件真实加载状态」报给 App 的 3490 桥。
  *
  * 为什么需要它：**注册进 profile 不等于加载成功**。cordis 的 PENDING 是最隐蔽的一种状态 ——
  * 插件 inject 的服务没有提供者时它就停在那儿，而且**不报错**（那是合法状态，服务可能稍后
@@ -387,7 +387,7 @@ export function reportPluginStates(ctx, io = {}) {
       const st = collectPluginStates(ctx)
       const snapshot = JSON.stringify(st)
       if (snapshot === previous) return
-      const url = 'http://127.0.0.1:3390/app/plugins'
+      const url = 'http://127.0.0.1:3490/app/plugins'
         + '?loaded=' + encodeURIComponent(st.loaded.join(','))
         + '&failed=' + encodeURIComponent(st.failed.join(','))
         + '&pending=' + encodeURIComponent(st.pending.join(','))

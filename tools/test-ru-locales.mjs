@@ -30,7 +30,7 @@ try {
   for(const match of html.matchAll(/href="\.\/(assets\/[^" ]+\.css)"/g))
     await page.addStyleTag({content:fs.readFileSync(path.join(frontend,match[1]),'utf8')});
   await fixture.load('dsh-client-locale',[readRecipe('language-patch.json')]);
-  await fixture.load('dsh-client-ui-plugin-manager',[readRecipe('plugin-manager-navigation-patch.json'),readRecipe('ru-plugin-manager-copy-patch.json')],'module.exports.audit={packageText,rowText};');
+  await fixture.load('dsh-client-ui-plugin-manager',[readRecipe('ru-plugin-manager-copy-patch.json')],'module.exports.audit={packageText,rowText};');
   await fixture.load('dsh-client-ui-jobs',[readRecipe('ru-jobs-patch.json')]);
   await fixture.load('dsh-experimental-client-ui-agent-team',[readRecipe('ru-agent-team-patch.json')]);
   await fixture.load('dsh-client-ui-permission-presets',[readRecipe('ru-permission-patch.json')],

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# DSHA_ADB_SCRIPT_VERSION=19
+# DSHA_ADB_SCRIPT_VERSION=20
 """设备 shell：原生白名单判定、有限时连接、发送后不重放、真实远端退出码。
 
 用法：adb-shell.py [--host 本机IP] [--port 端口] [--timeout 秒] [--su] 命令
@@ -30,14 +30,6 @@ TRANSPORT_TIMEOUT = 4.0
 CONNECT_TIMEOUT = 25.0
 COMMAND_TIMEOUT = 90.0
 
-# env 能启动任意程序，date/logcat/dumpsys 有写操作，均需确认。
-READONLY_CMDS = frozenset(('getprop', 'id', 'ps', 'df', 'free', 'uptime',
-    'whoami', 'ls', 'stat', 'wc', 'head', 'tail', 'grep', 'cat',
-    'md5sum', 'sha1sum', 'printenv', 'pwd', 'which', 'true', 'echo'))
-READONLY_SUB = {'pm': frozenset(('list', 'path', 'dump')),
-                'settings': frozenset(('get', 'list'))}
-
-
 class ConnectFail(Exception):
     """命令尚未发送，允许重新发现地址。"""
 
@@ -46,34 +38,11 @@ class ExecutionUnknown(Exception):
     """命令可能已执行，禁止自动重放。"""
 
 
-class ConfirmationError(Exception):
-    pass
-
 
 class ShellResult:
     def __init__(self, output, exit_code):
         self.output = output
         self.exit_code = exit_code
-
-
-def is_readonly_cmd(cmd):
-    # 不解释完整 shell 语法；展开、操作符和不明命令均需确认。
-    if not cmd.strip() or any(c in cmd for c in '><|;&$`\n\r(){}\\'):
-        return False
-    try:
-        parts = shlex.split(cmd)
-    except ValueError:
-        return False
-    if not parts:
-        return False
-    name = parts[0]
-    if '/' in name:
-        if not name.startswith('/system/bin/') or name.count('/') != 3:
-            return False
-        name = name.rsplit('/', 1)[-1]
-    if name in READONLY_SUB:
-        return len(parts) > 1 and parts[1] in READONLY_SUB[name]
-    return name in READONLY_CMDS
 
 
 def atomic_text(path, text):
@@ -215,7 +184,7 @@ def request_native_vscreen_commit(ticket):
         if not token:
             raise ValueError('missing token')
         query = urllib.parse.urlencode({'ticket': ticket})
-        request = urllib.request.Request('http://127.0.0.1:3390/device/vscreen/commit?' + query,
+        request = urllib.request.Request('http://127.0.0.1:3090/device/vscreen/commit?' + query,
             headers={'X-Token': token})
         opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
         with opener.open(request, timeout=10) as response:
@@ -323,50 +292,6 @@ def connect_with_retry(device_cls, signer_cls, cmd, port, host='',
     raise ConnectFail('命令尚未发送；请检查无线调试与配对授权。尝试记录：\n' + '\n'.join(errors[-8:]))
 
 
-def request_confirm(cmd, reason=''):
-    """一次请求一次决策；仅连接明确被拒绝时尝试另一地址族。"""
-    import errno
-    import urllib.request
-    import urllib.parse
-    import urllib.error
-    try:
-        with open('/root/.dsh/.bridge_token') as f:
-            token = f.read().strip()
-    except OSError:
-        token = ''
-    if not token:
-        raise ConfirmationError('BRIDGE_TOKEN_MISSING: 确认桥尚未就绪，请打开 DSHA 后重试')
-    display = cmd if not reason else cmd + '\n\n[理由] ' + reason
-    query = '/confirm?' + urllib.parse.urlencode({'cmd': display, 'force': '1'})
-    # 不继承代理环境；令牌只放头部，避免出现在 URL/错误日志。
-    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
-    for host in ('127.0.0.1', '[::1]'):
-        try:
-            req = urllib.request.Request('http://' + host + ':3390' + query, headers={'X-Token': token})
-            with opener.open(req, timeout=65) as response:
-                body = response.read(65536).decode('utf-8')
-            try:
-                result = json.loads(body).get('result')
-            except (ValueError, AttributeError):
-                result = 'YES' if body.strip() == '{"result":YES}' else None
-            if result == 'YES':
-                return True
-            if result == 'NO':
-                raise ConfirmationError('CONFIRM_NOT_GRANTED: 未获确认（可能拒绝、超时或已有确认等待），命令未发送')
-            if result == '[UNAUTHORIZED]':
-                raise ConfirmationError('BRIDGE_UNAUTHORIZED: 桥鉴权失败，请重新启动 DSHA')
-            raise ConfirmationError('CONFIRM_NOT_GRANTED: ' + str(result or '桥返回无效响应')[:240])
-        except ConfirmationError:
-            raise
-        except urllib.error.URLError as e:
-            if isinstance(e.reason, OSError) and e.reason.errno == errno.ECONNREFUSED:
-                continue
-            raise ConfirmationError('BRIDGE_RESPONSE_LOST: 未收到确认结果，命令未发送；请回到 DSHA 检查确认提示') from e
-        except (TimeoutError, OSError, ValueError) as e:
-            raise ConfirmationError('CONFIRM_TIMEOUT: 确认等待超时或响应中断，命令未发送') from e
-    raise ConfirmationError('BRIDGE_UNREACHABLE: 3390 确认桥未监听，请打开 DSHA 后重试')
-
-
 def request_device_plan(cmd, use_su=False):
     """所有设备命令均经过同一原生白名单；不接受 DSH_INTERNAL 或关闭确认来绕过。"""
     import urllib.request
@@ -377,7 +302,7 @@ def request_device_plan(cmd, use_su=False):
         if not token:
             raise ValueError('missing token')
         query = urllib.parse.urlencode({'cmd': cmd, 'su': '1' if use_su else '0'})
-        request = urllib.request.Request('http://127.0.0.1:3390/device/plan?' + query, headers={'X-Token': token})
+        request = urllib.request.Request('http://127.0.0.1:3090/device/plan?' + query, headers={'X-Token': token})
         opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
         with opener.open(request, timeout=75) as response:
             value = json.loads(response.read(1024 * 1024)).get('result')
@@ -404,7 +329,7 @@ def request_native_vscreen_start(cmd, ticket):
         if not token:
             raise ValueError('missing token')
         query = urllib.parse.urlencode({'cmd': cmd, 'ticket': ticket})
-        request = urllib.request.Request('http://127.0.0.1:3390/device/vscreen/start?' + query,
+        request = urllib.request.Request('http://127.0.0.1:3090/device/vscreen/start?' + query,
             headers={'X-Token': token})
         opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
         with opener.open(request, timeout=15) as response:
@@ -484,7 +409,7 @@ def request_native_execution(cmd, use_su=False, force_adb=False):
     except (OSError, ValueError) as error:
         raise policy.Blocked('设备桥未准备好，请打开 DSHA 后重试') from error
     query = urllib.parse.urlencode({'cmd': cmd, 'su': '1' if use_su else '0', 'adb': '1' if force_adb else '0'})
-    request = urllib.request.Request('http://127.0.0.1:3390/device/execute?' + query, headers={'X-Token': token})
+    request = urllib.request.Request('http://127.0.0.1:3090/device/execute?' + query, headers={'X-Token': token})
     try:
         opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
         with opener.open(request, timeout=155) as response:

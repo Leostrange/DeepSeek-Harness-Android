@@ -13,7 +13,7 @@ assert.ok(manifest.content_scripts.some(entry => entry.js.indexOf('mobile-layout
 assert.match(fs.readFileSync('app/src/main/java/com/deepseekharness/app/ui/WebPageScripts.java', 'utf8'),
   /read\(context, "web-integration\/mobile-layout.js"\)/);
 const fixture = await browserFixture(runtime);
-const { page } = fixture;
+const { page } = fixture; page.on("pageerror",e=>console.error("PAGE ERROR",String(e)));
 try {
   const frontend = path.resolve(runtime, 'node_modules/@deepseek-ai/dsh-web-frontend/dist');
   const html = fs.readFileSync(path.join(frontend, 'index.html'), 'utf8');
@@ -37,14 +37,14 @@ try {
     window.root = ReactDOM.createRoot(document.getElementById('root'));
     window.renderCase = kind => {
       if (kind === 'plan') root.render(React.createElement(questions.PlanReviewPanel, {
-        pending: {key:'plan', answer: async () => {pressed++;}, cancel: async () => {pressed++;}},
+        pending: {snapshot:()=>({channel:'waterfall'}),key:'plan', answer: async () => {pressed++;}, cancel: async () => {pressed++;}},
         review: {id:'plan', question:'Проверка плана', plan:'# План\n\nОписание', approve:{label:'approve'}},
         t, renderSlot: () => null
       }));
       if (kind === 'question') root.render(React.createElement(questions.QuestionFlow, {
-        pending: {key:'question', questions:[{id:'q', question:'Выберите вариант', options:[{label:'Первый вариант'}]}],
+        pending: {liveKeys:()=>['question'],engage(){},releaseFocus(){},holdFocus(){},snapshot(){return {channel:"waterfall",state:"active"}},takeTime(){},dismiss(){},key:'question', questions:[{id:'q', question:'Выберите вариант', options:[{label:'Первый вариант'}]}],
           cancel: async () => {pressed++;}, answer: async () => {pressed++;}},
-        useStore: pick => pick({}), actions:{replace(){}, clear(){}}, t
+        useStore: pick => pick({progressByRequest:{}}), useQuestionCard: (key,pick) => pick({channel:"waterfall",state:"active"}), actions:{prune(){},replace(){}, clear(){}}, t
       }));
       if(kind === 'model') root.render(React.createElement(auditExports['@deepseek-ai/dsh-client-ui-settings-models'].audit.ModelRow, {model:{id:'long-model-name',name:'Очень длинное название модели'},position:1,t,disabled:false,expanded:false,onFieldChange(){pressed++;},onRemove(){pressed++;},onToggle(){pressed++;}}));
       if(kind === 'plugin') root.render(React.createElement(auditExports['@deepseek-ai/dsh-client-ui-plugin-manager'].audit.CardHead, {title:'Очень длинное название плагина withoutspacesxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',description:'Описание',t,onOpen(){pressed++;},icon:null,tags:null,end:React.createElement('button',{onClick(){pressed++;}},'Включить пользовательский плагин')}));

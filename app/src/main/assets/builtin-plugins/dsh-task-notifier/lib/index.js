@@ -2,10 +2,10 @@
  * dsh-task-notifier — DSHA builtin server plugin.
  *
  * 精准任务完成通知：监听 session/event 的 turn/end（整轮对话结束 =
- * agent 任务完成），通过 DSHA 3390 桥发 App 通知栏提醒。
+ * agent 任务完成），通过 DSHA 3490 桥发 App 通知栏提醒。
  * 取代 App 端 TaskNotifier 的「轮询会话文件」方案（不准）。
  *
- * 链路：turn/end → curl http://127.0.0.1:3390/app/notify?title=&text=&token=
+ * 链路：turn/end → fetch http://127.0.0.1:3090/app/notify?title=&text=，X-Token 请求头鉴权
  * App 收到后在后台发通知（App 前台时 TaskNotifier 抑制，这里插件无感知——
  * 由 App 端 /app/notify 处理前台判断）。
  */
@@ -23,7 +23,7 @@ export function completionNotice(reason) {
   return ['DSHA · 任务需要处理', '本轮任务因错误或阻塞结束，请查看对话详情']
 }
 
-/** 通过 3390 桥发 App 通知（token 鉴权） */
+/** 通过 3490 桥发 App 通知（token 鉴权） */
 async function notifyApp(title, text) {
   try {
     const fs = await import('node:fs/promises')
@@ -32,12 +32,12 @@ async function notifyApp(title, text) {
       token = (await fs.readFile('/root/.dsh/.bridge_token', 'utf-8')).trim()
     } catch {}
     if (!token) return
-    // 用 fetch（node 18+ 内置）调 3390 桥 /app/notify
-    const url = 'http://127.0.0.1:3390/app/notify'
+    // 用 fetch（node 18+ 内置）调 3490 桥 /app/notify
+    const url = 'http://127.0.0.1:3490/app/notify'
       + '?title=' + encodeURIComponent(title)
       + '&text=' + encodeURIComponent(text)
-      + '&token=' + encodeURIComponent(token)
-    const resp = await fetch(url, { signal: AbortSignal.timeout(5000) })
+
+    const resp = await fetch(url, { headers: {'X-Token': token}, signal: AbortSignal.timeout(5000) })
     await resp.text()
   } catch {}
 }

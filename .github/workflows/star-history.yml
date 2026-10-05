@@ -1,10 +1,10 @@
 name: Star history
 
-# 按周更新仓库内的 SVG；也可手动刷新。
+# 按半天更新仓库内的 SVG；也可手动刷新。
 on:
   schedule:
-    # 每周一 03:17 UTC（北京时间 11:17）。错开整点，避开 GitHub 的调度高峰。
-    - cron: '17 3 * * 1'
+    # 每 12 小时一次（00:17 / 12:17 UTC，即北京时间 08:17 / 20:17）。错开整点，避开 GitHub 的调度高峰。
+    - cron: '17 0,12 * * *'
   workflow_dispatch:
 
 permissions:

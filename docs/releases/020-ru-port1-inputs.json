@@ -1,0 +1,94 @@
+{
+  "upstreamCommit": "3980ac011d4825adbf1373433b7c1e651391f3e0",
+  "customizationSnapshot": "b01c0ab6b38d42a934bb453fdef082d85f3da422",
+  "runtimeVersion": "0.2.0-rc.2",
+  "applicationId": "com.dsh.client.ru020",
+  "publicDataFolder": "dshdata-ru020",
+  "ports": {
+    "web": 3480,
+    "lan": 3481,
+    "bridge": 3490
+  },
+  "originalApkSha256": "1d42712eb5f796eb27ddab3cb2aa98b03e9063c3f61a4493fc285e64637165e2",
+  "runtimeArchiveSha256": "edc967c18fddc1fa5c7fbca6a322ad4f9944c8a9cc54a879d036cdaeb95f917c",
+  "customRecipes": [
+    {
+      "asset": "ru-agent-team-patch.json",
+      "module": "@deepseek-ai/dsh-experimental-client-ui-agent-team/lib/client.js",
+      "dshVersion": "0.2.0-rc.2",
+      "patchCount": 6
+    },
+    {
+      "asset": "ru-auto-review-patch.json",
+      "module": "@deepseek-ai/dsh-experimental-auto-review/lib/index.js",
+      "dshVersion": "0.2.0-rc.2",
+      "patchCount": 2
+    },
+    {
+      "asset": "ru-devtools-package-patch.json",
+      "module": "@deepseek-ai/dsh-web-app/package.json",
+      "dshVersion": "0.2.0-rc.2",
+      "patchCount": 1
+    },
+    {
+      "asset": "ru-jobs-patch.json",
+      "module": "@deepseek-ai/dsh-client-ui-jobs/lib/client.js",
+      "dshVersion": "0.2.0-rc.2",
+      "patchCount": 12
+    },
+    {
+      "asset": "ru-permission-patch.json",
+      "module": "@deepseek-ai/dsh-client-ui-permission-presets/lib/client.js",
+      "dshVersion": "0.2.0-rc.2",
+      "patchCount": 2
+    },
+    {
+      "asset": "ru-plugin-inventory-patch.json",
+      "module": "@deepseek-ai/dsh-client-ui-settings-plugin-inventory/lib/client.js",
+      "dshVersion": "0.2.0-rc.2",
+      "patchCount": 1
+    },
+    {
+      "asset": "ru-plugin-manager-copy-patch.json",
+      "module": "@deepseek-ai/dsh-client-ui-plugin-manager/lib/client.js",
+      "dshVersion": "0.2.0-rc.2",
+      "patchCount": 2
+    },
+    {
+      "asset": "ru-preset-editor-backend-patch.json",
+      "module": "@deepseek-ai/dsh-agent-preset-registry/lib/index.js",
+      "dshVersion": "0.2.0-rc.2",
+      "patchCount": 6
+    },
+    {
+      "asset": "ru-preset-editor-host-patch.json",
+      "module": "@deepseek-ai/dsh-agent-preset-registry/lib/typert.host.js",
+      "dshVersion": "0.2.0-rc.2",
+      "patchCount": 1
+    },
+    {
+      "asset": "ru-preset-editor-remote-client-patch.json",
+      "module": "@deepseek-ai/dsh-agent-preset-registry/lib/typert.remote-client.js",
+      "dshVersion": "0.2.0-rc.2",
+      "patchCount": 1
+    },
+    {
+      "asset": "ru-preset-picker-patch.json",
+      "module": "@deepseek-ai/dsh-client-ui-agent-preset/lib/client.js",
+      "dshVersion": "0.2.0-rc.2",
+      "patchCount": 15
+    },
+    {
+      "asset": "ru-stats-strip-patch.json",
+      "module": "@deepseek-ai/dsh-client-ui-chat/lib/client.js",
+      "dshVersion": "0.2.0-rc.2",
+      "patchCount": 2
+    }
+  ],
+  "terminalReference": {
+    "package": "com.io.ab.ub",
+    "version": "1.0.0",
+    "sha256": "cb78f4930db041cb4348b9659b936535844ce077edea830d394edd8b1dbc5a71",
+    "scope": "terminal screen only; no file manager or distro installer"
+  }
+}

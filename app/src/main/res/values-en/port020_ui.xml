@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="nav_launch">Launch</string>
+  <string name="nav_plugins">Plugins</string>
+  <string name="nav_settings">Settings</string>
+  <string name="nav_terminal">Terminal</string>
+</resources>

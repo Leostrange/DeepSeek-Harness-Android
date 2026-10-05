@@ -1,1 +1,2 @@
-<resources><string name="web_port_fallback_hint">Если предпочтительный порт занят, автоматически используется свободный порт. Фактический адрес указан на стартовом экране.</string></resources>
+<?xml version='1.0' encoding='utf-8'?>
+<resources />
