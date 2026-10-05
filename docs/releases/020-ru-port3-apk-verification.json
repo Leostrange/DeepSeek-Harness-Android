@@ -1,0 +1,22 @@
+{
+  "result": "PASS",
+  "apk": "C:\\Users\\xmeta\\projects\\DSHA\\work\\upstream-020-ru\\app\\build\\outputs\\apk\\standard\\ruTrial\\app-standard-ruTrial.apk",
+  "bytes": 275675219,
+  "sha256": "c1423ec844904a3af972b282621b23a9873300412361f48309cb43919cb3afde",
+  "applicationId": "com.dsh.client.ru020",
+  "dshVersion": "0.2.0-rc.2",
+  "certificateSha256": "9026a2270ff16f0842b40c65da6b812106b3ebfc8b77e2307e91010db4f4bb5d",
+  "customRecipes": 13,
+  "recovery": {
+    "apk": "C:\\Users\\xmeta\\projects\\DSHA\\work\\upstream-020-ru\\app\\build\\outputs\\apk\\standard\\ruTrial\\app-standard-ruTrial.apk",
+    "flavor": "standard",
+    "recoveryId": "3e3c1b5046b284e51a410f8faf63f5617a49febcf7455453b6317a4ad5a0278b",
+    "dshVersion": "0.2.0-rc.2",
+    "files": 20604,
+    "archiveSources": {
+      "recovery-rootfs.bin": "offline-rootfs.bin",
+      "recovery-dsh-runtime.bin": "dsh-runtime.bin"
+    },
+    "result": "PASS"
+  }
+}

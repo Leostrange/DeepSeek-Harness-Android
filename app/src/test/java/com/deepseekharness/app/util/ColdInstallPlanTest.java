@@ -62,6 +62,21 @@ public class ColdInstallPlanTest {
   }
 
   @Test
+  public void allProbeFailuresRetainBoundedReasonsAndNeverInstall() {
+    IOException error = assertThrows(IOException.class, () -> ColdInstallPlan.run(
+        ColdInstallPlan.modes(true, true, true, false),
+        (mode, probe) -> {
+          assertTrue(probe);
+          return result(126, true, "x".repeat(10000) + "loader: Invalid argument");
+        }, (mode, probe, observation) -> {}));
+    assertTrue(error.getMessage().startsWith("COLD_RUNTIME_PROBE_FAILED"));
+    for (var mode : ColdInstallPlan.Mode.values())
+      assertTrue(error.getMessage().contains(mode + ": exit=126 timeout=false"));
+    assertTrue(error.getMessage().contains("loader: Invalid argument"));
+    assertTrue(error.getMessage().length() < 7000);
+  }
+
+  @Test
   public void everyFailedProbeStopsWithoutInstallOrReady() {
     List<Boolean> calls = new ArrayList<>();
     assertThrows(

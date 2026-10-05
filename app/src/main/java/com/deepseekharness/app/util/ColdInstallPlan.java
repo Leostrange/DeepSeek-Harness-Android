@@ -81,11 +81,18 @@ public final class ColdInstallPlan {
       throws IOException, InterruptedException {
     if (modes.isEmpty() || modes.size() > 3 || modes.stream().distinct().count() != modes.size())
       throw new IllegalArgumentException("COLD_RUNTIME_PLAN");
+    StringBuilder failures = new StringBuilder();
     for (Mode mode : modes) {
       Observation probe = runner.run(mode, true);
       recorder.record(mode, true, probe);
       if (!probe.exited) throw new IOException("COLD_INSTALL_PROCESS_EXIT_UNCONFIRMED");
-      if (!probe.ready(PROBE_READY)) continue;
+      if (!probe.ready(PROBE_READY)) {
+        String detail = SensitiveData.redact(probe.diagnostic == null ? "" : probe.diagnostic);
+        failures.append("\n").append(mode).append(": exit=").append(probe.exitCode)
+            .append(" timeout=").append(probe.timedOut).append("\n")
+            .append(detail.substring(Math.max(0, detail.length() - 2048)));
+        continue;
+      }
       Observation installed = runner.run(mode, false);
       recorder.record(mode, false, installed);
       if (!installed.exited) throw new IOException("COLD_INSTALL_PROCESS_EXIT_UNCONFIRMED");
@@ -94,7 +101,7 @@ public final class ColdInstallPlan {
             "COLD_INSTALL_POSTCHECK_FAILED: " + mode + "\n" + installed.diagnostic);
       return mode;
     }
-    throw new IOException("COLD_RUNTIME_PROBE_FAILED");
+    throw new IOException("COLD_RUNTIME_PROBE_FAILED" + failures);
   }
 
   public static void applyEnvironment(Map<String, String> environment, Mode mode) {

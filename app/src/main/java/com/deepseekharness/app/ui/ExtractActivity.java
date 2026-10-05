@@ -85,7 +85,30 @@ public class ExtractActivity extends AppCompatActivity {
     content.addView(emergency, new LinearLayout.LayoutParams(-1, -2));
     Button logs = new androidx.appcompat.widget.AppCompatButton(this);
     logs.setText(com.deepseekharness.app.util.UiText.choose("查看本次维护记录", "View maintenance record"));
-    logs.setOnClickListener(v -> startActivity(DiagnosticActivity.downloadLogs(this)));
+    logs.setOnClickListener(v -> {
+      logs.setEnabled(false);
+      new Thread(() -> {
+        String record = com.deepseekharness.app.core.ColdInstallDiagnostics.read(this);
+        runOnUiThread(() -> {
+          if (isFinishing() || isDestroyed()) return;
+          logs.setEnabled(true);
+          CardPage page = new CardPage(this,
+              com.deepseekharness.app.util.UiText.text("查看本次维护记录"), "");
+          TextView text = page.text(record, 13, R.color.text_secondary);
+          text.setTextIsSelectable(true);
+          page.content.addView(text);
+          var dialog = CardSheet.create(this, page);
+          page.button(page.footer, com.deepseekharness.app.util.UiText.text("复制"), false, () -> {
+            android.content.ClipboardManager clipboard =
+                (android.content.ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            if (clipboard != null) clipboard.setPrimaryClip(
+                android.content.ClipData.newPlainText("DSHA maintenance", record));
+          });
+          page.button(page.footer, com.deepseekharness.app.util.UiText.text("关闭"), false, dialog::dismiss);
+          CardSheet.show(dialog, this);
+        });
+      }, "maintenance-record").start();
+    });
     content.addView(logs, new LinearLayout.LayoutParams(-1, -2));
     content.addView(format, new LinearLayout.LayoutParams(-1, -2));
     retry.setOnClickListener(
