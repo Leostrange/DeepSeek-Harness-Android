@@ -60,11 +60,36 @@ final class IsolatedInstallProcess extends Process implements AutoCloseable {
     if (launcher == null)
       throw new IOException(com.deepseekharness.app.util.UiText.text("此系统不支持独立安装进程组"));
     File status = new File(temporary, "cold-install-" + java.util.UUID.randomUUID() + ".status");
+    java.util.List<String> command = java.util.List.copyOf(target.command());
     // 完成后仍保留组长，直到宿主核验身份并回收，避免 PID/进程组号复用的歧义。
+    try {
+      return startWithHandshake(target, launcher, command, status, record);
+    } catch (IOException handshakeFailure) {
+      // 0.2.0 的出生握手在部分设备上会在读取 /proc/self/stat 或输出阶段失败；
+      // 回退到 0.1.7 已验证的监督路径（不解析输出，Java 轮询 supervisor 的 /proc 状态）。
+      try {
+        return startLegacy(target, launcher, command, status, record);
+      } catch (IOException legacyFailure) {
+        throw new IOException(
+            String.valueOf(handshakeFailure.getMessage())
+                + " | legacy="
+                + String.valueOf(legacyFailure.getMessage()),
+            legacyFailure);
+      }
+    }
+  }
+
+  private static IsolatedInstallProcess startWithHandshake(
+      ProcessBuilder target,
+      String launcher,
+      java.util.List<String> command,
+      File status,
+      BoundedGuestSessions.Operation record)
+      throws IOException {
     boolean nativeLauncher = !launcher.equals("/system/bin/setsid");
     String shell =
         com.deepseekharness.app.util.IsolatedCommand.script(
-            target.command(), status.getAbsolutePath(), !nativeLauncher);
+            command, status.getAbsolutePath(), !nativeLauncher);
     target.command(
         nativeLauncher
             ? Arrays.asList(launcher, "--birth-handshake", "/system/bin/sh", "-c", shell)
@@ -97,6 +122,51 @@ final class IsolatedInstallProcess extends Process implements AutoCloseable {
       throw new IOException(com.deepseekharness.app.util.UiText.text("安装准备被中断"), error);
     } finally {
       // 握手前只等 stdin，没有创建 guest 子进程；握手写入失败也回收整个已核验的组。
+      if (!accepted) {
+        if (ready != null) ready.close();
+        else Compat.destroy(supervisor);
+        status.delete();
+      }
+    }
+  }
+
+  /** 0.1.7 监督路径：不解析输出，Java 轮询 supervisor 的 /proc 状态直到它拥有会话。 */
+  private static IsolatedInstallProcess startLegacy(
+      ProcessBuilder target,
+      String launcher,
+      java.util.List<String> command,
+      File status,
+      BoundedGuestSessions.Operation record)
+      throws IOException {
+    String shell =
+        com.deepseekharness.app.util.IsolatedCommand.script(command, status.getAbsolutePath());
+    target.command(Arrays.asList(launcher, "/system/bin/sh", "-c", shell));
+    Process supervisor = target.start();
+    int pid = ProcessIdentity.androidPid(supervisor.getClass().getName(), supervisor.toString());
+    long deadline = android.os.SystemClock.elapsedRealtime() + 2000;
+    boolean accepted = false;
+    IsolatedInstallProcess ready = null;
+    try {
+      while (!ProcessTermination.exited(supervisor)
+          && android.os.SystemClock.elapsedRealtime() < deadline) {
+        ProcessIdentity identity = readIdentity(pid);
+        if (identity != null && identity.ownsSession()) {
+          ready = new IsolatedInstallProcess(supervisor, identity, status, record);
+          if (record != null) record.beforeLaunch(identity);
+          supervisor
+              .getOutputStream()
+              .write("DSHA_START\n".getBytes(java.nio.charset.StandardCharsets.US_ASCII));
+          supervisor.getOutputStream().flush();
+          accepted = true;
+          return ready;
+        }
+        Thread.sleep(5);
+      }
+      throw new IOException(com.deepseekharness.app.util.UiText.text("无法建立独立安装进程组"));
+    } catch (InterruptedException error) {
+      Thread.currentThread().interrupt();
+      throw new IOException(com.deepseekharness.app.util.UiText.text("安装准备被中断"), error);
+    } finally {
       if (!accepted) {
         if (ready != null) ready.close();
         else Compat.destroy(supervisor);

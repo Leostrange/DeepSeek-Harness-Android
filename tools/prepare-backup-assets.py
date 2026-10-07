@@ -29,7 +29,7 @@ content=json.dumps(output,ensure_ascii=False,indent=2)+'\n'
 args=sys.argv[1:]
 if args==['--check']:
  if not matches_text(target,content,encoding='utf8'):
-  raise SystemExit('受管依赖证明与当前归档不一致；先运行 tools/prepare-backup-assets.py --write 并审阅改动')
+  raise SystemExit('Доказательство управляемых зависимостей не совпадает с текущим архивом; сначала выполните tools/prepare-backup-assets.py --write и просмотрите изменения')
 elif args==[] or args==['--write']:
  write_source_text(target,content,encoding='utf8')
 else:raise SystemExit('usage: prepare-backup-assets.py [--check|--write]')

@@ -22,8 +22,9 @@ public final class ProcessBirthHandshake {
         int value = input.read();
         if (value < 0) throw new IOException("PROCESS_BIRTH_HANDSHAKE_EOF");
         if (value == '\n') {
-          ProcessIdentity identity = parse(line.toString(StandardCharsets.US_ASCII.name()), owner);
-          if (identity == null) throw new IOException("PROCESS_BIRTH_HANDSHAKE_INVALID");
+          String text = line.toString(StandardCharsets.US_ASCII.name());
+          ProcessIdentity identity = parse(text, owner);
+          if (identity == null) throw new IOException("PROCESS_BIRTH_HANDSHAKE_INVALID: " + snippet(text));
           return identity;
         }
         if (line.size() >= LIMIT) throw new IOException("PROCESS_BIRTH_HANDSHAKE_LIMIT");
@@ -33,6 +34,12 @@ public final class ProcessBirthHandshake {
       Thread.sleep(5);
     }
     throw new IOException("PROCESS_BIRTH_HANDSHAKE_TIMEOUT");
+  }
+
+  /** Негласная строка-первоисточник отказа: усечённая, без лишних данных. */
+  private static String snippet(String text) {
+    String flat = text.replace('\r', ' ');
+    return flat.length() > 200 ? flat.substring(0, 200) + "…" : flat;
   }
 
   public static ProcessIdentity parse(String line, int owner) {

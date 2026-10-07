@@ -48,7 +48,7 @@ def main(args):
     content = json.dumps(output, ensure_ascii=False, indent=2) + '\n'
     if args == ['--check']:
         if not matches_text(target,content,encoding='utf8'):
-            raise SystemExit('运行时描述符与当前受管输入不一致；先运行 tools/prepare-runtime-descriptor.py --write 并审阅改动')
+            raise SystemExit('Дескриптор рантайма не совпадает с текущими управляемыми входами; сначала выполните tools/prepare-runtime-descriptor.py --write и просмотрите изменения')
     elif args in ([], ['--write']):
         write_source_text(target,content,encoding='utf8')
     else:

@@ -94,7 +94,7 @@ def main():
     args = parser.parse_args()
     source, output = Path(args.source).resolve(), Path(args.output).absolute()
     if source == output or source in output.parents:
-        raise ValueError("生成目录不能放在原始资产目录内")
+        raise ValueError("Каталог генерации нельзя размещать внутри исходного каталога ресурсов")
     rootfs = source / "offline-rootfs.bin"
     runtime = source / "dsh-runtime.bin"
     deployment = load_manifest()
@@ -116,7 +116,7 @@ def main():
     repo = Path(__file__).resolve().parents[1]
     if any(sha256(repo / name) != digest for name, digest in compat_meta['inputs'].items()) \
             or sha256(source / 'web-integration/es-compat.js') != compat_meta['sha256']:
-        raise ValueError('网页兼容代码与依赖锁不一致，请运行 tools/prepare-web-compat.mjs')
+        raise ValueError('Код веб-совместимости не совпадает с локом зависимостей; запустите tools/prepare-web-compat.mjs')
     compatibility = (source / 'web-integration/es-compat.js').read_text(encoding='utf-8')
     compatibility += '\n' + (source / 'web-integration/compat.js').read_text(encoding='utf-8')
     compatibility += '\n' + (source / 'bridge-token-compat.cjs').read_text(encoding='utf-8')
@@ -135,10 +135,10 @@ def main():
         for name in ('dsh-runtime.bin', 'dsh-runtime.sha256', 'offline-rootfs.layout'):
             (output / name).unlink(missing_ok=True)
         (output.parent / "standard-assets-report.json").unlink(missing_ok=True)
-        print("未提供离线 rootfs，生成精简资产")
+        print("Офлайн rootfs не предоставлен - генерируется усечённый набор ресурсов")
         return
     if not runtime.is_file():
-        raise ValueError("缺少锁定的新版 dsh-runtime.bin；请先运行 tools/build-dsh-runtime.py，不能发布旧版 dsh")
+        raise ValueError("Отсутствует закреплённый новый dsh-runtime.bin; сначала запустите tools/build-dsh-runtime.py - публикация старого dsh запрещена")
     specification = importlib.util.spec_from_file_location('dsh_runtime_builder', Path(__file__).with_name('build-dsh-runtime.py'))
     builder = importlib.util.module_from_spec(specification)
     specification.loader.exec_module(builder)
@@ -146,7 +146,7 @@ def main():
     expected_version = json.loads((Path(__file__).parent / 'dsh-runtime/package.json').read_text(encoding='utf-8'))['dependencies']['@deepseek-ai/dsh']
     if metadata.get('version') != expected_version or metadata.get('inputs') != builder.recipe_inputs() \
             or metadata.get('archive_sha256') != sha256(runtime):
-        raise ValueError('dsh 离线运行时与当前补丁/依赖锁不一致，请重新生成 dsh-runtime.bin')
+        raise ValueError('Офлайн-рантайм dsh не совпадает с текущими патчами/локом зависимостей; пересоберите dsh-runtime.bin')
     # 同一份 dsh 覆盖层供冷安装和覆盖更新读取；不再嵌进 Ubuntu 大归档重复解压。
     shutil.copyfile(runtime, output / 'dsh-runtime.bin')
     write_source_text(output / 'dsh-runtime.sha256',metadata['archive_sha256'] + '\n',encoding='ascii')
@@ -157,11 +157,11 @@ def main():
     tools_archive = source / 'ubuntu-tools.bin'
     tools_metadata = json.loads((source / 'ubuntu-tools.inputs.json').read_text())
     if tools_metadata.get('inputs') != tools_builder.inputs() or tools_metadata.get('archive_sha256') != sha256(tools_archive):
-        raise ValueError('Ubuntu 离线基础工具与依赖锁不一致，请运行 tools/prepare-ubuntu-tools.py')
+        raise ValueError('Офлайн-инструменты Ubuntu не совпадают с локом зависимостей; запустите tools/prepare-ubuntu-tools.py')
     with tarfile.open(rootfs, 'r:gz') as original:
         status = next(item for item in original if item.name.removeprefix('./') == 'var/lib/dpkg/status')
         if hashlib.sha256(original.extractfile(status).read()).hexdigest() != tools_metadata.get('base_status_sha256'):
-            raise ValueError('Ubuntu 基础包状态已变化，必须重新解析离线工具依赖')
+            raise ValueError('Состояние базовых пакетов Ubuntu изменилось - зависимости офлайн-инструментов нужно разобрать заново')
     signature = {"source_sha256": sha256(rootfs), "recipe_sha256": sha256(Path(__file__)),
                  "text_writer_sha256": sha256(Path(__file__).with_name('source_text.py')),
                  "deployment_sha256": sha256(DEPLOYMENT_MANIFEST),
@@ -175,7 +175,7 @@ def main():
             if cached.get("inputs") == signature and cached.get("output_sha256") == sha256(optimized) and cached.get('unpacked_bytes', 0) > 0:
                 write_source_text(output / 'offline-rootfs.bytes',str(cached['unpacked_bytes']) + '\n',encoding='ascii')
                 write_source_text(output / 'offline-rootfs.sha256',cached['output_sha256'] + '\n',encoding='ascii')
-                print("rootfs 内容未变化，复用已校验的减重资产")
+                print("Содержимое rootfs не изменилось - переиспользуются проверенные облегчённые ресурсы")
                 return
         except (ValueError, OSError):
             pass
@@ -219,7 +219,7 @@ def main():
         for item in overlay:
             name = item.name.removeprefix("./").rstrip("/")
             if not valid_overlay(item, name):
-                raise ValueError("dsh 覆盖层包含非运行目录：" + name)
+                raise ValueError("Слой перекрытия dsh содержит не-рантайм каталог: " + name)
             kept.update((name + "\n").encode())
             kept_bytes += item.size if item.isfile() else 0
     temp.replace(output / "offline-rootfs.bin")
@@ -235,7 +235,7 @@ def main():
     write_source_text(output / 'offline-rootfs.sha256',report['output_sha256'] + '\n',encoding='ascii')
     print("rootfs: %.2f -> %.2f MiB" % (report["original_bytes"] / 1048576,
                                      report["optimized_bytes"] / 1048576))
-    print("移除解压内容:", {key: round(value / 1048576, 2) for key, value in removed.items()})
+    print("Удалено из распакованного:", {key: round(value / 1048576, 2) for key, value in removed.items()})
 
 
 if __name__ == "__main__":

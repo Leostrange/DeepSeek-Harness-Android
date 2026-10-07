@@ -23,9 +23,9 @@ android {
         minSdk 30
         targetSdk 37
         buildConfigField 'String', 'BUNDLED_PNPM_VERSION', '"' + bundledTools.pnpm.version + '"'
-        versionCode 164
+        versionCode 165
         // DSHA 修订号 + 固定的北京时间戳 + 内置 DSH 版本；同一交付重建不变。
-        versionName "0.2.0-rc2-ru-port3"
+        versionName "0.2.0-rc2-ru-port4"
         testInstrumentationRunner project.findProperty('dsha.testRunner') ?: "com.deepseekharness.app.Rc13Instrumentation"
         ndk {
             abiFilters 'arm64-v8a'
@@ -66,9 +66,9 @@ android {
                         ?: project.findProperty("dsha.key.password")
                 if (!storePassword || !keyPassword)
                     throw new GradleException('必须明确提供发布密钥口令，不能使用隐式缺省值')
-                println "签名：已配置历史发布证书"
+                        println "Подпись: исторический сертификат публикации настроен"
             } else {
-                println "签名：未配置历史发布证书；正式 APK 打包将被阻止"
+                        println "Подпись: исторический сертификат публикации не настроен; упаковка официального APK будет заблокирована"
             }
             enableV1Signing true
             enableV2Signing true

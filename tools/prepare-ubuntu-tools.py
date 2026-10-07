@@ -37,26 +37,26 @@ def main():
     cache.mkdir(parents=True, exist_ok=True)
     lock = json.loads(LOCK.read_text())
     if lock['format'] != 1 or lock['architecture'] != 'arm64':
-        raise ValueError('不支持的 Ubuntu 工具锁')
+        raise ValueError('Неподдерживаемый лок инструментов Ubuntu')
     rows = lock['packages']
     if len({r['Package'] for r in rows}) != len(rows):
-        raise ValueError('工具包重复')
+        raise ValueError('Повторяющийся инструментальный пакет')
     def fetch(row):
         relative = row['Filename']
         if not relative.startswith('pool/main/') or '..' in relative.split('/') or not re.fullmatch(r'[A-Za-z0-9_./+~%-]+', relative):
-            raise ValueError('软件包路径无效')
+            raise ValueError('Недопустимый путь пакета')
         if row['Architecture'] not in ('arm64', 'all'):
-            raise ValueError('软件包架构不符')
+            raise ValueError('Архитектура пакета не совпадает')
         target = cache / Path(relative).name
         if not target.is_file() or digest(target) != row['SHA256']:
             if args.offline:
-                raise ValueError('离线缓存缺少：' + target.name)
+                raise ValueError('В офлайн-кэше отсутствует: ' + target.name)
             temporary = target.with_suffix('.part')
             with urllib.request.urlopen('https://ports.ubuntu.com/ubuntu-ports/' + relative, timeout=40) as response:
                 temporary.write_bytes(response.read())
             if temporary.stat().st_size != int(row['Size']) or digest(temporary) != row['SHA256']:
                 temporary.unlink()
-                raise ValueError('Ubuntu 软件包摘要不符：' + target.name)
+                raise ValueError('Сводка пакета Ubuntu не совпадает: ' + target.name)
             temporary.replace(target)
         return target
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as workers:
