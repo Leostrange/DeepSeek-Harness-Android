@@ -1,18 +1,13 @@
-Title: fix: complete Russian localization and mobile settings/keyboard layout
+# PR253
 
-Russian users see mixed-language setup, diagnostics, recovery and Web UI text. This contribution completes the Russian display catalog, fills missing descriptions for known bundled plugins, and fixes horizontal overflow on Settings → Models and Settings → Built-in plugins.
+Официальная актуальная карточка: https://github.com/DSH-APP/DSHA/pull/253
 
-It also removes the duplicate mobile sidebar opener, centers the Team popup, and resizes the whole chat with native IME progress. Handled insets are passed to WebView as explicit zero values, preventing a stale keyboard inset from leaving a dark gap after the keyboard closes. Browser-only viewport handling is preserved.
+Head: `bc162a385bfe275ac5c7c1ca85513c9bf005e4c5`; tree: `415178c101a943f8534e28591f68467ac3e68596`.
 
-Validation:
-- The user confirmed that build363 starts, translations are complete, and the reported layouts and keyboard behavior are fixed on their Android16 device.
-- Fresh checks: 12 language-catalog tests, 11 deployment tests, 6 mobile-gear contracts; recipe syntax/locale/fallback checks; source i18n; generated resources; source hygiene; manifest; changelog;1296 documentation links.
-- The official fixed-input ZIP was verified against its published SHA-256. The ARM DSH runtime was rebuilt from locked npm inputs: its SHA-256 reproduces 5d0552168f52120be5247773978ed370132871b385bafa652b611461e560caa4. Package proofs were regenerated for657 packages; the descriptor verifies213 assets and486 launcher inputs.
-- Dedicated review covered the full57-file diff. Source findings were corrected. Review remains REQUEST_CHANGES for release packaging prerequisites: the new fixed-input distribution/lock must be published before merge, and complete Android/Chromium gates must run in supported CI.
-- The four browser-layout tests could not be rerun here because Chromium could not create its local socket (EPERM). Prior browser/Robolectric results are preserved in the original preparation, not reported as fresh passes.
-- This exact contribution tree has not been built/installed as an APK. It adds small translation-semantic corrections and source-proof cleanup after the accepted build363.
+Изменения: Android/Web RU, переполнение настроек моделей/плагинов, дублированная кнопка, панель команды, анимация IME; дополнительно отдельный каталог субагентов, названия действий, статусы, склонение счётчиков и время. Для новых пояснений модели язык задаётся существующим механизмом инструкции; пользовательские указания сохраняют приоритет, гарантии соблюдения моделью нет.
 
-Base: DSH-APP/DSHA main b597a9b5fd395355eca0976b6555be2b990d1010.
-Head:17a16a88d0ed3ff1197741a108e3d29f355623a3.
-No signing keys, APK package/version changes, user data, screenshots or logs are included.
-Site dsha.cc availability is a separate issue and is not claimed fixed.
+Прошли: реальная сборка prompt/child-scope и custom/complete overrides, компактный бюджет10языков; цепочки патчей и идемпотентность, предел16KiB; RU copy/syntax,11deployment, hygiene, i18n, notices, manifest258, Java formatting, diff whitespace;219assets/486launchers/657proofs соответствуют реальным файлам. Дополнительное ревью не оставило новых P0/P1/P2.
+
+Draft сохраняется: fixed-input distribution/lock ещё указывает на прежний архив; полный Android/Robolectric CI нужен перед слиянием; Chromium блокируется локальным EPERM. Полный старый prompt-language тест падает на проверке фразы Android MCP также на предыдущей базе, новый целевой тест сборки языка проходит.
+
+Build364 — отдельно упакованное обновление ресурсов принятого build363, а не полная нативная сборка точного дерева PR. Подпись/пакет сохраняются; установка на устройстве ожидает проверки. Ключи, APK и пользовательские данные в код PR не включены.
